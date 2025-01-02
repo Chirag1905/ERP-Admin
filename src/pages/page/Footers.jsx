@@ -36,7 +36,7 @@ export default function Footers() {
                             <CompanyLogo className="w-[53px] h-[18px] text-font-color-100 transition-all hover:text-secondary" />
                         </Link>
                         <p className='text-font-color-100 text-center'>
-                            © {CurrentYear} <Link to="/" className='text-primary'>Swift Pro</Link>, All Rights Reserved.
+                            © {CurrentYear} <Link to="/" className='text-primary'>Techvein</Link>, All Rights Reserved.
                         </p>
                     </div>
                     <ul className='flex items-center gap-x-20 gap-y-5 flex-wrap justify-center'>
@@ -86,7 +86,7 @@ export default function Footers() {
                         </li>
                     </ul>
                     <p className='text-font-color-100 text-center'>
-                        © {CurrentYear} <Link to="/" className='text-primary'>Swift Pro</Link>, All Rights Reserved.
+                        © {CurrentYear} <Link to="/" className='text-primary'>Techvein</Link>, All Rights Reserved.
                     </p>
                 </div>
                 <div className="footer p-6 bg-card-color rounded-xl grid lg:grid-cols-[1fr_1.5fr] grid-cols-1 gap-6 md:text-[16px]/[24px] text-[14px]/[20px]">
@@ -98,7 +98,7 @@ export default function Footers() {
                             Habitasse vivamus non dictum malesuada viverra aliquam mus facilisis ex curabitur leo magnis maecenas nunc cras
                         </p>
                         <p className='text-font-color-100 flex items-center gap-1 flex-wrap'>
-                            © {CurrentYear} <Link to="/" className='text-primary'>Swift.</Link><IconHeartFilled className='w-[20px] h-[20px] min-w-[20px] text-danger' /> by <span className='text-danger'>Swift Pro</span>.
+                            © {CurrentYear} <Link to="/" className='text-primary'>Techvein.</Link><IconHeartFilled className='w-[20px] h-[20px] min-w-[20px] text-danger' /> by <span className='text-danger'>Techvein</span>.
                         </p>
                     </div>
                     <div className='grid sm:grid-cols-3 grid-cols-1 gap-15'>
@@ -319,7 +319,7 @@ export default function Footers() {
                     </div>
                     <div className="pt-6 mt-6 border-t border-border-color flex items-center justify-between gap-15 md:flex-row flex-col md:text-[16px]/[24px] text-[14px]/[20px]">
                         <p className='text-font-color-100 text-center'>
-                            © {CurrentYear} <Link to="/" className='text-primary'>Swift Pro</Link>, All Rights Reserved.
+                            © {CurrentYear} <Link to="/" className='text-primary'>Techvein</Link>, All Rights Reserved.
                         </p>
                         <ul className='flex items-center gap-x-20 gap-y-5 flex-wrap justify-center'>
                             <li>

@@ -438,7 +438,7 @@ export default function CampaignBody({ campaignsModal, openCampaignsModal }) {
                     <div className='sm:col-span-2 flex gap-4 sm:flex-row flex-col-reverse card bg-secondary text-white rounded-xl overflow-hidden md:p-6 p-4'>
                         <div>
                             <p className='text-[20px]/[26px] font-medium mb-2'>
-                                SWIFT - Admin Dashboard Template
+                                Techvein - Admin Dashboard
                             </p>
                             <p className='mb-6'>
                                 1 Jan 20222, 11:15 AMF
