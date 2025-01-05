@@ -1,12 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';;
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import { useLocation } from 'react-router-dom';
-import {
-  menuList,
-  documentationItem,
-  crmManagement,
-} from './SidebarData';
 import {
   avatar1,
   avatar2,
@@ -24,12 +19,21 @@ import {
   profile_av,
 } from '../../assets/images'
 import {
+  IconHome,
+  IconSitemap,
+  IconShieldLock,
+  IconApps,
+  IconNotebook,
+  IconId,
+  IconLayout2,
+  IconChevronRight,
+  IconPin,
+  IconPinFilled,
   IconCalendar,
   IconNote,
   IconMessage,
   IconPower,
   IconPlus,
-  IconChevronRight,
   IconX,
   IconPhoneFilled,
   IconMessageCircle2Filled,
@@ -46,23 +50,19 @@ import {
   IconUsersGroup,
   IconCalendarFilled,
   IconTag,
+  IconSquares,
+  IconChecklist,
+  IconTimelineEventPlus,
 } from '@tabler/icons-react'
 import NewProject from '../../pages/app/project/NewProject';
 
+
 export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleChat }) {
+  const [pinnedItems, setPinnedItems] = useState([]);
+  const [menuActive, setMenuActive] = useState(null);
+  const [submenuActive, setSubmenuActive] = useState({});
 
   const pageUrl = useLocation().pathname;
-
-  const [menuActive, setMenuActive] = useState(0)
-  const menuToggle = (key) => {
-    setMenuActive(menuActive === key ? null : key)
-  }
-
-  const [menuActiveSub, setMenuActiveSub] = useState(false)
-  const menuToggleSub = (key) => {
-    setMenuActiveSub(menuActiveSub === key ? null : key)
-  }
-
   const [schedule, setSchedule] = useState(false)
   const toggleSchedule = () => {
     setSchedule(!schedule)
@@ -73,44 +73,196 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
     setNewProjectSidebar(!newProjectSidebar)
   }
 
-  const isDocumentationPage = (url) => {
-    return documentationItem.some(item => item.url === url);
+
+  const menuList = [
+    {
+      icon: IconLayout2,
+      link: 'Quick Access',
+      children: pinnedItems,
+    },
+    {
+      icon: IconHome,
+      link: 'My Dashboard',
+      children: [
+        { link: 'Analysis', url: '/' },
+        { link: 'My Wallet', url: '/index-wallet' },
+        { link: 'Smart IOT', url: '/index-iot' },
+      ],
+    },
+    {
+      icon: IconApps,
+      link: 'Applications',
+      children: [
+        { link: 'Calendar', url: '/app-calendar' },
+        // {link: "tui Calendar",url: "/app-calendar-tui"},
+        { link: 'Email App', url: '/app-email' },
+        { link: 'Chat App', url: '/app-chat' },
+        { link: 'Campaigns', url: '/app-campaign' },
+        { link: 'Social App', url: '/app-social' },
+        { link: 'File Manager', url: '/app-file-manager' },
+        { link: 'Todo App', url: '/app-todo' },
+        { link: 'Contact', url: '/app-contact' },
+        { link: 'Task', url: '/app-task' },
+        { link: 'Project List', url: '/app-project' },
+      ],
+    },
+    {
+      icon: IconNotebook,
+      link: 'More Pages',
+      children: [
+        { link: 'My Profile', url: '/page-my-profile' },
+        { link: 'Bookmarks', url: '/page-bookmark' },
+        { link: 'Timeline', url: '/page-timeline' },
+        { link: 'Image Gallery', url: '/page-image-gallery' },
+        { link: 'Pricing', url: '/page-pricing' },
+        { link: 'Teams Board', url: '/page-team-board' },
+        { link: 'Support Ticket', url: '/page-support-ticket' },
+        { link: 'FAQs', url: '/page-faq' },
+        { link: 'Search Page', url: '/page-search' },
+        { link: 'Footers', url: '/page-footer' },
+      ],
+    },
+    {
+      icon: IconId,
+      link: 'Account',
+      children: [
+        { link: 'Setting', url: '/account-setting' },
+        { link: 'Invoice List', url: '/account-invoice' },
+        { link: 'Create Invoice', url: '/account-create-invoice' },
+        { link: 'Billing', url: '/account-billing' },
+      ],
+    },
+    {
+      icon: IconShieldLock,
+      link: 'Authentication',
+      children: [
+        { link: '404', url: '/auth-404' },
+        { link: 'Sign In', url: '/auth-signin' },
+        { link: 'Sign Up', url: '/auth-signup' },
+        { link: 'Forgot Password', url: '/auth-forgot-password' },
+        { link: '2-Step Authentication', url: '/auth-two-step' },
+        { link: 'Lockscreen', url: '/auth-lockscreen' },
+        { link: 'Maintenance', url: '/auth-maintenance' },
+      ],
+    },
+    {
+      icon: IconSitemap,
+      link: 'Menu Level',
+      children: [
+        {
+          link: 'Analysis',
+          url: '/',
+          children: [
+            { link: 'Sub Analysis 1', url: '/account-setting' },
+            { link: 'Sub Analysis 2', url: '/account-billing' },
+          ],
+        },
+        { link: 'My Wallet', url: '/app-project' },
+        { link: 'Smart IOT', url: '/app-contact' },
+      ],
+    },
+    {
+      devider: "RESOURCES",
+    },
+    {
+      icon: IconSquares,
+      link: "Modals Popups",
+      url: "/modals",
+    },
+    {
+      icon: IconLayout2,
+      link: "Widget's",
+      url: "/widget",
+    },
+    {
+      icon: IconChecklist,
+      link: "Documentation",
+      url: "/doc-overview",
+    },
+    {
+      icon: IconTimelineEventPlus,
+      link: "Changelog",
+      url: "/doc-changelog",
+    },
+  ];
+
+  // const documentationItem = [
+  //   { devider: "DOCUMENTATION", color: "primary", fontWeight: "bold" },
+  //   { link: "Overview", url: "/doc-overview" },
+  //   { link: "Dev Setup", url: "/doc-setup" },
+  //   { link: "File Structure", url: "/doc-structure" },
+  //   { link: "References", url: "/doc-references" },
+  //   { link: "Helper Class", url: "/doc-helperclass" },
+  //   { link: "Changelog", url: "/doc-changelog" },
+  // ];
+
+  // const crmManagement = [
+  //   { link: "sdfsdf", url: "#" },
+  //   { link: "sdadasaffsdf", url: "#" },
+  // ];
+
+  const handlePinClick = (parentIndex, key, childIndex = null) => {
+    let itemToPin;
+
+    if (childIndex !== null) {
+      // Pinning a submenu item
+      itemToPin = {
+        ...menuList[parentIndex]?.children[key]?.children[childIndex],
+        parentLink: menuList[parentIndex]?.children[key]?.link,
+      };
+    } else {
+      // Pinning a main menu item
+      itemToPin = menuList[parentIndex]?.children[key];
+    }
+
+    if (itemToPin) {
+      // Check if the item is already pinned
+      const isPinned = pinnedItems.some(
+        (item) =>
+          item.url === itemToPin.url &&
+          (item.parentLink === itemToPin.parentLink || !item.parentLink)
+      );
+
+      if (isPinned) {
+        // Unpin the item if it's already pinned
+        setPinnedItems((prevState) =>
+          prevState.filter(
+            (item) =>
+              item.url !== itemToPin.url ||
+              item.parentLink !== itemToPin.parentLink
+          )
+        );
+      } else {
+        // Pin the item
+        setPinnedItems((prevState) => [...prevState, itemToPin]);
+      }
+    }
   };
 
-  const isCrmManagement = (url) => {
-    return crmManagement.some(item => item.url === url);
+  const toggleSubmenu = (parentIndex, childIndex) => {
+    setSubmenuActive((prev) => ({
+      ...prev,
+      [`${parentIndex}-${childIndex}`]: !prev[`${parentIndex}-${childIndex}`],
+    }));
   };
-
-  let data;
-  if (isDocumentationPage(pageUrl)) {
-    data = documentationItem;
-  } else if (isCrmManagement(pageUrl)) {
-    data = crmManagement;
-  } else {
-    data = menuList;
-  }
 
   useEffect(() => {
-    data.forEach((item, index) => {
-      if (item.children) {
-        item.children.forEach((child, subIndex) => {
-          if (child.url === pageUrl) {
-            setMenuActive(index);
-            setMenuActiveSub(subIndex);
-          } else if (child.children) {
-            child.children.forEach((subChild) => {
-              if (subChild.url === pageUrl) {
-                setMenuActive(index);
-                setMenuActiveSub(subIndex);
-              }
-            });
+    const findActiveMenu = (url) => {
+      for (let i = 0; i < menuList.length; i++) {
+        const item = menuList[i];
+        if (item.children) {
+          for (let j = 0; j < item.children.length; j++) {
+            if (item.children[j].url === url) {
+              setMenuActive(i);
+              return;
+            }
           }
-        });
-      } else if (item.url === pageUrl) {
-        setMenuActive(index);
+        }
       }
-    });
-  }, [pageUrl, data]);
+    };
+
+    findActiveMenu(pageUrl);
+  }, [pageUrl]);
 
   return (
     <>
@@ -201,58 +353,92 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
         </button>
         <NewProject newProjectSidebar={newProjectSidebar} toggleNewProject={toggleNewProject} />
       </div>
-      <ul className='text-font-color-400 px-6 py-2 overflow-auto xl:h-[calc(100svh-266px)] md:h-[calc(100svh-262px)] h-[calc(100svh-254px)] no-scrollbar'>
-        {data.map((item, key) => (
-          item.children ? <li key={key}>
-            <button
-              onClick={() => menuToggle(key)}
-              className={`flex items-center gap-10 w-full py-10 transition-all hover:text-secondary ${menuActive === key ? 'text-secondary' : ''}`}
-            >
-              <item.icon className='stroke-[1.5] w-[22px] h-[22px]' />
-              <span>{item.link}</span>
-              <IconChevronRight className={`stroke-[1.5] w-[18px] h-[18px] ms-auto rtl:rotate-180 transition-all ${menuActive === key ? 'rotate-90 rtl:rotate-90' : ''}`} />
-            </button>
-            {menuActive === key && <ul className='ps-30 relative before:absolute before:h-full before:w-[1px] ltr:before:left-10 rtl:before:right-10 before:top-0 before:bg-white-10'>
-              {item.children.map((res, key) => (
-                res.children ?
-                  <li key={key}>
-                    <button
-                      onClick={() => menuToggleSub(key)}
-                      className={`flex items-center gap-10 w-full py-2 text-[14px]/[20px] relative before:hidden before:absolute before:h-full before:w-[1px] ltr:before:left-[-20px] rtl:before:right-[-20px] before:top-0 before:bg-secondary hover:text-secondary hover:before:block transition-all ${menuActiveSub === key ? 'text-secondary before:!block' : ''}`}
-                    >
-                      <span>{res.link}</span>
-                      <IconChevronRight className={`stroke-[1.5] w-[18px] h-[18px] ms-auto rtl:rotate-180 transition-all ${menuActiveSub === key ? 'rotate-90 rtl:rotate-90' : ''}`} />
-                    </button>
-                    {menuActiveSub === key && <ul className='ps-30 relative before:absolute before:h-full before:w-[1px] ltr:before:left-10 rtl:before:right-10 before:top-0 before:bg-white-10'>
-                      {res.children.map((sub, key) => (
-                        <li key={key}>
-                          <Link to={sub.url} onClick={() => { window.innerWidth < 1200 && setMobileNav(false) }} className={`py-1 text-[14px]/[20px] flex relative before:hidden before:absolute before:h-full before:w-[1px] ltr:before:left-[-20px] rtl:before:right-[-20px] before:top-0 before:bg-secondary hover:text-secondary hover:before:block transition-all ${pageUrl === sub.url ? 'text-secondary before:!block' : ''}`}>
-                            {sub.link}
+      <ul className="text-font-color-400 px-6 py-2 overflow-auto xl:h-[calc(100svh-266px)] md:h-[calc(100svh-262px)] h-[calc(100svh-254px)] no-scrollbar">
+        {menuList.map((item, parentIndex) => (
+          item.children ? (
+            <li key={parentIndex}>
+              <button
+                onClick={() => setMenuActive(menuActive === parentIndex ? null : parentIndex)}
+                className={`flex items-center gap-10 w-full py-10 transition-all hover:text-secondary ${menuActive === parentIndex ? 'text-secondary' : ''}`}
+              >
+                <item.icon className="stroke-[1.5] w-[22px] h-[22px]" />
+                <span>{item.link}</span>
+                <IconChevronRight className={`stroke-[1.5] w-[18px] h-[18px] ms-auto rtl:rotate-180 transition-all ${menuActive === parentIndex ? 'rotate-90 rtl:rotate-90' : ''}`} />
+              </button>
+              {menuActive === parentIndex && (
+                <ul className="ps-30 relative before:absolute before:h-full before:w-[1px] ltr:before:left-10 rtl:before:right-10 before:top-0 before:bg-white-10">
+                  {item.children.map((res, key) => (
+                    <li key={key}>
+                      <div>
+                        <div
+                          className={`py-1 text-[14px]/[20px] flex relative before:hidden before:absolute before:h-full before:w-[1px] ltr:before:left-[-20px] rtl:before:right-[-20px] before:top-0 before:bg-secondary hover:text-secondary hover:before:block transition-all ${pageUrl === res.url ? 'text-secondary before:!block' : ''}`}
+                        >
+                          <Link
+                            to={res.url}
+                            onClick={() => window.innerWidth < 1200 && setMobileNav(false)}
+                          >
+                            {res.link}
+                            {res.children && (
+                              <button
+                                onClick={() => toggleSubmenu(parentIndex, key)}
+                                className="text-secondary ms-4 text-sm flex items-center"
+                              >
+                                <IconChevronRight className={`inline-block w-4 h-4 transition-transform ${submenuActive[`${parentIndex}-${key}`] ? 'rotate-90' : ''}`} />
+                              </button>
+                            )}
                           </Link>
-                        </li>
-                      ))}
-                    </ul>}
-                  </li>
-                  :
-                  <li key={key}>
-                    <Link to={res.url} onClick={() => { window.innerWidth < 1200 && setMobileNav(false) }} className={`py-1 text-[14px]/[20px] flex relative before:hidden before:absolute before:h-full before:w-[1px] ltr:before:left-[-20px] rtl:before:right-[-20px] before:top-0 before:bg-secondary hover:text-secondary hover:before:block transition-all ${pageUrl === res.url ? 'text-secondary before:!block' : ''}`}>
-                      {res.link}
-                    </Link>
-                  </li>
-              ))}
-            </ul>}
-          </li>
-            : item.url ?
-              <li key={key}>
-                <Link to={item.url} onClick={() => { window.innerWidth < 1200 && setMobileNav(false) }} className={`flex items-center gap-10 w-full py-2 transition-all hover:text-secondary ${pageUrl === item.url ? 'text-secondary' : ''}`}>
-                  {item.icon ? <item.icon className='stroke-[1.5] w-[22px] h-[22px]' /> : <IconChevronRight />}
-                  <span>{item.link}</span>
-                </Link>
-              </li>
-              :
-              <li key={key} className={`py-3 text-[12px]/[15px]${item.color ? ` text-${item.color}` : ''}${item.fontWeight ? ` font-${item.fontWeight}` : ''}`}>
-                {item.devider}
-              </li>
+                          {parentIndex === 0 ? (
+                            <IconPinFilled onClick={() => handlePinClick(parentIndex, key)} className="ms-auto cursor-pointer" />
+                          ) : pinnedItems?.some((item) => item.url === res.url) ? (
+                            <IconPinFilled onClick={() => handlePinClick(parentIndex, key)} className="ms-auto cursor-pointer" />
+                          ) : (
+                            <IconPin onClick={() => handlePinClick(parentIndex, key)} className="ms-auto cursor-pointer" />
+                          )}
+                        </div>
+                        {submenuActive[`${parentIndex}-${key}`] && res.children && (
+                          <ul className="ps-40">
+                            {res.children.map((subItem, childIndex) => (
+                              <li key={childIndex}>
+                                <div
+                                  className="py-1 text-[13px]/[18px] flex hover:text-secondary transition-all"
+                                >
+                                  <Link
+                                    to={subItem.url}
+                                    onClick={() => window.innerWidth < 1200 && setMobileNav(false)}
+                                  >
+                                    {subItem.link}
+                                  </Link>
+                                  {pinnedItems?.some(
+                                    (item) =>
+                                      item.url === subItem.url &&
+                                      item.parentLink === res.link
+                                  ) ? (
+                                    <IconPinFilled onClick={() => handlePinClick(parentIndex, key, childIndex)} className="ms-auto cursor-pointer" />
+                                  ) : (
+                                    <IconPin onClick={() => handlePinClick(parentIndex, key, childIndex)} className="ms-auto cursor-pointer" />
+                                  )}
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ) : item.url ?
+            <li key={parentIndex}>
+              <Link to={item.url} onClick={() => { window.innerWidth < 1200 && setMobileNav(false) }} className={`flex items-center gap-10 w-full py-2 transition-all hover:text-secondary ${pageUrl === item.url ? 'text-secondary' : ''}`}>
+                {item.icon ? <item.icon className='stroke-[1.5] w-[22px] h-[22px]' /> : <IconChevronRight />}
+                <span>{item.link}</span>
+              </Link>
+            </li>
+            :
+            <li key={parentIndex} className={`py-3 text-[12px]/[15px]${item.color ? ` text-${item.color}` : ''}${item.fontWeight ? ` font-${item.fontWeight}` : ''}`}>
+              {item.devider}
+            </li>
         ))}
       </ul>
       <div className={`fixed top-0 bg-card-color z-[5] h-svh w-full max-w-[300px] transition-all duration-200 ${schedule ? 'ltr:left-0 rtl:right-0' : 'ltr:-left-full rtl:-right-full'}`}>
@@ -1899,5 +2085,5 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
         </Tabs>
       </div>
     </>
-  )
+  );
 }
