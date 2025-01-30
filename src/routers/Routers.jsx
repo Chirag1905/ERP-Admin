@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 import Analysis from '../pages/dashboard/Analysis';
@@ -48,6 +48,7 @@ import References from '../pages/documentation/References';
 import HelperClass from '../pages/documentation/HelperClass';
 import ChangeLog from '../pages/documentation/ChangeLog';
 import Widget from '../pages/Widget';
+import InstitutionManagement from '../pages/institution_management/InstitutionManagement';
 
 export default function Routers() {
 
@@ -66,6 +67,7 @@ export default function Routers() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Analysis />} />
+          <Route path="/schools" element={<InstitutionManagement />} />
           <Route path="/index-wallet" element={<MyWallet />} />
           <Route path="/index-iot" element={<SmartIot />} />
           <Route path="/app-calendar" element={<Calendar />} />

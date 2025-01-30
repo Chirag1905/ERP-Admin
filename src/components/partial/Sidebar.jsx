@@ -53,6 +53,7 @@ import {
   IconSquares,
   IconChecklist,
   IconTimelineEventPlus,
+  IconSchool,
 } from '@tabler/icons-react'
 import NewProject from '../../pages/app/project/NewProject';
 
@@ -82,85 +83,40 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
     },
     {
       icon: IconHome,
-      link: 'My Dashboard',
-      children: [
-        { link: 'Analysis', url: '/' },
-        { link: 'My Wallet', url: '/index-wallet' },
-        { link: 'Smart IOT', url: '/index-iot' },
-      ],
+      link: "Overview Page",
+      url: "/",
+    },
+    {
+      icon: IconSchool,
+      link: "School Manangement",
+      url: "/schools",
     },
     {
       icon: IconApps,
-      link: 'Applications',
+      link: 'Other Tabs',
       children: [
-        { link: 'Calendar', url: '/app-calendar' },
-        // {link: "tui Calendar",url: "/app-calendar-tui"},
-        { link: 'Email App', url: '/app-email' },
-        { link: 'Chat App', url: '/app-chat' },
-        { link: 'Campaigns', url: '/app-campaign' },
-        { link: 'Social App', url: '/app-social' },
-        { link: 'File Manager', url: '/app-file-manager' },
-        { link: 'Todo App', url: '/app-todo' },
-        { link: 'Contact', url: '/app-contact' },
-        { link: 'Task', url: '/app-task' },
-        { link: 'Project List', url: '/app-project' },
+        { link: 'Multi School Group', url: '/app-calendar' },
+        { link: 'Payment Gateway', url: '/app-email' },
+        { link: 'SMS Configuration', url: '/app-chat' },
+        { link: 'User Management', url: '/app-campaign' },
       ],
     },
-    {
-      icon: IconNotebook,
-      link: 'More Pages',
-      children: [
-        { link: 'My Profile', url: '/page-my-profile' },
-        { link: 'Bookmarks', url: '/page-bookmark' },
-        { link: 'Timeline', url: '/page-timeline' },
-        { link: 'Image Gallery', url: '/page-image-gallery' },
-        { link: 'Pricing', url: '/page-pricing' },
-        { link: 'Teams Board', url: '/page-team-board' },
-        { link: 'Support Ticket', url: '/page-support-ticket' },
-        { link: 'FAQs', url: '/page-faq' },
-        { link: 'Search Page', url: '/page-search' },
-        { link: 'Footers', url: '/page-footer' },
-      ],
-    },
-    {
-      icon: IconId,
-      link: 'Account',
-      children: [
-        { link: 'Setting', url: '/account-setting' },
-        { link: 'Invoice List', url: '/account-invoice' },
-        { link: 'Create Invoice', url: '/account-create-invoice' },
-        { link: 'Billing', url: '/account-billing' },
-      ],
-    },
-    {
-      icon: IconShieldLock,
-      link: 'Authentication',
-      children: [
-        { link: '404', url: '/auth-404' },
-        { link: 'Sign In', url: '/auth-signin' },
-        { link: 'Sign Up', url: '/auth-signup' },
-        { link: 'Forgot Password', url: '/auth-forgot-password' },
-        { link: '2-Step Authentication', url: '/auth-two-step' },
-        { link: 'Lockscreen', url: '/auth-lockscreen' },
-        { link: 'Maintenance', url: '/auth-maintenance' },
-      ],
-    },
-    {
-      icon: IconSitemap,
-      link: 'Menu Level',
-      children: [
-        {
-          link: 'Analysis',
-          url: '/',
-          children: [
-            { link: 'Sub Analysis 1', url: '/account-setting' },
-            { link: 'Sub Analysis 2', url: '/account-billing' },
-          ],
-        },
-        { link: 'My Wallet', url: '/app-project' },
-        { link: 'Smart IOT', url: '/app-contact' },
-      ],
-    },
+    // {
+    //   icon: IconSitemap,
+    //   link: 'Menu Level',
+    //   children: [
+    //     {
+    //       link: 'Analysis',
+    //       url: '/account-billing',
+    //       children: [
+    //         { link: 'Sub Analysis 1', url: '/account-setting' },
+    //         { link: 'Sub Analysis 2', url: '/account-billing' },
+    //       ],
+    //     },
+    //     { link: 'My Wallet', url: '/app-project' },
+    //     { link: 'Smart IOT', url: '/app-contact' },
+    //   ],
+    // },
     {
       devider: "RESOURCES",
     },
@@ -376,6 +332,7 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
                           <Link
                             to={res.url}
                             onClick={() => window.innerWidth < 1200 && setMobileNav(false)}
+                            className={`py-1 text-[14px]/[20px] flex relative before:hidden before:absolute before:h-full before:w-[1px] ltr:before:left-[-20px] rtl:before:right-[-20px] before:top-0 before:bg-secondary hover:text-secondary hover:before:block transition-all ${pageUrl === res.url ? 'text-secondary before:!block' : ''}`}
                           >
                             {res.link}
                             {res.children && (

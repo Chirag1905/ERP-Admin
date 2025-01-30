@@ -22,6 +22,7 @@ import {
     IconUsersGroup,
     IconCalendarFilled,
     IconTag,
+    IconEdit,
 } from '@tabler/icons-react';
 import {
     dark_version,
@@ -281,13 +282,41 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
         },
     ]
 
+
+    const [title, setTitle] = useState("Tech");
+
+    // Load title from localStorage on initial render
+    useEffect(() => {
+        const storedTitle = localStorage.getItem("title");
+        if (storedTitle) {
+            setTitle(storedTitle);
+        }
+    }, []);
+
+    // Save the title to localStorage when the "Save" button is clicked
+    const handleSave = () => {
+        localStorage.setItem("title", title);
+        alert("Title saved!");
+    };
+
     return (
         <>
             <div className='md:py-4 py-3 md:px-6 px-4 flex items-center relative'>
                 <div className='text-white flex items-end gap-10 xl:w-[260px]'>
-                    <Link to="/">
-                        <CompanyLogo />
-                    </Link>
+                    <div className="flex">
+                        <Link to="/">
+                            {/* <CompanyLogo /> */}
+                            <input
+                                type="text"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                className="p-1 text-white w-3/4 bg-transparent hover:outline-none"
+                            />
+                        </Link>
+                        <button onClick={handleSave} className="ml-2 p-1 bg-blue-500 text-white">
+                            <IconEdit />
+                        </button>
+                    </div>
                     <span className="text-[14px]/[1] ssm:block hidden">- Admin</span>
                 </div>
                 <div className='flex-1 flex items-center justify-end text-font-color-200'>
