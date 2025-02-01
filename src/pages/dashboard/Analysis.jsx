@@ -1,596 +1,104 @@
-import React, { useEffect, useState } from 'react'
-import Breadcrumb from '../../components/common/Breadcrumb'
-import ReactApexChart from 'react-apexcharts'
+import React from 'react';
+import Breadcrumb from '../../components/common/Breadcrumb';
 import {
   IconBriefcase,
   IconCash,
   IconCornerRightUp,
   IconCreditCard,
-  IconDots,
   IconUserScan,
-  IconCheck,
-  IconX,
-} from '@tabler/icons-react'
-import {
-  avatar1,
-  avatar2,
-  avatar3,
-  avatar4,
-} from '../../assets/images'
-import { Link } from 'react-router-dom'
-import WelcomeHeader from '../../components/common/WelcomeHeader'
+} from '@tabler/icons-react';
+import { avatar1, avatar2, avatar3 } from '../../assets/images';
+import WelcomeHeader from '../../components/common/WelcomeHeader';
 
 export default function Analysis() {
-
   const breadcrumbItem = [
     {
       name: "Dashboard",
     },
-  ]
-
-  const chartData1 = {
-    series: [
-      {
-        name: 'Income',
-        data: [20, 10, 50, 30, 40, 30, 50, 60, 5, 20, 30, 20]
-      },
-      {
-        name: 'Expense',
-        data: [40, 20, 30, 50, 20, 20, 20, 5, 15, 40, 40, 50]
-      },
-      {
-        name: 'Revenue',
-        data: [40, 50, 10, 20, 20, 50, 10, 20, 60, 5, 20, 30]
-      },
-    ],
-    options: {
-      dataLabels: {
-        enabled: false
-      },
-      colors: ['var(--chart-color1)', 'var(--chart-color2)', 'var(--chart-color3)',],
-      chart: {
-        stacked: true,
-        toolbar: {
-          show: false,
-        },
-      },
-      tooltip: {
-        x: {
-          show: false,
-        },
-      },
-      grid: {
-        borderColor: 'var(--border-color)',
-      },
-      xaxis: {
-        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        tooltip: {
-          enabled: false,
-        },
-        axisBorder: {
-          color: 'var(--border-color)',
-        },
-        axisTicks: {
-          color: 'var(--border-color)',
-        },
-      },
-      yaxis: {
-        min: 0,
-        max: 100,
-        tickAmount: 10,
-      },
-    },
-  };
-
-  const chartData2 = {
-    series: [55, 35, 10],
-    options: {
-      colors: ['var(--chart-color1)', 'var(--chart-color2)', 'var(--chart-color3)'],
-      legend: {
-        show: true,
-        position: 'bottom',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        colors: ['var(--card-color)']
-      },
-      plotOptions: {
-        pie: {
-          expandOnClick: true,
-          donut: {
-            labels: {
-              show: true,
-              total: {
-                show: true,
-                showAlways: true,
-              },
-            },
-          }
-        }
-      }
-    },
-  };
-
-  const staticCards = [
-    {
-      id: 1,
-      title: "NEW EMPLOYEE",
-      image: avatar1,
-      description: "21 mutual connections Sr. ReatJs Developer at Facebook",
-    },
-    {
-      id: 2,
-      title: "EXPENSE",
-      image: avatar2,
-      description: "5 mutual connections Web Designer at Google",
-    },
-    {
-      id: 3,
-      title: "REVENUE",
-      image: avatar3,
-      description: "9 mutual connections Laravel Developer at Linkedin",
-    },
-    {
-      id: 4,
-      title: "NEW LEADS",
-      image: avatar4,
-      description: "18 mutual connections PHP Developer at Facebook",
-    },
-    {
-      id: 5,
-      title: "SWIFT Revenue",
-      image: avatar4,
-      description: "18 mutual connections PHP Developer at Facebook",
-    },
-    {
-      id: 6,
-      title: "Sales by Category",
-      image: avatar4,
-      description: "18 mutual connections PHP Developer at Facebook",
-    },
-    {
-      id: 7,
-      title: "My Wallet",
-      image: avatar4,
-      description: "18 mutual connections PHP Developer at Facebook",
-    },
-    {
-      id: 8,
-      title: "Reports overview",
-      image: avatar4,
-      description: "18 mutual connections PHP Developer at Facebook",
-    }
   ];
 
-  const [dashboardCards, setDashboardCards] = useState([
+  const dashboardCards = [
     {
       id: 1,
-      title: "NEW EMPLOYEE",
+      title: "Total Multischool Groups",
       image: avatar1,
       description: "21 mutual connections Sr. ReatJs Developer at Facebook",
     },
     {
       id: 2,
-      title: "EXPENSE",
+      title: "My Schools",
       image: avatar2,
       description: "5 mutual connections Web Designer at Google",
     },
     {
       id: 3,
-      title: "REVENUE",
+      title: "All Schools",
       image: avatar3,
       description: "9 mutual connections Laravel Developer at Linkedin",
-    },
-    {
-      id: 4,
-      title: "NEW LEADS",
-      image: avatar4,
-      description: "18 mutual connections PHP Developer at Facebook",
-    },
-    {
-      id: 5,
-      title: "SWIFT Revenue",
-      image: avatar4,
-      description: "18 mutual connections PHP Developer at Facebook",
-    },
-    {
-      id: 6,
-      title: "Sales by Category",
-      image: avatar4,
-      description: "18 mutual connections PHP Developer at Facebook",
-    },
-    {
-      id: 7,
-      title: "My Wallet",
-      image: avatar4,
-      description: "18 mutual connections PHP Developer at Facebook",
-    },
-    {
-      id: 8,
-      title: "Reports overview",
-      image: avatar4,
-      description: "18 mutual connections PHP Developer at Facebook",
     }
-  ]);
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const RequestModal = () => {
-    setModalOpen(!modalOpen)
-  }
-  useEffect(() => {
-    document.body.classList[modalOpen ? "add" : "remove"]("overflow-hidden")
-  }, [modalOpen])
-
-  // Compute cards available in the modal (not in the dashboard)
-  const modalCards = staticCards.filter(
-    (card) => !dashboardCards.find((dCard) => dCard.id === card.id)
-  );
-
-  // Open the modal
-  const openModal = () => {
-    setModalOpen(true);
-  };
-
-  // Add a card from the modal to the dashboard
-  const addCardToDashboard = (id) => {
-    const cardToAdd = staticCards.find((card) => card.id === id);
-    setDashboardCards([...dashboardCards, cardToAdd]);
-  };
-
-  // Remove a card from the dashboard
-  const removeCardFromDashboard = (id) => {
-    setDashboardCards(dashboardCards.filter((card) => card.id !== id));
-  };
+  ];
 
   return (
     <div>
       <Breadcrumb breadcrumbItem={breadcrumbItem} />
       <WelcomeHeader report />
-      <div className="flex flex-wrap justify-between mb-4">
-        <button
-          onClick={openModal}
-          className="card bg-card-color rounded-xl btn btn-primary uppercase ml-auto"
-        >
-          View in modals
-        </button>
-      </div>
-      {modalOpen &&
-        <>
-          <div className={`fixed p-15 w-full max-w-[800px] left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] z-[6]`}>
-            <div className='py-10 md:px-10 px-[7px] bg-card-color rounded-lg shadow-shadow-lg'>
-              <div className='my-10 lg:px-20 md:px-10 px-[7px] md:max-h-[80svh] max-h-[60svh] overflow-auto cus-scrollbar'>
-                <div className='flex justify-between items-start gap-4'>
-                  <div>
-                    <p className="text-font-color-100 small">If you are going to use a passage of Lorem Ipsum, you need</p>
-                  </div>
-                  <button onClick={RequestModal} className=''>
-                    <IconX />
-                  </button>
-                </div>
-                <ul className="flex flex-col md:gap-8 gap-6 mt-6">
-                  {modalCards?.length > 0 ? (
-                    modalCards?.map((item, index) => (
-                      <li key={index} className="flex sm:items-center sm:gap-4 gap-2 sm:flex-row flex-col">
-                        <img src={item?.image} alt="user profile" className='rounded-md w-[36px] h-[36px] min-w-[36px]' />
-                        <div className='flex-grow'>
-                          <h6 className="font-medium">{item?.title}</h6>
-                          <p className="text-font-color-100 small">{item?.description}</p>
-                        </div>
-                        <div className="flex items-stretch gap-2">
-                          <button className="btn btn-light-primary" onClick={() => addCardToDashboard(item?.id)}>
-                            <IconCheck className='w-[18px] h-[18px] min-w-[18px]' />
-                            <span className='md:block hidden'>Add</span>
-                          </button>
-                        </div>
-                      </li>
-                    ))
-                  ) : (
-                    <li className="flex sm:items-center sm:gap-4 gap">No cards available to add.</li>
-                  )}
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div onClick={RequestModal} className={`contents-[] fixed z-[5] w-full h-full left-0 top-0 bg-black-50 backdrop-blur-[5px]`}></div>
-        </>
-      }
-      {/* {/ Dashboard Cards /} */}
-
-      <div className='grid xxl:grid-cols-2 grid-cols-1 gap-4'>
+      <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
         {dashboardCards?.map((card) => (
-          <div key={card?.id}>
-            <div className='grid md:grid-cols-2 grid-cols-1 gap-4'>
-              {card?.title === "NEW EMPLOYEE" && (
-                <div className='card bg-card-color rounded-xl relative'>
-                  <button
-                    onClick={() => removeCardFromDashboard(card?.id)}
-                    className="absolute top-2 right-2 p-1 text-red-500 hover:text-red-700"
-                  >
-                    <IconX className='w-[18px] h-[18px]' />
-                  </button>
-                  <div className='md:p-6 p-4 mt-[12px] border-b border-dashed border-border-color'>
-                    <div className='flex items-center justify-between gap-5 mt-2 mb-2'>
-                      <p>NEW EMPLOYEE</p>
-                      <IconUserScan className='stroke-primary stroke-[1.5] w-[32px] h-[32px]' />
-                    </div>
-                    <div className='flex items-end gap-1 mb-4'>
-                      <span className='inline-block text-[24px]/[30px] font-medium'>
-                        51
-                      </span>
-                      <IconCornerRightUp className='stroke-font-color-100 w-[18px] h-[18px]' />
-                      <span className='text-font-color-100 text-[14px]/[20px]'>
-                        13%
-                      </span>
-                    </div>
-                    <div className='progress overflow-hidden h-[2px] bg-border-color rounded-full'>
-                      <div className='progress-bar w-[85%] bg-secondary h-full'></div>
-                    </div>
-                  </div>
-                  <div className='py-3 md:px-6 px-4 text-font-color-100 text-[14px]/[20px]'>
-                    Analytics for last week
-                  </div>
-                </div>
-
-              )}
-              {card?.title === "EXPENSE" && (
-                <div className='card bg-card-color rounded-xl relative'>
-                  <button
-                    onClick={() => removeCardFromDashboard(card?.id)}
-                    className="absolute top-2 right-2 p-1 text-red-500 hover:text-red-700"
-                  >
-                    <IconX className='w-[18px] h-[18px]' />
-                  </button>
-                  <div className='md:p-6 p-4 mt-[12px] border-b border-dashed border-border-color'>
-                    <div className='flex items-center justify-between gap-5 mb-2'>
-                      <p>
-                        EXPENSE
-                      </p>
-                      <IconCreditCard className='stroke-primary stroke-[1.5] w-[32px] h-[32px]' />
-                    </div>
-                    <div className='flex items-end gap-1 mb-4'>
-                      <span className='inline-block text-[24px]/[30px] font-medium'>
-                        $3,251
-                      </span>
-                      <IconCornerRightUp className='stroke-font-color-100 w-[18px] h-[18px]' />
-                      <span className='text-font-color-100 text-[14px]/[20px]'>
-                        13%
-                      </span>
-                    </div>
-                    <div className='progress overflow-hidden h-[2px] bg-border-color rounded-full'>
-                      <div className='progress-bar w-[13%] bg-primary h-full'></div>
-                    </div>
-                  </div>
-                  <div className='py-3 md:px-6 px-4 text-font-color-100 text-[14px]/[20px]'>
-                    Analytics for last week
-                  </div>
-                </div>
-              )}
-              {card?.title === "REVENUE" && (
-                <div className='card bg-card-color rounded-xl relative'>
-                  <button
-                    onClick={() => removeCardFromDashboard(card?.id)}
-                    className="absolute top-2 right-2 p-1 text-red-500 hover:text-red-700"
-                  >
-                    <IconX className='w-[18px] h-[18px]' />
-                  </button>
-                  <div className='md:p-6 p-4 mt-[12px] border-b border-dashed border-border-color'>
-                    <div className='flex items-center justify-between gap-5 mb-2'>
-                      <p>
-                        REVENUE
-                      </p>
-                      <IconCash className='stroke-primary stroke-[1.5] w-[32px] h-[32px]' />
-                    </div>
-                    <div className='flex items-end gap-1 mb-4'>
-                      <span className='inline-block text-[24px]/[30px] font-medium'>
-                        $18,925
-                      </span>
-                      <IconCornerRightUp className='stroke-font-color-100 w-[18px] h-[18px]' />
-                      <span className='text-font-color-100 text-[14px]/[20px]'>
-                        78%
-                      </span>
-                    </div>
-                    <div className='progress overflow-hidden h-[2px] bg-border-color rounded-full'>
-                      <div className='progress-bar w-[70%] bg-success h-full'></div>
-                    </div>
-                  </div>
-                  <div className='py-3 md:px-6 px-4 text-font-color-100 text-[14px]/[20px]'>
-                    Analytics for last week
-                  </div>
-                </div>
-              )}
-              {card?.title === "NEW LEADS" && (
-                <div className='card bg-card-color rounded-xl relative'>
-                  <button
-                    onClick={() => removeCardFromDashboard(card?.id)}
-                    className="absolute top-2 right-2 p-1 text-red-500 hover:text-red-700"
-                  >
-                    <IconX className='w-[18px] h-[18px]' />
-                  </button>
-                  <div className='md:p-6 p-4 mt-[12px] border-b border-dashed border-border-color'>
-                    <div className='flex items-center justify-between gap-5 mb-2'>
-                      <p>
-                        NEW LEADS
-                      </p>
-                      <IconBriefcase className='stroke-primary stroke-[1.5] w-[32px] h-[32px]' />
-                    </div>
-                    <div className='flex items-end gap-1 mb-4'>
-                      <span className='inline-block text-[24px]/[30px] font-medium'>
-                        125
-                      </span>
-                      <IconCornerRightUp className='stroke-font-color-100 w-[18px] h-[18px]' />
-                      <span className='text-font-color-100 text-[14px]/[20px]'>
-                        55%
-                      </span>
-                    </div>
-                    <div className='progress overflow-hidden h-[2px] bg-border-color rounded-full'>
-                      <div className='progress-bar w-[55%] bg-warning h-full'></div>
-                    </div>
-                  </div>
-                  <div className='py-3 md:px-6 px-4 text-font-color-100 text-[14px]/[20px]'>
-                    Analytics for last week
-                  </div>
-                </div>
-              )}
+          <div key={card?.id} className="card bg-card-color rounded-xl p-4 relative">
+            <div className='flex items-center justify-between gap-5 mb-2'>
+              <p>{card?.title}</p>
+              {card?.title === "Total Multischool Groups" && <IconUserScan className='stroke-primary stroke-[1.5] w-[32px] h-[32px]' />}
+              {card?.title === "My Schools" && <IconCreditCard className='stroke-primary stroke-[1.5] w-[32px] h-[32px]' />}
+              {card?.title === "All Schools" && <IconCash className='stroke-primary stroke-[1.5] w-[32px] h-[32px]' />}
             </div>
-            {card?.title === "SWIFT Revenue" && (
-              <div className='card rounded-xl bg-card-color relative'>
-                <button
-                  onClick={() => removeCardFromDashboard(card?.id)}
-                  className="absolute top-2 right-2 p-1 text-red-500 hover:text-red-700"
-                >
-                  <IconX className='w-[18px] h-[18px]' />
-                </button>
-                <div className='flex items-center mt-[12px] justify-between gap-15 md:p-6 p-4'>
-                  <div className='font-semibold'>
-                    SWIFT Revenue
-                  </div>
-                  <button className='bg-primary-10 p-[2px] rounded text-primary transition-all hover:bg-primary hover:text-white'>
-                    <IconDots className='w-[18px] h-[18px]' />
-                  </button>
-                </div>
-                <ReactApexChart options={chartData1.options} series={chartData1.series} type="bar" height="280" className="md:px-6" />
-              </div>
-            )}
-            <div className='grid md:grid-cols-2 grid-cols-1 gap-4'>
-              {card?.title === "Sales by Category" && (
-                <div className='card bg-card-color rounded-xl md:p-6 p-4 relative'>
-                  <button
-                    onClick={() => removeCardFromDashboard(card?.id)}
-                    className="absolute top-2 right-2 p-1 text-red-500 hover:text-red-700"
-                  >
-                    <IconX className='w-[18px] h-[18px]' />
-                  </button>
-                  <div className='font-semibold md:mb-6 mb-4'>
-                    Sales by Category
-                  </div>
-                  <ReactApexChart options={chartData2.options} series={chartData2.series} type="donut" height="300" className="max-w-[300px] mx-auto" />
-                </div>
-              )}
-              {card?.title === "Reports overview" && (
-                <div className='card bg-card-color rounded-xl relative'>
-                  <button
-                    onClick={() => removeCardFromDashboard(card?.id)}
-                    className="absolute top-2 right-2 p-1 text-red-500 hover:text-red-700"
-                  >
-                    <IconX className='w-[18px] h-[18px]' />
-                  </button>
-                  <div className='border-b border-dashed border-border-color md:p-6 p-4'>
-                    <div className='font-semibold md:mb-6 mb-4'>
-                      My Wallet
-                    </div>
-                    <p className='md:text-[24px]/[30px] text-[20px]/[26px] font-medium md:mb-2'>
-                      0.0386245 BTC
-                    </p>
-                    <p>
-                      Available BTC <Link to="#" className='text-primary transition-all hover:text-secondary'>View Account</Link>
-                    </p>
-                    <div className='mt-6'>
-                      <span className='uppercase text-[14px]/[20px] text-font-color-100'>
-                        BUY THIS MONTH
-                      </span>
-                      <p className='md:text-[20px]/[26px] font-medium'>
-                        3.0675432 BTC
-                      </p>
-                    </div>
-                    <div className='mt-6'>
-                      <span className='uppercase text-[14px]/[20px] text-font-color-100'>
-                        SELL THIS MONTH
-                      </span>
-                      <p className='md:text-[20px]/[26px] font-medium'>
-                        2.0345618 BTC
-                      </p>
-                    </div>
-                  </div>
-                  <div className='md:px-6 px-4 py-4 flex gap-10'>
-                    <button className='btn btn-secondary w-full'>
-                      Buy
-                    </button>
-                    <button className='btn btn-outline-secondary w-full'>
-                      Sell
-                    </button>
-                  </div>
-                </div>
-              )}
+            <div className='flex items-end gap-1 mb-4'>
+              <span className='inline-block text-[24px]/[30px] font-medium'>
+                {card?.title === "Total Multischool Groups" && "4"}
+                {card?.title === "My Schools" && "100"}
+                {card?.title === "All Schools" && "110"}
+              </span>
+              <IconCornerRightUp className='stroke-font-color-100 w-[18px] h-[18px]' />
+              <span className='text-font-color-100 text-[14px]/[20px]'>
+                {card?.title === "Total Multischool Groups" && "13%"}
+                {card?.title === "My Schools" && "13%"}
+                {card?.title === "All Schools" && "78%"}
+              </span>
             </div>
-            {card?.title === "Reports overview" && (
-              <div className='card rounded-xl bg-card-color flex flex-col relative'>
-                <button
-                  onClick={() => removeCardFromDashboard(card?.id)}
-                  className="absolute top-2 right-2 p-1 text-red-500 hover:text-red-700"
-                >
-                  <IconX className='w-[18px] h-[18px]' />
-                </button>
-                <div className='md:p-6 p-4'>
-                  <div className='flex items-center justify-between gap-15 md:mb-6 mb-4'>
-                    <div className='font-semibold'>
-                      Reports overview
-                    </div>
-                    <button className='bg-primary-10 p-[2px] rounded text-primary transition-all hover:bg-primary hover:text-white'>
-                      <IconDots className='w-[18px] h-[18px]' />
-                    </button>
-                  </div>
-                  <p className='md:text-[24px]/[30px] text-[20px]/[26px] font-bold mb-2'>
-                    $7,431.14 USD
-                  </p>
-                  <div className='progress overflow-hidden h-10 bg-border-color rounded-full flex'>
-                    <div className='progress-bar w-[15%] bg-chart-color1 h-full'></div>
-                    <div className='progress-bar w-[30%] bg-chart-color2 h-full'></div>
-                    <div className='progress-bar w-[20%] bg-chart-color3 h-full'></div>
-                  </div>
-                  <div className="flex justify-between text-[14px]/[20px] text-font-color-100 mt-2">
-                    <span>0%</span>
-                    <span>100%</span>
-                  </div>
-                </div>
-                <div className="overflow-x-auto border-t border-border-color mt-auto">
-                  <table className="w-full min-w-[500px]">
-                    <tbody>
-                      <tr>
-                        <td className='px-4 py-3 border-e border-b border-dashed border-border-color'>
-                          <p className='flex items-center gap-2'>
-                            <span className='inline-block w-[14px] h-[14px] min-w-[14px] rounded-full bg-chart-color1'></span>Gross value
-                          </p>
-                        </td>
-                        <td className='px-4 py-3 border-e border-b border-dashed border-border-color'>$3,500.71</td>
-                        <td className='px-4 py-3 border-b border-dashed border-border-color'><span className="py-1 px-2 rounded-md text-white text-[12px]/[1] bg-success">+12.1%</span></td>
-                      </tr>
-                      <tr>
-                        <td className='px-4 py-3 border-e border-b border-dashed border-border-color'>
-                          <p className='flex items-center gap-2'>
-                            <span className='inline-block w-[14px] h-[14px] min-w-[14px] rounded-full bg-chart-color2'></span>Net volume from sales
-                          </p>
-                        </td>
-                        <td className='px-4 py-3 border-e border-b border-dashed border-border-color'>$2,980.45</td>
-                        <td className='px-4 py-3 border-b border-dashed border-border-color'><span className="py-1 px-2 rounded-md text-black text-[12px]/[1] bg-warning">+6.9%</span></td>
-                      </tr>
-                      <tr>
-                        <td className='px-4 py-3 border-e border-b border-dashed border-border-color'>
-                          <p className='flex items-center gap-2'>
-                            <span className='inline-block w-[14px] h-[14px] min-w-[14px] rounded-full bg-chart-color3'></span>New volume from sales
-                          </p>
-                        </td>
-                        <td className='px-4 py-3 border-e border-b border-dashed border-border-color'>$950.00</td>
-                        <td className='px-4 py-3 border-b border-dashed border-border-color'><span className="py-1 px-2 rounded-md text-white text-[12px]/[1] bg-danger">-1.5%</span></td>
-                      </tr>
-                      <tr>
-                        <td className='px-4 py-3 border-r border-dashed border-border-color'>
-                          <p className='flex items-center gap-2'>
-                            <span className='inline-block w-[14px] h-[14px] min-w-[14px] rounded-full bg-chart-color4'></span>Other
-                          </p>
-                        </td>
-                        <td className='px-4 py-3 border-r border-dashed border-border-color'>32</td>
-                        <td className='px-4 py-3'><span className="py-1 px-2 rounded-md text-white text-[12px]/[1] bg-success">1.9%</span></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
+            <div className='progress overflow-hidden h-[2px] bg-border-color rounded-full'>
+              <div className={`progress-bar ${card?.title === "Total Multischool Groups" ? "w-[85%] bg-secondary" :
+                card?.title === "My Schools" ? "w-[13%] bg-primary" :
+                  card?.title === "All Schools" ? "w-[70%] bg-success" : ""
+                } h-full`}></div>
+            </div>
+            <div className='py-3 text-font-color-100 text-[14px]/[20px]'>
+              Show all
+            </div>
           </div>
         ))}
       </div>
+      <div className="flex flex-wrap items-stretch gap-6 mt-10">
+        <div className="flex-1 bg-card-color rounded-xl p-6 flex flex-col">
+          <p className="text-lg font-semibold mb-4">Daily Stats</p>
+          <div className="flex flex-wrap justify-between gap-y-4 w-full">
+            <div className="flex flex-col">
+              <span className="text-font-color-100 text-[16px]/[20px]">New Multischool Groups</span>
+              <span className="text-[24px]/[30px] font-medium">0</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-font-color-100 text-[16px]/[20px]">New Multischool Schools</span>
+              <span className="text-[24px]/[30px] font-medium">0</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-font-color-100 text-[16px]/[20px]">New Schools</span>
+              <span className="text-[24px]/[30px] font-medium">0</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-font-color-100 text-[16px]/[20px]">Expiring Schools</span>
+              <span className="text-[24px]/[30px] font-medium">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
