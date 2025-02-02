@@ -302,22 +302,26 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
     return (
         <>
             <div className='md:py-4 py-3 md:px-6 px-4 flex items-center relative'>
-                <div className='text-white flex items-end gap-10 xl:w-[260px]'>
-                    <div className="flex">
-                        <Link to="/">
+                <div className='text-white flex items-center justify-between p-4 rounded-lg shadow-lg xl:w-[260px]'>
+                    <div className="flex items-center gap-3">
+                        <Link to="/" className="flex items-centerhover:opacity-80 transition-opacity">
                             {/* <CompanyLogo /> */}
                             <input
                                 type="text"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
-                                className="p-1 text-white w-3/4 bg-transparent hover:outline-none"
+                                className="p-1 text-white text-center w-full bg-transparent border-b border-transparent hover:border-gray-400 focus:outline-none focus:border-white transition-colors placeholder-gray-400"
+                                placeholder="Enter title"
                             />
                         </Link>
-                        <button onClick={handleSave} className="ml-2 p-1 bg-blue-500 text-white">
-                            <IconEdit />
-                        </button>
+                        <span className="text-white w-full bg-transparent hover:border-gray-400 transition-colors placeholder-gray-400 hidden sm:block">- Admin</span>
                     </div>
-                    <span className="text-[14px]/[1] ssm:block hidden">- Admin</span>
+                    <button
+                        onClick={handleSave}
+                        className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
+                    >
+                        <IconEdit className="w-4 h-4" />
+                    </button>
                 </div>
                 <div className='flex-1 flex items-center justify-end text-font-color-200'>
                     <div className='relative px-4 flex-1 md:block hidden'>

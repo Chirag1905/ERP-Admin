@@ -76,6 +76,7 @@ export default function Analysis() {
           </div>
         ))}
       </div>
+      {/* </div> */}
       <div className="flex flex-wrap items-stretch gap-6 mt-10">
         <div className="flex-1 bg-card-color rounded-xl p-6 flex flex-col">
           <p className="text-lg font-semibold mb-4">Daily Stats</p>
