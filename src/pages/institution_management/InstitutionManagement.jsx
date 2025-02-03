@@ -302,15 +302,17 @@ export default function InstitutionManagement() {
                     <div className="grid grid-cols-3 gap-4">
                       {modules?.map((module, index) => (
                         <div className="form-check border border-border-color rounded-md p-4 bg-body-color" key={index}>
-                          <input
-                            type="checkbox"
-                            id={`module-${index}`}
-                            name="campaignsModule"
-                            className="form-check-input"
-                            checked={selectedModules.includes(module)}
-                            onChange={() => handleModuleChange(module)}
-                          />
-                          <label className="form-check-label !text-[16px]/[24px] ml-2" htmlFor={`module-${index}`}>
+                          <div className='ml-2'>
+                            <input
+                              type="checkbox"
+                              id={`module-${index}`}
+                              name="campaignsModule"
+                              className="form-check-input"
+                              checked={selectedModules.includes(module)}
+                              onChange={() => handleModuleChange(module)}
+                            />
+                          </div>
+                          <label className="form-check-label !text-[16px]/[24px] mx-2" htmlFor={`module-${index}`}>
                             {module}
                           </label>
                         </div>
@@ -553,14 +555,16 @@ export default function InstitutionManagement() {
                           <div className="grid grid-cols-3 gap-4">
                             {modules?.map((module, index) => (
                               <div className="form-check border border-border-color rounded-md p-4 bg-body-color" key={index}>
-                                <input
-                                  type="checkbox"
-                                  id={`module-${index}`}
-                                  name="campaignsModule"
-                                  className="form-check-input"
-                                  checked={selectedModules.includes(module)}
-                                  onChange={() => handleModuleChange(module)}
-                                />
+                                <div className='ml-2'>
+                                  <input
+                                    type="checkbox"
+                                    id={`module-${index}`}
+                                    name="campaignsModule"
+                                    className="form-check-input"
+                                    checked={selectedModules.includes(module)}
+                                    onChange={() => handleModuleChange(module)}
+                                  />
+                                </div>
                                 <label className="form-check-label !text-[16px]/[24px] ml-2" htmlFor={`module-${index}`}>
                                   {module}
                                 </label>

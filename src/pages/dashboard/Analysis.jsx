@@ -58,7 +58,7 @@ export default function Analysis() {
                 {card?.title === "All Schools" && "110"}
               </span>
               <IconCornerRightUp className='stroke-font-color-100 w-[18px] h-[18px]' />
-              <span className='text-font-color-100 text-[14px]/[20px]'>
+              <span className='text-primary text-[14px]/[20px]'>
                 {card?.title === "Total Multischool Groups" && "13%"}
                 {card?.title === "My Schools" && "13%"}
                 {card?.title === "All Schools" && "78%"}
@@ -70,7 +70,7 @@ export default function Analysis() {
                   card?.title === "All Schools" ? "w-[70%] bg-success" : ""
                 } h-full`}></div>
             </div>
-            <div className='py-3 text-font-color-100 text-[14px]/[20px]'>
+            <div className='py-3 text-primary hover:text-secondary text-[14px]/[20px]'>
               Show all
             </div>
           </div>
