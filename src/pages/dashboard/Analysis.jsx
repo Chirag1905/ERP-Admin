@@ -59,8 +59,8 @@ export default function Analysis() {
               </span>
               <IconCornerRightUp className='stroke-font-color-100 w-[18px] h-[18px]' />
               <span className='text-primary text-[14px]/[20px]'>
-                {card?.title === "Total Multischool Groups" && "14%"}
-                {card?.title === "My Schools" && "14%"}
+                {card?.title === "Total Multischool Groups" && "13%"}
+                {card?.title === "My Schools" && "13%"}
                 {card?.title === "All Schools" && "78%"}
               </span>
             </div>
