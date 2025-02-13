@@ -48,7 +48,7 @@ import References from '../pages/documentation/References';
 import HelperClass from '../pages/documentation/HelperClass';
 import ChangeLog from '../pages/documentation/ChangeLog';
 import Widget from '../pages/Widget';
-import InstitutionManagement from '../pages/institution_management/InstitutionManagement';
+import CampusManagement from '../pages/campus_management/CampusManagement';
 
 export default function Routers() {
 
@@ -67,7 +67,7 @@ export default function Routers() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Analysis />} />
-          <Route path="/schools" element={<InstitutionManagement />} />
+          <Route path="/schools" element={<CampusManagement />} />
           <Route path="/index-wallet" element={<MyWallet />} />
           <Route path="/index-iot" element={<SmartIot />} />
           <Route path="/app-calendar" element={<Calendar />} />
