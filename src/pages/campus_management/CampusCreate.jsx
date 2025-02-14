@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 const CampusCreate = (props) => {
-    const { openCreateSchoolModal } = props;
+    const { openCreateSchoolModal, fetchData } = props;
     const [formData, setFormData] = useState({
         campusGroupName: "",
         licenseCount: "",
@@ -42,7 +42,7 @@ const CampusCreate = (props) => {
 
         const requestBody = {
             campusGroupName: formData.campusGroupName,
-            licenseCount: formData.licenseCount,
+            licenseCount: "10",
             gpsEnabled: formData.gpsEnabled,
             zoomEnabled: formData.zoomEnabled,
             isActive: formData.isActive,
@@ -70,6 +70,7 @@ const CampusCreate = (props) => {
 
             const result = await response.json();
             openCreateSchoolModal();
+            fetchData();
             console.log("Campus group created successfully:", result);
             return result;
         } catch (error) {

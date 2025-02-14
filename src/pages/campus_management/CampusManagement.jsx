@@ -62,9 +62,6 @@ export default function CampusManagement() {
     }
   };
 
-
-
-
   // const handleModuleChange = (module) => {
   //   if (selectedModules.includes(module)) {
   //     setSelectedModules(selectedModules.filter((m) => m !== module));
@@ -81,78 +78,19 @@ export default function CampusManagement() {
   const [zoomEnabled, setZoomEnabled] = useState(false);
   const [isActive, setIsActive] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('https://api.testmazing.com/campus/api/campusgroups');
-        const json = await response.json();
-        setData(json);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+  const fetchData = async () => {
+    try {
+      const response = await fetch('https://api.testmazing.com/campus/api/campusgroups');
+      const json = await response.json();
+      setData(json);
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
+  }
 
+  useEffect(() => {
     fetchData();
   }, [])
-
-  // const schools = [
-  //   {
-  //     id: 1,
-  //     name: 'DonBoscoPurnea',
-  //     logo: avatar1,
-  //     location: 'San Francisco, USA',
-  //     students: 350,
-  //     teachers: 22,
-  //   },
-  //   {
-  //     id: 2,
-  //     name: 'StSoldierJandiala',
-  //     logo: avatar2,
-  //     location: 'San Francisco, USA',
-  //     students: 350,
-  //     teachers: 22,
-  //   },
-  //   {
-  //     id: 3,
-  //     name: 'StSoldierEliteConvent',
-  //     logo: avatar3,
-  //     location: 'San Francisco, USA',
-  //     students: 350,
-  //     teachers: 22,
-  //   },
-  //   {
-  //     id: 4,
-  //     name: 'Ucemsp',
-  //     logo: avatar4,
-  //     location: 'San Francisco, USA',
-  //     students: 350,
-  //     teachers: 22,
-  //   },
-  //   {
-  //     id: 5,
-  //     name: 'ABC High School',
-  //     logo: avatar1,
-  //     location: 'New York, USA',
-  //     students: 300,
-  //     teachers: 20,
-  //   },
-  //   {
-  //     id: 6,
-  //     name: 'XYZ College',
-  //     logo: avatar2,
-  //     location: 'Los Angeles, USA',
-  //     students: 400,
-  //     teachers: 25,
-  //   },
-  //   {
-  //     id: 7,
-  //     name: 'DEF Academy',
-  //     logo: avatar3,
-  //     location: 'Chicago, USA',
-  //     students: 250,
-  //     teachers: 15,
-  //   },
-  // ];
 
   const modules = [
     "Instant Fee",
@@ -186,7 +124,7 @@ export default function CampusManagement() {
       </div>
       <WelcomeHeader />
       {createCampusModal ? (
-        <CampusCreate openCreateSchoolModal={openCreateSchoolModal} />
+        <CampusCreate openCreateSchoolModal={openCreateSchoolModal} fetchData={fetchData} />
       ) : editSchoolModal ? (
         <>
           <div className='py-10 md:px-10 mt-10 px-[7px] bg-card-color rounded-lg'>
