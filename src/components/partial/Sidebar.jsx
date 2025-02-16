@@ -92,6 +92,11 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
       url: "/schools",
     },
     {
+      icon: IconSquares,
+      link: "Test",
+      url: "/test",
+    },
+    {
       icon: IconApps,
       link: 'Other Tabs',
       children: [
