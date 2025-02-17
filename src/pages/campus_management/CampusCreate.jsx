@@ -465,3 +465,4 @@ const CampusCreate = (props) => {
 }
 
 export default CampusCreate
+

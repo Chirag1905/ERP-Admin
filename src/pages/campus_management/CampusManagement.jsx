@@ -1,4 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import {
+  requestGetCampus,
+  userLogout,
+} from "../../Redux/actions";
 import Breadcrumb from '../../components/common/Breadcrumb';
 import WelcomeHeader from '../../components/common/WelcomeHeader';
 import {
@@ -18,7 +24,7 @@ import { Box, MenuItem, Pagination, Select, Typography } from "@mui/material";
 import CampusCreate from './CampusCreate';
 import CustomPagination from '../CustomPagination';
 
-export default function CampusManagement() {
+function CampusManagement(props) {
   const breadcrumbItem = [
     {
       name: "School Management",
@@ -99,12 +105,8 @@ export default function CampusManagement() {
   //   }
   // }
 
-  const fetchData = async () => {
-    setIsLoading((prev) => ({ ...prev, main: true }));
-
-    try {
-      // Encode search text to handle spaces & special characters
-      const encodedSearchText = searchText ? encodeURIComponent(searchText) : "";
+  useEffect(() => {
+    const encodedSearchText = searchText ? encodeURIComponent(searchText) : "";
 
       const params = new URLSearchParams({
         page: page || 0,
@@ -114,35 +116,57 @@ export default function CampusManagement() {
         ...(encodedSearchText && { searchFilter: encodedSearchText }) // Ensure proper key
       });
 
-      const url = `https://api.testmazing.com/campus/api/campusgroupspagination?${params}`;
+    props.requestGetCampus({
+      params
+    });
+  }, [page, rowsPerPage, searchText]);
 
-      console.log("🚀 ~ fetchData ~ url:", url)
-      // Fetch data with headers
-      const response = await fetch(url, {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
+  console.log(props?.admin?.campusData?.data, "*************************props***********************");
 
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+  // const fetchData = async () => {
+  //   setIsLoading((prev) => ({ ...prev, main: true }));
 
-      const json = await response.json();
-      console.log("API Response:", json); // Debugging: Check API response structure
+  //   try {
+  //     // Encode search text to handle spaces & special characters
+  //     const encodedSearchText = searchText ? encodeURIComponent(searchText) : "";
 
-      // Update state
-      setData(json || []);
-      setTotalPages(json?.totalPages || 0);
-    } catch (error) {
-      console.error("Error fetching order data:", error);
-    } finally {
-      setIsLoading((prev) => ({ ...prev, main: false }));
-    }
-  };
+  //     const params = new URLSearchParams({
+  //       page: page || 0,
+  //       size: rowsPerPage || 10,
+  //       sortBy: "id",
+  //       ascending: "true",
+  //       ...(encodedSearchText && { searchFilter: encodedSearchText }) // Ensure proper key
+  //     });
+
+  //     const url = `https://api.testmazing.com/campus/api/campusgroupspagination?${params}`;
+
+  //     console.log("🚀 ~ fetchData ~ url:", url)
+  //     // Fetch data with headers
+  //     const response = await fetch(url, {
+  //       headers: {
+  //         "Content-Type": "application/json"
+  //       }
+  //     });
+
+  //     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+  //     const json = await response.json();
+  //     console.log("API Response:", json); // Debugging: Check API response structure
+
+  //     // Update state
+  //     setData(json || []);
+  //     setTotalPages(json?.totalPages || 0);
+  //   } catch (error) {
+  //     console.error("Error fetching order data:", error);
+  //   } finally {
+  //     setIsLoading((prev) => ({ ...prev, main: false }));
+  //   }
+  // };
 
 
-  useEffect(() => {
-    fetchData();
-  }, [page, rowsPerPage, searchText])
+  // useEffect(() => {
+  //   fetchData();
+  // }, [page, rowsPerPage, searchText])
 
   const modules = [
     "Instant Fee",
@@ -232,3 +256,14 @@ export default function CampusManagement() {
     </>
   );
 }
+
+const mapStateToProps = (state) => {
+  return { admin: state.admin };
+};
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ requestGetCampus, userLogout }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(CampusManagement);
+
+
