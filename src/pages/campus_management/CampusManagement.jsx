@@ -12,9 +12,11 @@ import {
   IconPlus,
   IconLogin2,
   IconTrash,
+  IconSearch,
 } from '@tabler/icons-react';
 import { Box, MenuItem, Pagination, Select, Typography } from "@mui/material";
 import CampusCreate from './CampusCreate';
+import CustomPagination from '../CustomPagination';
 
 export default function CampusManagement() {
   const breadcrumbItem = [
@@ -23,10 +25,9 @@ export default function CampusManagement() {
     },
   ];
 
+  const [searchText, setSearchText] = useState("");
   const [createCampusModal, setCreateCampusModal] = useState(false);
   const [editSchoolModal, setEditSchoolModal] = useState(false);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [schoolName, setSchoolName] = useState('');
   const [inheritEmailSettings, setInheritEmailSettings] = useState(false);
   const [inheritGoogleOAuth, setInheritGoogleOAuth] = useState(false);
@@ -37,6 +38,26 @@ export default function CampusManagement() {
   const [assignedDomains, setAssignedDomains] = useState('');
   const [selectedModules, setSelectedModules] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
+  const [data, setData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [campusGroupName, setCampusGroupName] = useState("");
+  const [licenseCount, setLicenseCount] = useState();
+  const [gpsEnabled, setGPSEnabled] = useState(false);
+  const [zoomEnabled, setZoomEnabled] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   const openCreateSchoolModal = () => {
     setCreateCampusModal(!createCampusModal);
@@ -56,6 +77,10 @@ export default function CampusManagement() {
     document.body.classList[editSchoolModal ? "add" : "remove"]("overflow-hidden");
   }, [editSchoolModal]);
 
+  // Handle search
+  const handleSearch = (e) => {
+    setSearchText(e.target.value);
+  };
   const handleModuleChange = (module) => {
     if (selectedModules.includes(module)) {
       setSelectedModules(selectedModules.filter((m) => m !== module));
@@ -64,35 +89,60 @@ export default function CampusManagement() {
     }
   };
 
-  // const handleModuleChange = (module) => {
-  //   if (selectedModules.includes(module)) {
-  //     setSelectedModules(selectedModules.filter((m) => m !== module));
-  //   } else {
-  //     setSelectedModules([...selectedModules, module]);
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await fetch('https://api.testmazing.com/campus/api/campusgroups');
+  //     const json = await response.json();
+  //     setData(json);
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error);
   //   }
-  // };
-
-  const [data, setData] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
-  const [campusGroupName, setCampusGroupName] = useState("");
-  const [licenseCount, setLicenseCount] = useState();
-  const [gpsEnabled, setGPSEnabled] = useState(false);
-  const [zoomEnabled, setZoomEnabled] = useState(false);
-  const [isActive, setIsActive] = useState(false);
+  // }
 
   const fetchData = async () => {
+    setIsLoading((prev) => ({ ...prev, main: true }));
+
     try {
-      const response = await fetch('https://api.testmazing.com/campus/api/campusgroups');
+      // Encode search text to handle spaces & special characters
+      const encodedSearchText = searchText ? encodeURIComponent(searchText) : "";
+
+      const params = new URLSearchParams({
+        page: page || 0,
+        size: rowsPerPage || 10,
+        sortBy: "id",
+        ascending: "true",
+        ...(encodedSearchText && { searchFilter: encodedSearchText }) // Ensure proper key
+      });
+
+      const url = `https://api.testmazing.com/campus/api/campusgroupspagination?${params}`;
+
+      console.log("🚀 ~ fetchData ~ url:", url)
+      // Fetch data with headers
+      const response = await fetch(url, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
       const json = await response.json();
-      setData(json);
+      console.log("API Response:", json); // Debugging: Check API response structure
+
+      // Update state
+      setData(json || []);
+      setTotalPages(json?.totalPages || 0);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching order data:", error);
+    } finally {
+      setIsLoading((prev) => ({ ...prev, main: false }));
     }
-  }
+  };
+
 
   useEffect(() => {
     fetchData();
-  }, [])
+  }, [page, rowsPerPage, searchText])
 
   const modules = [
     "Instant Fee",
@@ -112,18 +162,6 @@ export default function CampusManagement() {
     "App Frame",
   ];
 
-  const totalPages = Math.ceil(data.length / rowsPerPage);
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage - 1);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-
   return (
     <>
       <div className="flex justify-between items-center">
@@ -137,17 +175,31 @@ export default function CampusManagement() {
         </button>
       </div>
       <WelcomeHeader />
-        <> <div className='py-10 md:px-10 mt-10 px-[7px] bg-card-color rounded-lg'>
-          <div className='my-10 lg:px-20 md:px-10 px-[7px] md:max-h-[70svh] max-h-[60svh] overflow-auto cus-scrollbar'>
-            <div className='flex justify-between items-start gap-4'>
-              <div>
-                <h5 className='text-[20px]/[30px] font-medium'>
-                  Schools Listing
-                </h5>
-              </div>
+      <>
+        <div className='py-10 md:px-10 mt-10 px-[7px] bg-card-color rounded-lg'>
+          <div className='flex justify-between items-start gap-4 me-4'>
+            <div>
+              <h5 className='text-[20px]/[30px] font-medium'>
+                Schools Listing
+              </h5>
             </div>
+            <div className='card bg-card-color rounded-xl form-control flex'>
+              <input
+                type="text"
+                id="team_board_search"
+                className="form-input !rounded-e-none !py-[6px]"
+                placeholder="Search Schools..."
+                value={searchText}
+                onChange={handleSearch}
+              />
+              <button className="btn border border-border-color !rounded-s-none" type="button">
+                <IconSearch className='w-[20px] h-[20px]' />
+              </button>
+            </div>
+          </div>
+          <div className='my-10 lg:px-20 md:px-10 px-[7px] md:max-h-[70svh] max-h-[60svh] overflow-auto cus-scrollbar'>
             <ul className="flex flex-col md:gap-8 gap-6 mt-6">
-              {data?.length > 0 && data?.map((item, index) => (
+              {data?.content?.length > 0 && data?.content?.map((item, index) => (
                 <li className="flex sm:items-center sm:gap-4 gap-2 sm:flex-row flex-col" key={index}>
                   <img src={avatar1 || ""} alt="user profile" className='rounded-md w-[36px] h-[36px] min-w-[36px]' />
                   <div className='flex-grow'>
@@ -168,64 +220,15 @@ export default function CampusManagement() {
             </ul>
           </div>
         </div>
-          <div className='mt-8 mr-2 text-right'>
-            <button className='py-[6px] px-3 border border-border-color rounded-s-full bg-card-color transition-all hover:bg-primary hover:text-white'>
-              Previous
-            </button>
-            <button className='py-[6px] px-3 border-y border-e border-border-color bg-card-color transition-all hover:bg-primary hover:text-white'>
-              1
-            </button>
-            <button className='py-[6px] px-3 border-y border-e border-border-color bg-primary text-white transition-all hover:bg-primary hover:text-white'>
-              2
-            </button>
-            <button className='py-[6px] px-3 border-y border-border-color bg-card-color transition-all hover:bg-primary hover:text-white'>
-              3
-            </button>
-            <button className='py-[6px] px-3 border border-border-color rounded-e-full bg-card-color transition-all hover:bg-primary hover:text-white'>
-              Next
-            </button>
-          </div>
-          <div className="flex md:flex-row flex-col text-xs items-center justify-between p-2 pt-5 pb-3 gap-3">
-              <Box
-                display="flex"
-                alignItems="center"
-                sx={{ fontSize: '0.875rem', fontFamily: 'Poppins, sans-serif', padding: '5px', width: 'fit-content' }}
-              >
-                <Typography sx={{ color: "#717171", fontSize: '13px', marginRight: '0px', fontFamily: 'Poppins, sans-serif' }}>
-                  Mostra
-                </Typography>
-                <Select
-                  value={rowsPerPage}
-                  onChange={handleChangeRowsPerPage}
-                  sx={{ borderRadius: "6px", borderColor: "#B8B8B8", opacity: 1, margin: "0 5px", height: '30px', fontSize: '13px', fontFamily: 'Poppins, sans-serif' }}
-                >
-                  <MenuItem value={10}>10</MenuItem>
-                  <MenuItem value={25}>25</MenuItem>
-                  <MenuItem value={50}>50</MenuItem>
-                  <MenuItem value={100}>100</MenuItem>
-                </Select>
-                <Typography sx={{ color: "#717171", fontSize: '13px', fontFamily: 'Poppins, sans-serif' }}>
-                  di {data.length} risultati
-                </Typography>
-              </Box>
-              <Pagination
-                count={totalPages}
-                page={page + 1}
-                onChange={handleChangePage}
-                shape="rounded"
-                size="small"
-                siblingCount={0}
-                boundaryCount={1}
-                sx={{
-                  "& .MuiPaginationItem-root": {
-                    fontSize: "12px",
-                    minWidth: "30px",
-                    height: "30px",
-                  },
-                }}
-              />
-            </div>
-        </>
+        <CustomPagination
+          page={page}
+          totalPages={totalPages}
+          handleChange={handleChange}
+          data={data}
+          rowsPerPage={rowsPerPage}
+          handleChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+      </>
     </>
   );
 }
