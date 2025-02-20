@@ -24,7 +24,7 @@ import { Box, MenuItem, Pagination, Select, Typography } from "@mui/material";
 import CampusCreate from './CampusCreate';
 import CustomPagination from '../CustomPagination';
 
-function CampusManagement(props) {
+const CampusManagement = (props) => {
   const breadcrumbItem = [
     {
       name: "School Management",
@@ -34,24 +34,15 @@ function CampusManagement(props) {
   const [searchText, setSearchText] = useState("");
   const [createCampusModal, setCreateCampusModal] = useState(false);
   const [editSchoolModal, setEditSchoolModal] = useState(false);
-  const [schoolName, setSchoolName] = useState('');
-  const [inheritEmailSettings, setInheritEmailSettings] = useState(false);
-  const [inheritGoogleOAuth, setInheritGoogleOAuth] = useState(false);
-  const [enableGPS, setEnableGPS] = useState(false);
-  const [enableGoogleMeet, setEnableGoogleMeet] = useState(false);
-  const [enableSMSTemplateEdit, setEnableSMSTemplateEdit] = useState(false);
-  const [enableSMSTemplateID, setEnableSMSTemplateID] = useState(false);
-  const [assignedDomains, setAssignedDomains] = useState('');
   const [selectedModules, setSelectedModules] = useState([]);
-  const [activeTab, setActiveTab] = useState(0);
-  const [data, setData] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
-  const [campusGroupName, setCampusGroupName] = useState("");
-  const [licenseCount, setLicenseCount] = useState();
-  const [gpsEnabled, setGPSEnabled] = useState(false);
-  const [zoomEnabled, setZoomEnabled] = useState(false);
-  const [isActive, setIsActive] = useState(false);
+  const [data, setData] = useState(props?.admin?.campusData?.data);
+  console.log("🚀 ~ CampusManagement ~ props?.admin?.campusData?.data:", props?.admin?.campusData?.data)
 
+  useEffect(() => {
+    // Update the `data` state whenever `props.admin.campusData.data` changes
+    setData(props?.admin?.campusData?.data);
+  }, [props.admin.campusData.data]);
+  
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -95,96 +86,31 @@ function CampusManagement(props) {
     }
   };
 
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await fetch('https://api.testmazing.com/campus/api/campusgroups');
-  //     const json = await response.json();
-  //     setData(json);
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //   }
-  // }
+  useEffect(() => {
+    // const encodedSearchText = searchText ? encodeURIComponent(searchText) : "";
+    const params = {
+      page: page || 0,
+      size: rowsPerPage || 10,
+      sortBy: "id",
+      ascending: "true",
+      // encodedSearchText:"45"
+      searchFilter: searchText
+      // ...(encodedSearchText && { searchFilter: encodedSearchText }),
+    };
+
+    // Call the function with the params object
+    props.requestGetCampus({ data: params });
+  }, [page, rowsPerPage, searchText, props.requestGetCampus]);
 
   useEffect(() => {
-    const encodedSearchText = searchText ? encodeURIComponent(searchText) : "";
+    if (data) {
+      setTotalPages(data?.totalPages);
+    }
+  }, [data, rowsPerPage]);
 
-      const params = new URLSearchParams({
-        page: page || 0,
-        size: rowsPerPage || 10,
-        sortBy: "id",
-        ascending: "true",
-        ...(encodedSearchText && { searchFilter: encodedSearchText }) // Ensure proper key
-      });
+  // console.log(props?.admin?.campusData?.data, "props");
+  // console.log(data, "***********");
 
-    props.requestGetCampus({
-      params
-    });
-  }, [page, rowsPerPage, searchText]);
-
-  console.log(props?.admin?.campusData?.data, "*************************props***********************");
-
-  // const fetchData = async () => {
-  //   setIsLoading((prev) => ({ ...prev, main: true }));
-
-  //   try {
-  //     // Encode search text to handle spaces & special characters
-  //     const encodedSearchText = searchText ? encodeURIComponent(searchText) : "";
-
-  //     const params = new URLSearchParams({
-  //       page: page || 0,
-  //       size: rowsPerPage || 10,
-  //       sortBy: "id",
-  //       ascending: "true",
-  //       ...(encodedSearchText && { searchFilter: encodedSearchText }) // Ensure proper key
-  //     });
-
-  //     const url = `https://api.testmazing.com/campus/api/campusgroupspagination?${params}`;
-
-  //     console.log("🚀 ~ fetchData ~ url:", url)
-  //     // Fetch data with headers
-  //     const response = await fetch(url, {
-  //       headers: {
-  //         "Content-Type": "application/json"
-  //       }
-  //     });
-
-  //     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
-  //     const json = await response.json();
-  //     console.log("API Response:", json); // Debugging: Check API response structure
-
-  //     // Update state
-  //     setData(json || []);
-  //     setTotalPages(json?.totalPages || 0);
-  //   } catch (error) {
-  //     console.error("Error fetching order data:", error);
-  //   } finally {
-  //     setIsLoading((prev) => ({ ...prev, main: false }));
-  //   }
-  // };
-
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, [page, rowsPerPage, searchText])
-
-  const modules = [
-    "Instant Fee",
-    "Discussion",
-    "Online Exam",
-    "Data Management",
-    "Gallery",
-    "Custom Report",
-    "Assignment",
-    "Task",
-    "Placement",
-    "Online Meeting",
-    "Moodle",
-    "Applicant Registration",
-    "Blog",
-    "Data Profile",
-    "App Frame",
-  ];
 
   return (
     <>
@@ -265,5 +191,3 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators({ requestGetCampus, userLogout }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(CampusManagement);
-
-

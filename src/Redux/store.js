@@ -15,7 +15,3 @@ const store = createStore(persistedReducer, applyMiddleware(sagaMiddleware));
 const persistor = persistStore(store);
 
 export { store, persistor, sagaMiddleware };
-
-
-
-

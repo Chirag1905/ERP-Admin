@@ -1,12 +1,11 @@
 import axios from "axios";
 
-
 export const getCampus = (obj) => {
-  console.log(obj, "obj")
+  console.log(obj, "Main object");
   return axios
     .get("https://api.testmazing.com/campus/api/campusgroupspagination", {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       params: obj.data,
     })
