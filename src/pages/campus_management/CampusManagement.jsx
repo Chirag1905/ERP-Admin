@@ -19,6 +19,8 @@ import {
   IconLogin2,
   IconTrash,
   IconSearch,
+  IconCaretDownFilled,
+  IconCaretUpFilled,
 } from '@tabler/icons-react';
 import { Box, MenuItem, Pagination, Select, Typography } from "@mui/material";
 import CampusCreate from './CampusCreate';
@@ -32,10 +34,11 @@ const CampusManagement = (props) => {
   ];
 
   const [searchText, setSearchText] = useState("");
+  const [isAscending, setIsAscending] = useState(true);
   const [createCampusModal, setCreateCampusModal] = useState(false);
   const [editSchoolModal, setEditSchoolModal] = useState(false);
   const [data, setData] = useState(props?.admin?.campusData?.data);
-  const [isLoading, setIsLoading] = useState({ main: false, edit: false, save: false });
+  const [isLoading, setIsLoading] = useState({ main: false, edit: false, add: false });
 
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
@@ -122,7 +125,7 @@ const CampusManagement = (props) => {
         page: page || 0,
         size: rowsPerPage || 10,
         sortBy: "id",
-        ascending: "true",
+        ascending: isAscending,
         searchFilter: searchText
       };
       try {
@@ -134,7 +137,7 @@ const CampusManagement = (props) => {
       }
     };
     fetchData();
-  }, [page, rowsPerPage, searchText, props?.requestGetCampus]);
+  }, [page, rowsPerPage, searchText, isAscending, props?.requestGetCampus]);
 
   useEffect(() => {
     setData(props?.admin?.campusData?.data);
@@ -160,7 +163,7 @@ const CampusManagement = (props) => {
       </div>
       <WelcomeHeader />
       {createCampusModal ? (
-        <CampusCreate openCreateSchoolModal={openCreateSchoolModal} />
+        <CampusCreate openCreateSchoolModal={openCreateSchoolModal} isLoading={isLoading} setIsLoading={setIsLoading} />
       ) : editSchoolModal ? (
         <>
           <div className='py-10 md:px-10 mt-10 px-[7px] bg-card-color rounded-lg'>
@@ -554,10 +557,14 @@ const CampusManagement = (props) => {
         <>
           <div className='py-9 md:px-10 px-[7px] bg-card-color rounded-lg'>
             <div className='flex justify-between items-start gap-4 mr-6'>
-              <div>
+              <div className='flex'>
                 <h5 className='text-[20px]/[30px] font-medium ml-6'>
                   Schools Listing
                 </h5>
+                {isAscending ?
+                  <IconCaretDownFilled onClick={() => setIsAscending(false)} /> :
+                  <IconCaretUpFilled onClick={() => setIsAscending(true)} />
+                }
               </div>
               <div className='card bg-card-color rounded-xl form-control flex'>
                 <input

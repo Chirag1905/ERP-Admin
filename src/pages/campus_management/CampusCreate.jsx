@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from 'react'
+import { connect } from 'react-redux';
+import { bindActionCreators } from "redux";
+import { requestPostCampus, userLogout } from '../../Redux/actions';
 
 const CampusCreate = (props) => {
-    const { openCreateSchoolModal, fetchData } = props;
+    const {
+        openCreateSchoolModal,
+        isLoading,
+        setIsLoading
+    } = props;
+    
     const [formData, setFormData] = useState({
         campusGroupName: "",
         licenseCount: "",
@@ -24,7 +32,6 @@ const CampusCreate = (props) => {
             [key]: value,
         }));
     };
-
 
     const [selectedModules, setSelectedModules] = useState([]);
     const [activeTab, setActiveTab] = useState(0);
@@ -96,6 +103,30 @@ const CampusCreate = (props) => {
         "Data Profile",
         "App Frame",
     ];
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setIsLoading({ ...isLoading, s: true });
+            const params = {
+                campusGroupName: formData.campusGroupName,
+                licenseCount: formData.gpsEnabled,
+                gpsEnabled: formData.gpsEnabled,
+                zoomEnabled: formData.zoomEnabled,
+                isActive: formData.isActive,
+            };
+            console.log("🚀 ~ fetchData ~ params:", params)
+            try {
+                await props?.requestPostCampus({ data: params });
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setIsLoading({ ...isLoading, main: false });
+            }
+        };
+        fetchData();
+    }, [props?.requestPostCampus]);
+
+    console.log(formData)
     return (
         <>
             <div className='py-10 md:px-10 mt-10 px-[7px] bg-card-color rounded-lg'>
@@ -127,23 +158,77 @@ const CampusCreate = (props) => {
                         <div className="w-3/4 p-4">
                             {activeTab === 0 && (
                                 <>
-                                    <div className='flex justify-between px-10'>
-                                        {/* Profile Content */}
-                                        <label htmlFor='campaignsTitle' className='form-label'>
-                                            Name <span className="text-red-500"> *</span>
-                                        </label>
-                                        <div className='form-control h-full w-3/5 mb-15'>
-                                            <input
-                                                type='text'
-                                                placeholder='School Name'
-                                                className='form-input'
-                                                value={formData.campusGroupName || ""}
-                                                onChange={(e) => updateFormData("campusGroupName", e.target.value)}
-                                            />
+                                    <div className="flex flex-col space-y-4">
+                                        <div className='flex justify-between px-10'>
+                                            <label htmlFor='campaignsTitle' className='form-label'>
+                                                Name <span className="text-red-500"> *</span>
+                                            </label>
+                                            <div className='form-control h-full w-3/5 mb-15'>
+                                                <input
+                                                    type='text'
+                                                    placeholder='School Name'
+                                                    className='form-input'
+                                                    value={formData.campusGroupName || ""}
+                                                    onChange={(e) => updateFormData("campusGroupName", e.target.value)}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className='flex justify-between px-10'>
+                                            <label htmlFor='campaignsTitle' className='form-label'>
+                                                License Count <span className="text-red-500"> *</span>
+                                            </label>
+                                            <div className='form-control h-full w-3/5 mb-15'>
+                                                <input
+                                                    type='number'
+                                                    placeholder='license count'
+                                                    className='form-input'
+                                                    value={formData.licenseCount || ""}
+                                                    onChange={(e) => updateFormData("licenseCount", e.target.value)}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className='flex justify-between px-10'>
+                                            <label htmlFor='campaignsTitle' className='form-label'>
+                                                GPS Enabled <span className="text-red-500"> *</span>
+                                            </label>
+                                            <div className='form-check form-switch h-full w-3/5 mb-15'>
+                                                <input
+                                                    type="checkbox"
+                                                    className="form-check-input"
+                                                    checked={formData.gpsEnabled || ""}
+                                                    onChange={(e) => updateFormData("gpsEnabled", e.target.checked)}
+                                                />
+                                                {/* <label className="form-check-label" htmlFor="lightIndoor1">Kitchen</label> */}
+                                            </div>
+                                        </div>
+                                        <div className='flex justify-between px-10'>
+                                            <label htmlFor='campaignsTitle' className='form-label'>
+                                                Zoom Meeting Enabled <span className="text-red-500"> *</span>
+                                            </label>
+                                            <div className='form-check form-switch h-full w-3/5 mb-15'>
+                                                <input
+                                                    type='checkbox'
+                                                    className='form-check-input'
+                                                    checked={formData.zoomEnabled || ""}
+                                                    onChange={(e) => updateFormData("zoomEnabled", e.target.checked)}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className='flex justify-between px-10'>
+                                            <label htmlFor='campaignsTitle' className='form-label'>
+                                                IsActive <span className="text-red-500"> *</span>
+                                            </label>
+                                            <div className='form-check form-switch h-full w-3/5 mb-15'>
+                                                <input
+                                                    type='checkbox'
+                                                    className='form-check-input'
+                                                    checked={formData.isActive || ""}
+                                                    onChange={(e) => updateFormData("isActive", e.target.checked)}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className='flex px-10'>
-                                        {/* Profile Content */}
+                                    {/* <div className='flex px-10'>
                                         <label htmlFor='campaignsTitle' className='form-label'>
                                             Inherit Email Settings
                                         </label>
@@ -152,13 +237,12 @@ const CampusCreate = (props) => {
                                                 type='checkbox'
                                                 placeholder='Inherit Email Settings'
                                                 className='form-input'
-                                                value={formData.inheritEmailSettings || ""}
-                                                onChange={(e) => updateFormData("campusGroupName", e.target.value)}
+                                                // value={formData.inheritEmailSettings || ""}
+                                                // onChange={(e) => updateFormData("campusGroupName", e.target.value)}
                                             />
                                         </div>
-                                    </div>
-                                    <div className='flex justify-between px-10'>
-                                        {/* Profile Content */}
+                                    </div> */}
+                                    {/* <div className='flex justify-between px-10'>
                                         <label htmlFor='campaignsTitle' className='form-label'>
                                             SMS Template ID Enabled
                                         </label>
@@ -167,13 +251,12 @@ const CampusCreate = (props) => {
                                                 type='checkbox'
                                                 placeholder='SMS Template ID Enabled'
                                                 className='form-input'
-                                                value={formData.enableSMSTemplateID || ""}
-                                                onChange={(e) => updateFormData("enableSMSTemplateID", e.target.value)}
+                                                // value={formData.enableSMSTemplateID || ""}
+                                                // onChange={(e) => updateFormData("enableSMSTemplateID", e.target.value)}
                                             />
                                         </div>
-                                    </div>
-                                    <div className='flex justify-between px-10'>
-                                        {/* Profile Content */}
+                                    </div> */}
+                                    {/* <div className='flex justify-between px-10'>
                                         <label htmlFor='campaignsTitle' className='form-label'>
                                             Inherit Google OAuth
                                         </label>
@@ -182,86 +265,39 @@ const CampusCreate = (props) => {
                                                 type='checkbox'
                                                 placeholder='School Name'
                                                 className='form-input'
-                                                value={formData.inheritGoogleOAuth || ""}
-                                                onChange={(e) => updateFormData("inheritGoogleOAuth", e.target.value)}
+                                                // value={formData.inheritGoogleOAuth || ""}
+                                                // onChange={(e) => updateFormData("inheritGoogleOAuth", e.target.value)}
                                             />
                                         </div>
-                                    </div>
-                                    <div className='flex justify-between px-10'>
-                                        {/* Profile Content */}
-                                        <label htmlFor='campaignsTitle' className='form-label'>
-                                            GPS Enabled
-                                        </label>
-                                        <div className='form-control h-full w-3/5 mb-15'>
-                                            <input
-                                                type='checkbox'
-                                                placeholder='School Name'
-                                                className='form-input'
-                                                value={formData.enableGPS || ""}
-                                                onChange={(e) => updateFormData("enableGPS", e.target.value)}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className='flex justify-between px-10'>
-                                        {/* Profile Content */}
-                                        <label htmlFor='campaignsTitle' className='form-label'>
-                                            Zoom Meeting Enabled
-                                        </label>
-                                        <div className='form-control h-full w-3/5 mb-15'>
-                                            <input
-                                                type='checkbox'
-                                                placeholder='School Name'
-                                                className='form-input'
-                                                value={formData.zoomEnabled || ""}
-                                                onChange={(e) => updateFormData("zoomEnabled", e.target.value)}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className='flex justify-between px-10'>
-                                        {/* Profile Content */}
+                                    </div> */}
+                                    {/* <div className='flex justify-between px-10'>
                                         <label htmlFor='campaignsTitle' className='form-label'>
                                             Google Meet Enabled
                                         </label>
-                                        <div className='form-control h-full w-3/5 mb-15'>
+                                        <div className='form-check form-switch h-full w-3/5 mb-15'>
                                             <input
                                                 type='checkbox'
                                                 placeholder='School Name'
-                                                className='form-input'
+                                                className='form-check-input'
                                                 value={formData.enableGoogleMeet || ""}
                                                 onChange={(e) => updateFormData("enableGoogleMeet", e.target.value)}
                                             />
                                         </div>
                                     </div>
                                     <div className='flex justify-between px-10'>
-                                        {/* Profile Content */}
-                                        <label htmlFor='campaignsTitle' className='form-label'>
-                                            Higher Storage Plan
-                                        </label>
-                                        <div className='form-control h-full w-3/5 mb-15'>
-                                            <input
-                                                type='text'
-                                                placeholder='School Name'
-                                                className='form-input'
-                                            // value={formData.campusGroupName || ""}
-                                            // onChange={(e) => updateFormData("campusGroupName", e.target.value)}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className='flex justify-between px-10'>
-                                        {/* Profile Content */}
                                         <label htmlFor='campaignsTitle' className='form-label'>
                                             Owned by
                                         </label>
                                         <div className='form-control h-full w-3/5 mb-15'>
                                             <input
                                                 type='text'
-                                                placeholder='School Name'
+                                                placeholder='Owned by'
                                                 className='form-input'
                                             // value={formData.campusGroupName || ""}
                                             // onChange={(e) => updateFormData("campusGroupName", e.target.value)}
                                             />
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </>
                             )}
                             {activeTab === 1 && (
@@ -303,8 +339,8 @@ const CampusCreate = (props) => {
                                                             id={`module-${index}`}
                                                             name="campaignsModule"
                                                             className="form-check-input"
-                                                            checked={selectedModules.includes(module)}
-                                                            onChange={() => handleModuleChange(module)}
+                                                        // checked={selectedModules.includes(module)}
+                                                        // onChange={() => handleModuleChange(module)}
                                                         />
                                                     </div>
                                                     <label className="form-check-label !text-[16px]/[24px] ml-2" htmlFor={`module-${index}`}>
@@ -455,7 +491,7 @@ const CampusCreate = (props) => {
                             Close
                         </button>
                         <button className='btn btn-primary' onClick={createCampusGroup}>
-                            Save
+                            Submit
                         </button>
                     </div>
                 </div>
@@ -464,5 +500,11 @@ const CampusCreate = (props) => {
     )
 }
 
-export default CampusCreate
+const mapStateToProps = (state) => {
+    return { admin: state.admin };
+};
 
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators({ requestPostCampus, userLogout }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(CampusCreate);

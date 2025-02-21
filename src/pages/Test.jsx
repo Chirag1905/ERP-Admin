@@ -627,3 +627,220 @@ export default function CampusManagement() {
     </div>
   );
 }
+
+
+// import React, { useEffect, useState } from 'react';
+// import { connect } from 'react-redux';
+// import { bindActionCreators } from 'redux';
+// import { requestPostCampus, userLogout } from '../../Redux/actions';
+
+// const CampusCreate = (props) => {
+//     const {
+//         openCreateSchoolModal,
+//         isLoading,
+//         setIsLoading,
+//         requestPostCampus,
+//     } = props;
+
+//     const [formData, setFormData] = useState({
+//         campusGroupName: '',
+//         licenseCount: '',
+//         gpsEnabled: false,
+//         zoomEnabled: false,
+//         isActive: false,
+//         inheritEmailSettings: false,
+//         inheritGoogleOAuth: false,
+//         enableGPS: false,
+//         enableGoogleMeet: false,
+//         enableSMSTemplateEdit: false,
+//         enableSMSTemplateID: false,
+//         assignedDomains: '',
+//     });
+
+//     const [selectedModules, setSelectedModules] = useState([]);
+//     const [activeTab, setActiveTab] = useState(0);
+
+//     const updateFormData = (key, value) => {
+//         setFormData((prevData) => ({
+//             ...prevData,
+//             [key]: value,
+//         }));
+//     };
+
+//     const handleModuleChange = (module) => {
+//         if (selectedModules.includes(module)) {
+//             setSelectedModules(selectedModules.filter((m) => m !== module));
+//         } else {
+//             setSelectedModules([...selectedModules, module]);
+//         }
+//     };
+
+//     const modules = [
+//         'Instant Fee',
+//         'Discussion',
+//         'Online Exam',
+//         'Data Management',
+//         'Gallery',
+//         'Custom Report',
+//         'Assignment',
+//         'Task',
+//         'Placement',
+//         'Online Meeting',
+//         'Moodle',
+//         'Applicant Registration',
+//         'Blog',
+//         'Data Profile',
+//         'App Frame',
+//     ];
+
+//     const handleSubmit = async () => {
+//         setIsLoading({ ...isLoading, add: true });
+
+//         const params = {
+//             campusGroupName: formData.campusGroupName,
+//             licenseCount: formData.licenseCount,
+//             gpsEnabled: formData.gpsEnabled,
+//             zoomEnabled: formData.zoomEnabled,
+//             isActive: formData.isActive,
+//         };
+
+//         try {
+//             await requestPostCampus({ data: params });
+//             // Handle success (e.g., show a success message or redirect)
+//         } catch (error) {
+//             console.error('Error posting campus data:', error);
+//             // Handle error (e.g., show an error message)
+//         } finally {
+//             setIsLoading({ ...isLoading, add: false });
+//         }
+//     };
+
+//     return (
+//         <>
+//             <div className='py-10 md:px-10 mt-10 px-[7px] bg-card-color rounded-lg'>
+//                 <div className='my-10 lg:px-20 md:px-10 px-[7px] md:max-h-[80svh] max-h-[60svh] overflow-auto cus-scrollbar'>
+//                     <div className="flex justify-between items-center">
+//                         <div className='text-[24px]/[30px] font-medium mb-2'>
+//                             New School
+//                         </div>
+//                     </div>
+
+//                     {/* Flex container for tabs and content */}
+//                     <div className="flex">
+//                         {/* Left Side Tabs */}
+//                         <div className="w-1/4 bg-card-color border-r border-border-color">
+//                             <div className="flex flex-col space-y-10 p-4">
+//                                 {['Profile', 'Domain', 'Plugins', 'Email', 'SMS Setting', 'Plugin Settings', 'Gateways'].map((tab, index) => (
+//                                     <button
+//                                         key={index}
+//                                         className={`py-2 px-4 text-left text-primary hover:text-secondary ${activeTab === index ? 'bg-primary-color text-secondary' : 'text-primary'}`}
+//                                         onClick={() => setActiveTab(index)}
+//                                     >
+//                                         {tab}
+//                                     </button>
+//                                 ))}
+//                             </div>
+//                         </div>
+
+//                         {/* Right Side Content */}
+//                         <div className="w-3/4 p-4">
+//                             {activeTab === 0 && (
+//                                 <>
+//                                     <div className="flex flex-col space-y-4">
+//                                         <div className='flex justify-between px-10'>
+//                                             <label htmlFor='campaignsTitle' className='form-label'>
+//                                                 Name <span className="text-red-500"> *</span>
+//                                             </label>
+//                                             <div className='form-control h-full w-3/5 mb-15'>
+//                                                 <input
+//                                                     type='text'
+//                                                     placeholder='School Name'
+//                                                     className='form-input'
+//                                                     value={formData.campusGroupName || ''}
+//                                                     onChange={(e) => updateFormData('campusGroupName', e.target.value)}
+//                                                 />
+//                                             </div>
+//                                         </div>
+//                                         <div className='flex justify-between px-10'>
+//                                             <label htmlFor='campaignsTitle' className='form-label'>
+//                                                 License Count <span className="text-red-500"> *</span>
+//                                             </label>
+//                                             <div className='form-control h-full w-3/5 mb-15'>
+//                                                 <input
+//                                                     type='number'
+//                                                     placeholder='license count'
+//                                                     className='form-input'
+//                                                     value={formData.licenseCount || ''}
+//                                                     onChange={(e) => updateFormData('licenseCount', e.target.value)}
+//                                                 />
+//                                             </div>
+//                                         </div>
+//                                         <div className='flex justify-between px-10'>
+//                                             <label htmlFor='campaignsTitle' className='form-label'>
+//                                                 GPS Enabled <span className="text-red-500"> *</span>
+//                                             </label>
+//                                             <div className='form-check form-switch h-full w-3/5 mb-15'>
+//                                                 <input
+//                                                     type="checkbox"
+//                                                     className="form-check-input"
+//                                                     checked={formData.gpsEnabled || false}
+//                                                     onChange={(e) => updateFormData('gpsEnabled', e.target.checked)}
+//                                                 />
+//                                             </div>
+//                                         </div>
+//                                         <div className='flex justify-between px-10'>
+//                                             <label htmlFor='campaignsTitle' className='form-label'>
+//                                                 Zoom Meeting Enabled <span className="text-red-500"> *</span>
+//                                             </label>
+//                                             <div className='form-check form-switch h-full w-3/5 mb-15'>
+//                                                 <input
+//                                                     type='checkbox'
+//                                                     className='form-check-input'
+//                                                     checked={formData.zoomEnabled || false}
+//                                                     onChange={(e) => updateFormData('zoomEnabled', e.target.checked)}
+//                                                 />
+//                                             </div>
+//                                         </div>
+//                                         <div className='flex justify-between px-10'>
+//                                             <label htmlFor='campaignsTitle' className='form-label'>
+//                                                 IsActive <span className="text-red-500"> *</span>
+//                                             </label>
+//                                             <div className='form-check form-switch h-full w-3/5 mb-15'>
+//                                                 <input
+//                                                     type='checkbox'
+//                                                     className='form-check-input'
+//                                                     checked={formData.isActive || false}
+//                                                     onChange={(e) => updateFormData('isActive', e.target.checked)}
+//                                                 />
+//                                             </div>
+//                                         </div>
+//                                     </div>
+//                                 </>
+//                             )}
+//                             {/* Other tabs content remains the same */}
+//                         </div>
+//                     </div>
+
+//                     {/* Buttons Section */}
+//                     <div className='flex items-stretch gap-5'>
+//                         <button onClick={openCreateSchoolModal} className='btn btn-secondary'>
+//                             Close
+//                         </button>
+//                         <button className='btn btn-primary' onClick={handleSubmit} disabled={isLoading.add}>
+//                             {isLoading.add ? 'Loading...' : 'Submit'}
+//                         </button>
+//                     </div>
+//                 </div>
+//             </div>
+//         </>
+//     );
+// };
+
+// const mapStateToProps = (state) => {
+//     return { admin: state.admin };
+// };
+
+// const mapDispatchToProps = (dispatch) =>
+//     bindActionCreators({ requestPostCampus, userLogout }, dispatch);
+
+// export default connect(mapStateToProps, mapDispatchToProps)(CampusCreate);
