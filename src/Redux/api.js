@@ -24,7 +24,7 @@ export const postCampus = async (obj) => {
   try {
     const response = await axios.post(
       "https://api.testmazing.com/campus/api/createcampusgroup",
-      obj.data, // The data to be sent in the body of the POST request
+      obj.data,
       {
         headers: {
           "Content-Type": "application/json",

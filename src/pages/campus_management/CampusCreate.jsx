@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
-import { requestPostCampus, userLogout } from '../../Redux/actions';
+import { requestGetCampus, requestPostCampus, userLogout } from '../../Redux/actions';
+import toast, { Toaster } from 'react-hot-toast';
 
 const CampusCreate = (props) => {
     const {
         openCreateSchoolModal,
         isLoading,
-        setIsLoading
+        setIsLoading,
+        handleCampusAdded,
     } = props;
-    
+
     const [formData, setFormData] = useState({
         campusGroupName: "",
         licenseCount: "",
@@ -44,47 +46,38 @@ const CampusCreate = (props) => {
         }
     };
 
-    const createCampusGroup = async () => {
-        const url = "https://api.testmazing.com/campus/api/createcampusgroup";
+    const handleSubmit = async () => {
+        setIsLoading({ ...isLoading, add: true });
 
-        const requestBody = {
+        const params = {
             campusGroupName: formData.campusGroupName,
-            licenseCount: "10",
+            licenseCount: formData.licenseCount,
             gpsEnabled: formData.gpsEnabled,
             zoomEnabled: formData.zoomEnabled,
             isActive: formData.isActive,
-            // inheritEmailSettings: formData.inheritEmailSettings,
-            // inheritGoogleOAuth: formData.inheritGoogleOAuth,
-            // enableGPS: formData.enableGPS,
-            // enableGoogleMeet: formData.enableGoogleMeet,
-            // enableSMSTemplateEdit: formData.enableSMSTemplateEdit,
-            // enableSMSTemplateID: formData.enableSMSTemplateID,
-            // assignedDomains: formData.assignedDomains,
         };
 
-        try {
-            const response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(requestBody),
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+        await toast.promise(
+            props.requestPostCampus({ data: params }),
+            {
+                loading: 'Saving...',
+                success: 'Successfully saved!',
+                error: 'Failed to save data.',
+            },
+            {
+                position: 'top-center',
+                duration: 3000,
             }
-
-            const result = await response.json();
+        ).then(async () => {
             openCreateSchoolModal();
-            fetchData();
-            console.log("Campus group created successfully:", result);
-            return result;
-        } catch (error) {
-            console.error("Error creating campus group:", error);
-            return null;
-        }
+            await props.requestGetCampus({});
+        }).catch((error) => {
+            console.error('Error posting campus data:', error);
+        }).finally(() => {
+            setIsLoading({ ...isLoading, add: false });
+        });
     };
+
 
     const modules = [
         "Instant Fee",
@@ -104,31 +97,9 @@ const CampusCreate = (props) => {
         "App Frame",
     ];
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setIsLoading({ ...isLoading, s: true });
-            const params = {
-                campusGroupName: formData.campusGroupName,
-                licenseCount: formData.gpsEnabled,
-                gpsEnabled: formData.gpsEnabled,
-                zoomEnabled: formData.zoomEnabled,
-                isActive: formData.isActive,
-            };
-            console.log("🚀 ~ fetchData ~ params:", params)
-            try {
-                await props?.requestPostCampus({ data: params });
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            } finally {
-                setIsLoading({ ...isLoading, main: false });
-            }
-        };
-        fetchData();
-    }, [props?.requestPostCampus]);
-
-    console.log(formData)
     return (
         <>
+            <Toaster />
             <div className='py-10 md:px-10 mt-10 px-[7px] bg-card-color rounded-lg'>
                 <div className='my-10 lg:px-20 md:px-10 px-[7px] md:max-h-[80svh] max-h-[60svh] overflow-auto cus-scrollbar'>
                     <div className="flex justify-between items-center">
@@ -490,8 +461,10 @@ const CampusCreate = (props) => {
                         <button onClick={openCreateSchoolModal} className='btn btn-secondary'>
                             Close
                         </button>
-                        <button className='btn btn-primary' onClick={createCampusGroup}>
-                            Submit
+                        <button className='btn btn-primary' onClick={handleSubmit}
+                            disabled={isLoading.add}
+                        >
+                            {isLoading.add ? 'Loading...' : 'Submit'}
                         </button>
                     </div>
                 </div>
@@ -505,6 +478,6 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) =>
-    bindActionCreators({ requestPostCampus, userLogout }, dispatch);
+    bindActionCreators({ requestGetCampus, requestPostCampus, userLogout }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(CampusCreate);

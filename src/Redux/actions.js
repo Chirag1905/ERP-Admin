@@ -7,8 +7,8 @@ export const receiveGetCampus = (data) => ({ type: RECEIVE_GET_CAMPUS, data });
 // Post campus
 export const REQUEST_POST_CAMPUS = "REQUEST_POST_CAMPUS";
 export const RECEIVE_POST_CAMPUS = "RECEIVE_POST_CAMPUS";
-export const requestPostCampus = (payload) => ({ type: REQUEST_POST_CAMPUS, payload });
-export const receivePostCampus = (response) => ({ type: RECEIVE_POST_CAMPUS, response });
+export const requestPostCampus = (obj) => ({ type: REQUEST_POST_CAMPUS, obj });
+export const receivePostCampus = (data) => ({ type: RECEIVE_POST_CAMPUS, data });
 
 //logout
 export const USER_LOGOUT = "USER_LOGOUT";

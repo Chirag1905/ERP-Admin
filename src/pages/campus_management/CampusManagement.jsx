@@ -37,7 +37,7 @@ const CampusManagement = (props) => {
   const [isAscending, setIsAscending] = useState(true);
   const [createCampusModal, setCreateCampusModal] = useState(false);
   const [editSchoolModal, setEditSchoolModal] = useState(false);
-  const [data, setData] = useState(props?.admin?.campusData?.data);
+  const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState({ main: false, edit: false, add: false });
 
   const [page, setPage] = useState(0);
@@ -110,6 +110,7 @@ const CampusManagement = (props) => {
   const handleSearch = (e) => {
     setSearchText(e.target.value);
   };
+  
   const handleModuleChange = (module) => {
     if (selectedModules.includes(module)) {
       setSelectedModules(selectedModules.filter((m) => m !== module));
@@ -118,36 +119,34 @@ const CampusManagement = (props) => {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading({ ...isLoading, main: true });
-      const params = {
-        page: page || 0,
-        size: rowsPerPage || 10,
-        sortBy: "id",
-        ascending: isAscending,
-        searchFilter: searchText
-      };
-      try {
-        await props.requestGetCampus({ data: params });
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setIsLoading({ ...isLoading, main: false });
-      }
+  const fetchData = async () => {
+    setIsLoading({ ...isLoading, main: true });
+    const params = {
+      page: page || 0,
+      size: rowsPerPage || 10,
+      sortBy: "id",
+      ascending: isAscending,
+      searchFilter: searchText
     };
-    fetchData();
-  }, [page, rowsPerPage, searchText, isAscending, props?.requestGetCampus]);
-
-  useEffect(() => {
-    setData(props?.admin?.campusData?.data);
-  }, [props?.admin?.campusData?.data]);
-
-  useEffect(() => {
-    if (data) {
-      setTotalPages(data?.totalPages);
+    try {
+      await props.requestGetCampus({ data: params });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading({ ...isLoading, main: false });
     }
-  }, [data, rowsPerPage]);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [page, rowsPerPage, isAscending, searchText, props?.requestGetCampus]);
+
+  useEffect(() => {
+    if (props?.admin?.campusData?.data) {
+      setData(props.admin.campusData.data);
+      setTotalPages(props.admin.campusData.data.totalPages);
+    }
+  }, [props?.admin?.campusData?.data, rowsPerPage]);
 
   return (
     <>
@@ -163,7 +162,11 @@ const CampusManagement = (props) => {
       </div>
       <WelcomeHeader />
       {createCampusModal ? (
-        <CampusCreate openCreateSchoolModal={openCreateSchoolModal} isLoading={isLoading} setIsLoading={setIsLoading} />
+        <CampusCreate
+          openCreateSchoolModal={openCreateSchoolModal}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+        />
       ) : editSchoolModal ? (
         <>
           <div className='py-10 md:px-10 mt-10 px-[7px] bg-card-color rounded-lg'>

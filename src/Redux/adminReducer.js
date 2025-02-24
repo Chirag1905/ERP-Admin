@@ -19,7 +19,7 @@ export default (state = initialState, { type, data }) => {
     case RECEIVE_POST_CAMPUS:
       return {
         ...state,
-        campusData: [...state.campusData, data], // Append the new data to the existing campusData
+        campusDataPost:data // Append the new data to the existing campusData
       };
 
     default:
