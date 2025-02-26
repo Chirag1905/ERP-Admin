@@ -77,6 +77,8 @@ const CampusCreate = (props) => {
             setIsLoading({ ...isLoading, add: false });
         });
     };
+    console.log(props.admin.campusDataPost)
+    console.log(props.admin.campusDataPost.data)
 
 
     const modules = [
@@ -462,9 +464,10 @@ const CampusCreate = (props) => {
                             Close
                         </button>
                         <button className='btn btn-primary' onClick={handleSubmit}
-                            disabled={isLoading.add}
+                        // disabled={isLoading.add}
                         >
-                            {isLoading.add ? 'Loading...' : 'Submit'}
+                            {/* {isLoading.add ? 'Loading...' : 'Submit'} */}
+                            Submit
                         </button>
                     </div>
                 </div>

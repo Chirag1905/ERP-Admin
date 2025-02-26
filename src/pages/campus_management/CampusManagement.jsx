@@ -110,7 +110,7 @@ const CampusManagement = (props) => {
   const handleSearch = (e) => {
     setSearchText(e.target.value);
   };
-  
+
   const handleModuleChange = (module) => {
     if (selectedModules.includes(module)) {
       setSelectedModules(selectedModules.filter((m) => m !== module));
@@ -119,34 +119,40 @@ const CampusManagement = (props) => {
     }
   };
 
-  const fetchData = async () => {
-    setIsLoading({ ...isLoading, main: true });
-    const params = {
-      page: page || 0,
-      size: rowsPerPage || 10,
-      sortBy: "id",
-      ascending: isAscending,
-      searchFilter: searchText
-    };
-    try {
-      await props.requestGetCampus({ data: params });
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setIsLoading({ ...isLoading, main: false });
-    }
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading({ ...isLoading, main: true });
+
+      const params = {
+        page: page || 0,
+        size: rowsPerPage || 10,
+        sortBy: "id",
+        ascending: isAscending,
+        searchFilter: searchText
+      };
+
+      // Create a minimum delay of 1 second
+      const minDelay = new Promise(resolve => setTimeout(resolve, 1000));
+
+      try {
+        // Wait for both the API call and the minimum delay to complete
+        await Promise.all([props.requestGetCampus({ data: params }), minDelay]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading({ ...isLoading, main: false });
+      }
+    };
+
     fetchData();
   }, [page, rowsPerPage, isAscending, searchText, props?.requestGetCampus]);
 
   useEffect(() => {
     if (props?.admin?.campusData?.data) {
-      setData(props.admin.campusData.data);
-      setTotalPages(props.admin.campusData.data.totalPages);
+      setData(props?.admin?.campusData?.data);
+      setTotalPages(props?.admin?.campusData?.data?.totalPages);
     }
-  }, [props?.admin?.campusData?.data, rowsPerPage]);
+  }, [props?.admin?.campusData?.data, page, rowsPerPage]);
 
   return (
     <>
@@ -585,7 +591,7 @@ const CampusManagement = (props) => {
             </div>
             <div className={`my-10 lg:px-20 md:px-10 px-[7px] md:max-h-[70svh] max-h-[60svh] ${isLoading?.main ? '' : 'overflow-auto cus-scrollbar'}`}>
               {isLoading?.main ? (
-                <div className="flex justify-center items-center h-full">
+                <div className="flex flex-col items-center justify-center h-[250px]">
                   <svg
                     aria-hidden="true"
                     className="w-9 h-12 text-gray-200 animate-spin bg-card-color fill-[#8B2433]"
@@ -602,31 +608,35 @@ const CampusManagement = (props) => {
                       fill="currentFill"
                     />
                   </svg>
-                  <span className="sr-only">Loading...</span>
                 </div>
               ) : (
                 <ul className="flex flex-col md:gap-8 gap-6 mt-6">
-                  {data?.content?.length > 0 && data?.content?.map((item, index) => (
-                    <li className="flex sm:items-center sm:gap-4 gap-2 sm:flex-row flex-col" key={index}>
-                      <img src={avatar1 || ""} alt="user profile" className='rounded-md w-[36px] h-[36px] min-w-[36px]' />
-                      <div className='flex-grow'>
-                        <h6 className="font-medium">{item?.campusGroupName || ""}</h6>
-                      </div>
-                      <div className="flex items-stretch gap-2">
-                        <button className="btn btn-light-primary" onClick={openEditSchoolModal}>
-                          <IconEdit className='w-[18px] h-[18px] min-w-[18px]' />
-                          <span className='md:block hidden'>Edit</span>
-                        </button>
-                        <button className="btn btn-light-danger">
-                          <IconLogin2 className='w-[18px] h-[18px] min-w-[18px]' />
-                          <span className='md:block hidden'>Login</span>
-                        </button>
-                      </div>
-                    </li>
-                  ))}
+                  {data?.content?.length > 0 ? (
+                    data.content.map((item, index) => (
+                      <li className="flex sm:items-center sm:gap-4 gap-2 sm:flex-row flex-col" key={index}>
+                        <img src={avatar1 || ""} alt="user profile" className='rounded-md w-[36px] h-[36px] min-w-[36px]' />
+                        <div className='flex-grow'>
+                          <h6 className="font-medium">{item?.campusGroupName || ""}</h6>
+                        </div>
+                        <div className="flex items-stretch gap-2">
+                          <button className="btn btn-light-primary" onClick={openEditSchoolModal}>
+                            <IconEdit className='w-[18px] h-[18px] min-w-[18px]' />
+                            <span className='md:block hidden'>Edit</span>
+                          </button>
+                          <button className="btn btn-light-danger">
+                            <IconLogin2 className='w-[18px] h-[18px] min-w-[18px]' />
+                            <span className='md:block hidden'>Login</span>
+                          </button>
+                        </div>
+                      </li>
+                    ))
+                  ) : (
+                    <li className="text-center text-gray-500">No schools available</li>
+                  )}
                 </ul>
               )}
             </div>
+
           </div>
           <CustomPagination
             page={page}
