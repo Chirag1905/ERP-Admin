@@ -1,14 +1,40 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { IconBrandGoogleFilled, IconEye, IconEyeOff } from '@tabler/icons-react'
+import { login } from '../../routers/Services/authServices';
 
-export default function Signin() {
-
+export default function Signin({ setAuthenticated }) {
+    const navigate = useNavigate();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError(null);
+
+        try {
+            const tokens = await login(username, password);
+            // Store tokens in localStorage or state management
+            localStorage.setItem('access_token', tokens.accessToken);
+            localStorage.setItem('refresh_token', tokens.refreshToken);
+            localStorage.setItem('id_token', tokens.idToken);
+            setAuthenticated(true);
+            navigate('/');
+        } catch (err) {
+            console.log("🚀 ~ handleSubmit ~ err:", err)
+            setError('Invalid credentials');
+        } finally {
+            setLoading(false);
+        }
+    };
     return (
         <>
             <div className='sm:mb-8 mb-6 text-center'>
@@ -32,12 +58,19 @@ export default function Signin() {
                     <span className='inline-block h-[1px] w-full bg-font-color-400'></span>
                 </div>
             </div>
-            <div className=''>
+            <form onSubmit={handleSubmit}>
                 <div className='form-control mb-15'>
                     <label htmlFor='email' className='form-label'>
                         Email
                     </label>
-                    <input type='email' id='email' placeholder='name@example.com' className='form-input' />
+                    <input
+                        type='text'
+                        id='email'
+                        placeholder='name@example.com'
+                        className='form-input'
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required />
                 </div>
                 <div className='form-control mb-15'>
                     <label htmlFor='password' className='form-label'>
@@ -49,6 +82,9 @@ export default function Signin() {
                             id='password'
                             placeholder='Enter the password'
                             className='form-input !pr-12'
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
                         />
                         <button onClick={togglePasswordVisibility} className='absolute top-[50%] translate-y-[-50%] right-3 text-font-color-100'>
                             {showPassword ? <IconEyeOff /> : <IconEye />}
@@ -68,18 +104,19 @@ export default function Signin() {
                         Forgot Password?
                     </Link>
                 </div>
-                <Link to="/" className='btn btn-secondary large w-full uppercase'>
-                    Sign In
-                </Link>
+                {error && <p className="error">{error}</p>}
+                <button className='btn btn-secondary large w-full uppercase' type='submit'>
+                    {loading ? 'Signing in...' : 'Sign In'}
+                </button>
                 <div className='text-center sm:mt-30 mt-6 text-font-color-100'>
                     <p>
-                        Don't have an account yet?
+                        Don&apos;t have an account yet?
                     </p>
                     <Link to="/auth-signup" className='text-primary'>
                         Sign up here
                     </Link>
                 </div>
-            </div>
+            </form>
         </>
     )
 }
