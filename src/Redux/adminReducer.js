@@ -1,11 +1,13 @@
 import {
   RECEIVE_GET_CAMPUS,
   RECEIVE_POST_CAMPUS,
+  RECEIVE_LOGIN,
 } from "./actions";
 
 // Initial state
 const initialState = {
-  campusData: [], // Assuming campusData is an array
+  campusData: [],
+  loginData:[] // Assuming campusData is an array
 };
 
 export default (state = initialState, { type, data }) => {
@@ -19,7 +21,13 @@ export default (state = initialState, { type, data }) => {
     case RECEIVE_POST_CAMPUS:
       return {
         ...state,
-        campusDataPost:data // Append the new data to the existing campusData
+        campusDataPost: data, // Append the new data to the existing campusData
+      };
+      
+    case RECEIVE_LOGIN:
+      return {
+        ...state,
+        loginData: data,
       };
 
     default:

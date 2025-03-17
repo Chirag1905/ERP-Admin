@@ -1,9 +1,14 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { IconBrandGoogleFilled, IconEye, IconEyeOff } from '@tabler/icons-react'
 import { login } from '../../routers/Services/authServices';
+import toast from 'react-hot-toast';
+import { connect } from 'react-redux';
+import { bindActionCreators } from "redux";
+import { requestLogin, userLogout } from '../../Redux/actions';
 
-export default function Signin({ setAuthenticated }) {
+const Signin = (props) => {
+    console.log("🚀 ~ Signin ~ props:", props)
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -15,26 +20,51 @@ export default function Signin({ setAuthenticated }) {
         setShowPassword(!showPassword);
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
+        // e.preventDefault();
         setLoading(true);
         setError(null);
 
-        try {
-            const tokens = await login(username, password);
-            // Store tokens in localStorage or state management
-            localStorage.setItem('access_token', tokens.accessToken);
-            localStorage.setItem('refresh_token', tokens.refreshToken);
-            localStorage.setItem('id_token', tokens.idToken);
-            setAuthenticated(true);
-            navigate('/');
-        } catch (err) {
-            console.log("🚀 ~ handleSubmit ~ err:", err)
-            setError('Invalid credentials');
-        } finally {
-            setLoading(false);
-        }
+        const params = {
+            grant_type: "password",
+            client_id: "saas-ui-app",
+            client_secret: "JPwfUjOQkfq1oy9RKOUIqToLQF9Egc2I",
+            username: username,
+            password: password,
+            scope: "openid profile email"
+        };
+
+        await props.requestLogin(params);
+
+         // Show a loading, success, or error toast
+        //  toast.promise(loginPromise, {
+        //     pending: 'Authenticating... Please wait.',
+        //     success: 'Welcome back! Login successful.',
+        //     error: 'Login failed. Please check your credentials and try again.',
+        // });
+
+        // const loginPromise = login(username, password)
+        //     .then((tokens) => {
+        //         // Store tokens in localStorage
+        //         localStorage.setItem('access_token', tokens.accessToken);
+        //         localStorage.setItem('refresh_token', tokens.refreshToken);
+        //         localStorage.setItem('id_token', tokens.idToken);
+        //         navigate('/');
+
+        //         return "Data saved successfully!"; // Message for success toast
+        //     })
+        //     .catch((err) => {
+        //         console.log("🚀 ~ handleSubmit ~ err:", err);
+        //         setError('Invalid credentials');
+        //         throw new Error("Failed to save data. Please try again."); // Message for error toast
+        //     })
+        //     .finally(() => {
+        //         setLoading(false);
+        //     });
+
+       
     };
+
     return (
         <>
             <div className='sm:mb-8 mb-6 text-center'>
@@ -58,7 +88,7 @@ export default function Signin({ setAuthenticated }) {
                     <span className='inline-block h-[1px] w-full bg-font-color-400'></span>
                 </div>
             </div>
-            <form onSubmit={handleSubmit}>
+            <div>
                 <div className='form-control mb-15'>
                     <label htmlFor='email' className='form-label'>
                         Email
@@ -105,7 +135,7 @@ export default function Signin({ setAuthenticated }) {
                     </Link>
                 </div>
                 {error && <p className="error">{error}</p>}
-                <button className='btn btn-secondary large w-full uppercase' type='submit'>
+                <button className='btn btn-secondary large w-full uppercase' onClick={handleSubmit}>
                     {loading ? 'Signing in...' : 'Sign In'}
                 </button>
                 <div className='text-center sm:mt-30 mt-6 text-font-color-100'>
@@ -116,7 +146,16 @@ export default function Signin({ setAuthenticated }) {
                         Sign up here
                     </Link>
                 </div>
-            </form>
+            </div>
         </>
     )
 }
+
+const mapStateToProps = (state) => {
+    return { admin: state.admin };
+};
+
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators({ requestLogin, userLogout }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signin);
