@@ -1,16 +1,7 @@
 import axios from "axios";
-// import Keycloak from "keycloak-js";
-
-const keycloakConfig = {
-  url: "https://api.testmazing.com/auth",
-  realm: "school-group-1",
-  clientId: "saas-ui-app",
-};
-
-// const keycloak = new Keycloak(keycloakConfig);
 
 export const getCampus = async (obj) => {
-  // console.log(obj, "Main object For Get");
+  console.log(obj, "Main object For Get Campus");
   try {
     const response = await axios.get(
       "https://api.testmazing.com/campus/api/campusgroupspagination",
@@ -29,7 +20,7 @@ export const getCampus = async (obj) => {
 };
 
 export const postCampus = async (obj) => {
-  console.log(obj, "Main object");
+  console.log(obj, "Main object Post Campus");
   try {
     const response = await axios.post(
       "https://api.testmazing.com/campus/api/createcampusgroup",
@@ -48,7 +39,7 @@ export const postCampus = async (obj) => {
 };
 
 export const login = async (obj) => {
-  console.log(obj, "Main object");
+  console.log(obj, "Main object Login");
   try {
     const formData = new URLSearchParams();
     for (const key in obj) {

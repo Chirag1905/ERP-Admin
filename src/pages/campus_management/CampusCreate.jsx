@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
-import { requestGetCampus, requestPostCampus, userLogout } from '../../Redux/actions';
+// import { requestGetCampus, requestPostCampus, userLogout } from '../../Redux/actions';
 import toast, { Toaster } from 'react-hot-toast';
 
 const CampusCreate = (props) => {
@@ -564,11 +564,13 @@ const CampusCreate = (props) => {
     )
 }
 
-const mapStateToProps = (state) => {
-    return { admin: state.admin };
-};
+// const mapStateToProps = (state) => {
+//     return { admin: state.admin };
+// };
 
-const mapDispatchToProps = (dispatch) =>
-    bindActionCreators({ requestGetCampus, requestPostCampus, userLogout }, dispatch);
+// const mapDispatchToProps = (dispatch) =>
+//     bindActionCreators({ requestGetCampus, requestPostCampus, userLogout }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(CampusCreate);
+// export default connect(mapStateToProps, mapDispatchToProps)(CampusCreate);
+
+export default CampusCreate;

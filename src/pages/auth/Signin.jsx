@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { IconBrandGoogleFilled, IconEye, IconEyeOff } from '@tabler/icons-react'
-import { login } from '../../routers/Services/authServices';
+// import { login } from '../../routers/Services/authServices';
 import toast from 'react-hot-toast';
 import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
-import { requestLogin, userLogout } from '../../Redux/actions';
+// import { requestLogin, userLogout } from '../../Redux/actions';
 
-const Signin = (props) => {
+const Signin = () => {
     console.log("🚀 ~ Signin ~ props:", props)
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
@@ -20,50 +20,50 @@ const Signin = (props) => {
         setShowPassword(!showPassword);
     };
 
-    const handleSubmit = async () => {
-        // e.preventDefault();
-        setLoading(true);
-        setError(null);
+    // const handleSubmit = async () => {
+    //     // e.preventDefault();
+    //     setLoading(true);
+    //     setError(null);
 
-        const params = {
-            grant_type: "password",
-            client_id: "saas-ui-app",
-            client_secret: "JPwfUjOQkfq1oy9RKOUIqToLQF9Egc2I",
-            username: username,
-            password: password,
-            scope: "openid profile email"
-        };
+    //     const params = {
+    //         grant_type: "password",
+    //         client_id: "saas-ui-app",
+    //         client_secret: "JPwfUjOQkfq1oy9RKOUIqToLQF9Egc2I",
+    //         username: username,
+    //         password: password,
+    //         scope: "openid profile email"
+    //     };
 
-        await props.requestLogin(params);
+    //     await props.requestLogin(params);
 
-         // Show a loading, success, or error toast
-        //  toast.promise(loginPromise, {
-        //     pending: 'Authenticating... Please wait.',
-        //     success: 'Welcome back! Login successful.',
-        //     error: 'Login failed. Please check your credentials and try again.',
-        // });
+    //      // Show a loading, success, or error toast
+    //     //  toast.promise(loginPromise, {
+    //     //     pending: 'Authenticating... Please wait.',
+    //     //     success: 'Welcome back! Login successful.',
+    //     //     error: 'Login failed. Please check your credentials and try again.',
+    //     // });
 
-        // const loginPromise = login(username, password)
-        //     .then((tokens) => {
-        //         // Store tokens in localStorage
-        //         localStorage.setItem('access_token', tokens.accessToken);
-        //         localStorage.setItem('refresh_token', tokens.refreshToken);
-        //         localStorage.setItem('id_token', tokens.idToken);
-        //         navigate('/');
+    //     // const loginPromise = login(username, password)
+    //     //     .then((tokens) => {
+    //     //         // Store tokens in localStorage
+    //     //         localStorage.setItem('access_token', tokens.accessToken);
+    //     //         localStorage.setItem('refresh_token', tokens.refreshToken);
+    //     //         localStorage.setItem('id_token', tokens.idToken);
+    //     //         navigate('/');
 
-        //         return "Data saved successfully!"; // Message for success toast
-        //     })
-        //     .catch((err) => {
-        //         console.log("🚀 ~ handleSubmit ~ err:", err);
-        //         setError('Invalid credentials');
-        //         throw new Error("Failed to save data. Please try again."); // Message for error toast
-        //     })
-        //     .finally(() => {
-        //         setLoading(false);
-        //     });
+    //     //         return "Data saved successfully!"; // Message for success toast
+    //     //     })
+    //     //     .catch((err) => {
+    //     //         console.log("🚀 ~ handleSubmit ~ err:", err);
+    //     //         setError('Invalid credentials');
+    //     //         throw new Error("Failed to save data. Please try again."); // Message for error toast
+    //     //     })
+    //     //     .finally(() => {
+    //     //         setLoading(false);
+    //     //     });
 
-       
-    };
+
+    // };
 
     return (
         <>
@@ -135,7 +135,9 @@ const Signin = (props) => {
                     </Link>
                 </div>
                 {error && <p className="error">{error}</p>}
-                <button className='btn btn-secondary large w-full uppercase' onClick={handleSubmit}>
+                <button className='btn btn-secondary large w-full uppercase'
+                // onClick={handleSubmit}
+                >
                     {loading ? 'Signing in...' : 'Sign In'}
                 </button>
                 <div className='text-center sm:mt-30 mt-6 text-font-color-100'>
@@ -151,11 +153,13 @@ const Signin = (props) => {
     )
 }
 
-const mapStateToProps = (state) => {
-    return { admin: state.admin };
-};
+// const mapStateToProps = (state) => {
+//     return { admin: state.admin };
+// };
 
-const mapDispatchToProps = (dispatch) =>
-    bindActionCreators({ requestLogin, userLogout }, dispatch);
+// const mapDispatchToProps = (dispatch) =>
+//     bindActionCreators({ requestLogin, userLogout }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Signin);
+// export default connect(mapStateToProps, mapDispatchToProps)(Signin);
+
+export default Signin;

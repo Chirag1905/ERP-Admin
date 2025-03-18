@@ -1,5 +1,4 @@
 import App from './App.jsx'
-import React from 'react';
 import mainSaga from "./Redux/sagas";
 import { store, persistor, sagaMiddleware } from "./Redux/store";
 import { PersistGate } from "redux-persist/integration/react";

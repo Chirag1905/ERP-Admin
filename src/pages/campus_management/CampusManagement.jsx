@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
   requestGetCampus,
-  userLogout,
+  // userLogout,
 } from "../../Redux/actions";
 import Breadcrumb from '../../components/common/Breadcrumb';
 import WelcomeHeader from '../../components/common/WelcomeHeader';
@@ -22,22 +22,23 @@ import {
   IconCaretDownFilled,
   IconCaretUpFilled,
 } from '@tabler/icons-react';
-import { Box, MenuItem, Pagination, Select, Typography } from "@mui/material";
 import CampusCreate from './CampusCreate';
 import CustomPagination from '../CustomPagination';
 
-const CampusManagement = (props) => {
+const CampusManagement = () => {
   const breadcrumbItem = [
     {
       name: "School Management",
     },
   ];
-
+  const dispatch = useDispatch();
+  const { campusData, loading, error } = useSelector((state) => state.admin);
   const [searchText, setSearchText] = useState("");
   const [isAscending, setIsAscending] = useState(true);
   const [createCampusModal, setCreateCampusModal] = useState(false);
   const [editSchoolModal, setEditSchoolModal] = useState(false);
   const [data, setData] = useState();
+  console.log("🚀 ~ CampusManagement ~ data:", data)
   const [isLoading, setIsLoading] = useState({ main: false, edit: false, add: false });
 
   const [page, setPage] = useState(0);
@@ -136,7 +137,7 @@ const CampusManagement = (props) => {
 
       try {
         // Wait for both the API call and the minimum delay to complete
-        await Promise.all([props.requestGetCampus({ data: params }), minDelay]);
+        await Promise.all([dispatch(requestGetCampus({ data: params })), minDelay]);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -145,14 +146,14 @@ const CampusManagement = (props) => {
     };
 
     fetchData();
-  }, [page, rowsPerPage, isAscending, searchText, props?.requestGetCampus]);
+  }, [page, rowsPerPage, isAscending, searchText, dispatch]);
 
   useEffect(() => {
-    if (props?.admin?.campusData?.data) {
-      setData(props?.admin?.campusData?.data);
-      setTotalPages(props?.admin?.campusData?.data?.totalPages);
+    if (campusData) {
+      setData(campusData?.data?.data?.content);
+      setTotalPages(campusData?.data?.data?.totalPages);
     }
-  }, [props?.admin?.campusData?.data, page, rowsPerPage]);
+  }, [campusData, page, rowsPerPage]);
 
   return (
     <>
@@ -611,8 +612,8 @@ const CampusManagement = (props) => {
                 </div>
               ) : (
                 <ul className="flex flex-col md:gap-8 gap-6 mt-6">
-                  {data?.content?.length > 0 ? (
-                    data.content.map((item, index) => (
+                  {data?.length > 0 ? (
+                    data?.map((item, index) => (
                       <li className="flex sm:items-center sm:gap-4 gap-2 sm:flex-row flex-col" key={index}>
                         <img src={avatar1 || ""} alt="user profile" className='rounded-md w-[36px] h-[36px] min-w-[36px]' />
                         <div className='flex-grow'>
@@ -652,11 +653,4 @@ const CampusManagement = (props) => {
   );
 }
 
-const mapStateToProps = (state) => {
-  return { admin: state.admin };
-};
-
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ requestGetCampus, userLogout }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(CampusManagement);
+export default CampusManagement;

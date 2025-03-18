@@ -1,13 +1,14 @@
-import { combineReducers } from "redux";
-import adminReducer from "./adminReducer";
-import { USER_LOGOUT } from "./actions";
+// reducers.js
+import { combineReducers } from '@reduxjs/toolkit';
+import campusReducer from './actions'; // Import the slice reducer
+
 const appReducer = combineReducers({
-  admin: adminReducer,
+  admin: campusReducer,
 });
 
 const rootReducer = (state, action) => {
-  if (action.type === USER_LOGOUT) {
-    localStorage.removeItem("persist:root");    
+  if (action.type) {
+    localStorage.removeItem('persist:root');
     return appReducer(undefined, action);
   }
   return appReducer(state, action);

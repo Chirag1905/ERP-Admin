@@ -1,21 +1,65 @@
-//Get campus
-export const REQUEST_GET_CAMPUS = "REQUEST_GET_CAMPUS";
-export const RECEIVE_GET_CAMPUS = "RECEIVE_GET_CAMPUS";
-export const requestGetCampus = (obj) => ({ type: REQUEST_GET_CAMPUS, obj });
-export const receiveGetCampus = (data) => ({ type: RECEIVE_GET_CAMPUS, data });
+// actions.js
+import { createSlice } from "@reduxjs/toolkit";
 
-// Post campus
-export const REQUEST_POST_CAMPUS = "REQUEST_POST_CAMPUS";
-export const RECEIVE_POST_CAMPUS = "RECEIVE_POST_CAMPUS";
-export const requestPostCampus = (obj) => ({ type: REQUEST_POST_CAMPUS, obj });
-export const receivePostCampus = (data) => ({ type: RECEIVE_POST_CAMPUS, data });
+const campusSlice = createSlice({
+  name: "campus",
+  initialState: {
+    campusData: [],
+    loginData: [],
+    campusGroups: [],
+    loading: false,
+    error: null,
+  },
+  reducers: {
+    requestLogin: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    requestGetCampus: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    requestPostCampus: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    requestCampusGroups: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    receiveLogin: (state, action) => {
+      state.loginData = action.payload;
+      state.loading = false;
+    },
+    receiveGetCampus: (state, action) => {
+      state.campusData = action.payload;
+      state.loading = false;
+    },
+    receivePostCampus: (state, action) => {
+      state.campusData.push(action.payload); // Add new data instead of overwriting
+      state.loading = false;
+    },
+    receiveCampusGroups: (state, action) => {
+      state.campusGroups = action.payload;
+      state.loading = false;
+    },
+    receiveError: (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    },
+  },
+});
 
-// Login
-export const REQUEST_LOGIN= "REQUEST_LOGIN";
-export const RECEIVE_LOGIN= "RECEIVE_LOGIN";
-export const requestLogin= (obj) => ({ type: REQUEST_LOGIN, obj });
-export const receiveLogin= (data) => ({ type: RECEIVE_LOGIN, data });
+export const {
+  requestLogin,
+  requestGetCampus,
+  requestPostCampus,
+  requestCampusGroups,
+  receiveLogin,
+  receiveGetCampus,
+  receivePostCampus,
+  receiveCampusGroups,
+  receiveError,
+} = campusSlice.actions;
 
-//Logout
-export const USER_LOGOUT = "USER_LOGOUT";
-export const userLogout = () => ({ type: USER_LOGOUT });
+export default campusSlice.reducer;
