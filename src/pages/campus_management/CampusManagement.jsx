@@ -38,7 +38,6 @@ const CampusManagement = () => {
   const [createCampusModal, setCreateCampusModal] = useState(false);
   const [editSchoolModal, setEditSchoolModal] = useState(false);
   const [data, setData] = useState();
-  console.log("🚀 ~ CampusManagement ~ data:", data)
   const [isLoading, setIsLoading] = useState({ main: false, edit: false, add: false });
 
   const [page, setPage] = useState(0);

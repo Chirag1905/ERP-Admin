@@ -24,13 +24,14 @@ export const postCampus = async (obj) => {
   try {
     const response = await axios.post(
       "https://api.testmazing.com/campus/api/createcampusgroup",
-      obj.data,
+      obj,
       {
         headers: {
           "Content-Type": "application/json",
         },
       }
     );
+    console.log("🚀 ~ postCampus ~ response:", response);
     return response;
   } catch (err) {
     console.log(err, "err");
@@ -45,7 +46,6 @@ export const login = async (obj) => {
     for (const key in obj) {
       formData.append(key, obj[key]);
     }
-
     const response = await axios.post(
       "https://api.testmazing.com/auth/realms/school-group-1/protocol/openid-connect/token",
       formData.toString(),

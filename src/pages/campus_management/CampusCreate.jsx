@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from "redux";
 // import { requestGetCampus, requestPostCampus, userLogout } from '../../Redux/actions';
 import toast, { Toaster } from 'react-hot-toast';
+import { requestPostCampus } from '../../Redux/actions';
 
 const CampusCreate = (props) => {
     const {
         openCreateSchoolModal,
         isLoading,
-        setIsLoading,
-        handleCampusAdded,
+        setIsLoading
     } = props;
+
+    const dispatch = useDispatch();
+    const { campusData, loading, error } = useSelector((state) => state.admin);
 
     const [formData, setFormData] = useState({
         campusGroupName: "",
@@ -109,7 +112,7 @@ const CampusCreate = (props) => {
     // };
 
     const handleSubmit = async () => {
-        setIsLoading({ ...isLoading, add: true });
+        setIsLoading((prev) => ({ ...prev, add: true }));
 
         const params = {
             campusGroupName: formData.campusGroupName,
@@ -119,55 +122,59 @@ const CampusCreate = (props) => {
             isActive: formData.isActive,
         };
 
-        // Dispatch the Redux action to post campus data
-        await props.requestPostCampus({ data: params });
+        // Create a minimum delay of 1 second
+        const minDelay = new Promise((resolve) => setTimeout(resolve, 1000));
 
-        // Check the Redux state for the response
-        if (props?.admin?.campusDataPost?.status === 200 || props?.admin?.campusDataPost?.status === 201) {
-            // Success case
-            toast.success(props?.admin?.campusDataPost?.data?.statusMsg || 'Data saved successfully!', {
-                position: 'top-right',
-                duration: 3000,
-            });
-            openCreateSchoolModal();
-            await props.requestGetCampus({});
-        } else if (props?.admin?.campusDataPost?.status === 400) {
-            // Validation error case
-            const errorData = props?.admin?.campusDataPost?.data;
+        try {
+            // Dispatch API call and wait for both the API response and minimum delay
+            await Promise.all([dispatch(requestPostCampus(params)), minDelay]);
 
-            if (errorData) {
-                let errorMessage = 'Please fix the following errors:\n';
-                if (errorData.campusGroupName) {
-                    errorMessage += `- ${errorData.campusGroupName}\n`;
-                }
-                if (errorData.licenseCount) {
-                    errorMessage += `- ${errorData.licenseCount}\n`;
-                }
-
-                toast.error(errorMessage, {
+            // Extract Redux state response
+            console.log(campusData[0]?.data?.errors)
+            if (campusData[0]?.data?.statusCode === 200 || campusData[0]?.data?.statusCode === 201) {
+                // Success case - show success message
+                toast.success(campusData[0]?.data?.message || 'Data saved successfully!', {
                     position: 'top-right',
-                    duration: 5000, // Longer duration for user to read
+                    duration: 3000,
                 });
+
+                openCreateSchoolModal();
+                await props.requestGetCampus(); // Refresh campus data
+            } else if (campusData[0]?.data?.statusCode === 400) {
+                // Validation error case
+                const errorData = campusData[0]?.data?.errors;
+
+                if (Array.isArray(errorData) && errorData.length > 0) {
+                    errorData.forEach((error) => {
+                        toast.error(`${error.field}: ${error.message}`, {
+                            position: "top-right",
+                            duration: 5000, // Show each error for a longer time
+                        });
+                    });
+                } else {
+                    toast.error("Failed to save data. Please try again.", {
+                        position: "top-right",
+                        duration: 3000,
+                    });
+                }
             } else {
-                // Generic error message if no specific errors are returned
-                toast.error('Failed to save data. Please try again.', {
+                // Generic failure case
+                toast.error('Failed to save data.', {
                     position: 'top-right',
                     duration: 3000,
                 });
             }
-        } else {
-            // Generic error case
-            toast.error('Failed to save data.', {
+        } catch (error) {
+            // Handle unexpected errors
+            console.error("Error submitting data:", error);
+            toast.error('Something went wrong. Please try again.', {
                 position: 'top-right',
                 duration: 3000,
             });
+        } finally {
+            setIsLoading((prev) => ({ ...prev, add: false }));
         }
-
-        setIsLoading({ ...isLoading, add: false });
     };
-    console.log(props.admin.campusDataPost?.data)
-    console.log(props?.admin?.campusDataPost?.data?.statusMsg)
-
 
     const modules = [
         "Instant Fee",
