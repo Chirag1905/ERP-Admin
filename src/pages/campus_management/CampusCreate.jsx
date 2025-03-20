@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { bindActionCreators } from "redux";
-// import { requestGetCampus, requestPostCampus, userLogout } from '../../Redux/actions';
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import toast, { Toaster } from 'react-hot-toast';
-import { requestPostCampus } from '../../Redux/actions';
+import { requestGetCampus, requestPostCampus } from '../../Redux/actions';
 
 const CampusCreate = (props) => {
     const {
@@ -13,7 +11,13 @@ const CampusCreate = (props) => {
     } = props;
 
     const dispatch = useDispatch();
-    const { campusData, loading, error } = useSelector((state) => state.admin);
+    const { campusData, campusPostData, loading, error } = useSelector((state) => state.admin);
+    console.log("🚀 ~ CampusCreate ~ campusPostData:", campusPostData);
+    console.log("🚀 ~ CampusCreate ~ campusData:", campusData);
+    // console.log("🚀 ~ CampusCreate ~ error:", error)
+    // console.log("🚀 ~ CampusCreate ~ loading:", loading)
+    const [selectedModules, setSelectedModules] = useState([]);
+    const [activeTab, setActiveTab] = useState(0);
 
     const [formData, setFormData] = useState({
         campusGroupName: "",
@@ -38,141 +42,11 @@ const CampusCreate = (props) => {
         }));
     };
 
-    const [selectedModules, setSelectedModules] = useState([]);
-    const [activeTab, setActiveTab] = useState(0);
-
     const handleModuleChange = (module) => {
         if (selectedModules.includes(module)) {
             setSelectedModules(selectedModules.filter((m) => m !== module));
         } else {
             setSelectedModules([...selectedModules, module]);
-        }
-    };
-
-    // const handleSubmit = async () => {
-    //     setIsLoading({ ...isLoading, add: true });
-
-    //     const params = {
-    //         campusGroupName: formData.campusGroupName,
-    //         licenseCount: formData.licenseCount,
-    //         gpsEnabled: formData.gpsEnabled,
-    //         zoomEnabled: formData.zoomEnabled,
-    //         isActive: formData.isActive,
-    //     };
-
-    //     try {
-    //         const response = await props.requestPostCampus({ data: params });
-
-    //         if (response.status === 200 || response.status === 201) {
-    //             // Success case
-    //             toast.success(props?.admin?.campusDataPost?.data?.statusMsg || 'Data saved successfully!', {
-    //                 position: 'top-right',
-    //                 duration: 3000,
-    //             });
-    //             openCreateSchoolModal();
-    //             await props.requestGetCampus({});
-    //         } else {
-    //             // Handle other status codes if needed
-    //             toast.error('Failed to save data.', {
-    //                 position: 'top-right',
-    //                 duration: 3000,
-    //             });
-    //         }
-    //     } catch (error) {
-    //         // Error case
-    //         console.log('Error object:', error);
-    //         const errorData = error.response?.data;
-
-    //         if (errorData) {
-    //             // Display validation errors to the user
-    //             let errorMessage = 'Please fix the following errors:\n';
-    //             if (errorData.campusGroupName) {
-    //                 errorMessage += `- ${errorData.campusGroupName}\n`;
-    //             }
-    //             if (errorData.licenseCount) {
-    //                 errorMessage += `- ${errorData.licenseCount}\n`;
-    //             }
-
-    //             toast.error(errorMessage, {
-    //                 position: 'top-center',
-    //                 duration: 5000, // Longer duration for user to read
-    //             });
-    //         } else {
-    //             // Generic error message if no specific errors are returned
-    //             toast.error('Failed to save data. Please try again.', {
-    //                 position: 'top-center',
-    //                 duration: 3000,
-    //             });
-    //         }
-
-    //         console.error('Error posting campus data:', error);
-    //     } finally {
-    //         setIsLoading({ ...isLoading, add: false });
-    //     }
-    // };
-
-    const handleSubmit = async () => {
-        setIsLoading((prev) => ({ ...prev, add: true }));
-
-        const params = {
-            campusGroupName: formData.campusGroupName,
-            licenseCount: formData.licenseCount,
-            gpsEnabled: formData.gpsEnabled,
-            zoomEnabled: formData.zoomEnabled,
-            isActive: formData.isActive,
-        };
-
-        // Create a minimum delay of 1 second
-        const minDelay = new Promise((resolve) => setTimeout(resolve, 1000));
-
-        try {
-            // Dispatch API call and wait for both the API response and minimum delay
-            await Promise.all([dispatch(requestPostCampus(params)), minDelay]);
-
-            // Extract Redux state response
-            console.log(campusData[0]?.data?.errors)
-            if (campusData[0]?.data?.statusCode === 200 || campusData[0]?.data?.statusCode === 201) {
-                // Success case - show success message
-                toast.success(campusData[0]?.data?.message || 'Data saved successfully!', {
-                    position: 'top-right',
-                    duration: 3000,
-                });
-
-                openCreateSchoolModal();
-                await props.requestGetCampus(); // Refresh campus data
-            } else if (campusData[0]?.data?.statusCode === 400) {
-                // Validation error case
-                const errorData = campusData[0]?.data?.errors;
-
-                if (Array.isArray(errorData) && errorData.length > 0) {
-                    errorData.forEach((error) => {
-                        toast.error(`${error.field}: ${error.message}`, {
-                            position: "top-right",
-                            duration: 5000, // Show each error for a longer time
-                        });
-                    });
-                } else {
-                    toast.error("Failed to save data. Please try again.", {
-                        position: "top-right",
-                        duration: 3000,
-                    });
-                }
-            } else {
-                // Generic failure case
-                toast.error('Failed to save data.', {
-                    position: 'top-right',
-                    duration: 3000,
-                });
-            }
-        } catch (error) {
-            // Handle unexpected errors
-            console.error("Error submitting data:", error);
-            toast.error('Something went wrong. Please try again.', {
-                position: 'top-right',
-                duration: 3000,
-            });
-        } finally {
-            setIsLoading((prev) => ({ ...prev, add: false }));
         }
     };
 
@@ -193,6 +67,125 @@ const CampusCreate = (props) => {
         "Data Profile",
         "App Frame",
     ];
+
+    // const handleSubmit = async () => {
+    //     setIsLoading((prev) => ({ ...prev, add: true }));
+
+    //     const params = {
+    //         campusGroupName: formData.campusGroupName,
+    //         licenseCount: formData.licenseCount,
+    //         gpsEnabled: formData.gpsEnabled,
+    //         zoomEnabled: formData.zoomEnabled,
+    //         isActive: formData.isActive,
+    //     };
+
+    //     // Create a minimum delay of 1 second
+    //     const minDelay = new Promise((resolve) => setTimeout(resolve, 1000));
+
+    //     try {
+    //         // Dispatch API call and wait for both the API response and minimum delay
+    //         await Promise.all([dispatch(requestPostCampus(params)), minDelay]);
+
+    //         // Extract Redux state response
+    //         console.log(campusPostData?.errors)
+    //         if (campusPostData?.statusCode === 200 || campusPostData?.statusCode === 201) {
+    //             // Success case - show success message
+    //             toast.success(campusPostData?.message || 'Data saved successfully!', {
+    //                 position: 'top-right',
+    //                 duration: 3000,
+    //             });
+
+    //             openCreateSchoolModal();
+    //             dispatch(requestGetCampus({
+    //                 data: {
+    //                     page: 0,
+    //                     size: 10,
+    //                     sortBy: "id",
+    //                     ascending: true
+    //                 }
+    //             }));
+    //         } else {
+    //             const errorData = campusPostData?.errors;
+    //             if (Array.isArray(errorData) && errorData?.length > 0) {
+    //                 errorData.forEach((error) => {
+    //                     toast.error(`${error?.field}: ${error?.message}`, {
+    //                         position: "top-right",
+    //                         duration: 5000, // Show each error for a longer time
+    //                     });
+    //                 });
+    //             } else {
+    //                 toast.error("Failed to save data. Please try again.", {
+    //                     position: "top-right",
+    //                     duration: 3000,
+    //                 });
+    //             }
+    //         }
+    //     } catch (error) {
+    //         // Handle unexpected errors
+    //         console.error("Error submitting data:", error);
+    //         toast.error('Something went wrong. Please try again.', {
+    //             position: 'top-right',
+    //             duration: 3000,
+    //         });
+    //     } finally {
+    //         setIsLoading((prev) => ({ ...prev, add: false }));
+    //     }
+    // };
+
+    const handleSubmit = async () => {
+        setIsLoading((prev) => ({ ...prev, add: true }));
+
+        const params = {
+            campusGroupName: formData.campusGroupName,
+            licenseCount: formData.licenseCount,
+            gpsEnabled: formData.gpsEnabled,
+            zoomEnabled: formData.zoomEnabled,
+            isActive: formData.isActive,
+        };
+
+        // Create a minimum delay of 1 second
+        const minDelay = new Promise((resolve) => setTimeout(resolve, 1000));
+
+        try {
+            // Use toast.promise to show a loading state and handle success/error messages
+            await toast.promise(
+                Promise.all([dispatch(requestPostCampus(params)), minDelay]),
+                {
+                    loading: 'Saving data...',
+                    success: () => {
+                        if (campusPostData?.statusCode === 200 || campusPostData?.statusCode === 201) {
+                            openCreateSchoolModal();
+                            dispatch(requestGetCampus({
+                                data: {
+                                    page: 0,
+                                    size: 10,
+                                    sortBy: "id",
+                                    ascending: true
+                                }
+                            }));
+                            return campusPostData?.message || 'Data saved successfully!';
+                        } else {
+                            throw campusPostData?.errors || "Failed to save data. Please try again.";
+                        }
+                    },
+                    error: (error) => {
+                        if (Array.isArray(error)) {
+                            return error.map(err => `${err?.field}: ${err?.message}`).join('\n');
+                        }
+                        return "Something went wrong. Please try again.";
+                    },
+                },
+                {
+                    position: "top-right",
+                    duration: 3000,
+                }
+            );
+        } catch (error) {
+            console.error("Error submitting data:", error);
+        } finally {
+            setIsLoading((prev) => ({ ...prev, add: false }));
+        }
+    };
 
     return (
         <>

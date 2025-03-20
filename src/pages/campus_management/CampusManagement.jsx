@@ -1,10 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { connect, useDispatch, useSelector } from "react-redux";
-import { bindActionCreators } from "redux";
-import {
-  requestGetCampus,
-  // userLogout,
-} from "../../Redux/actions";
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { requestGetCampus } from "../../Redux/actions";
 import Breadcrumb from '../../components/common/Breadcrumb';
 import WelcomeHeader from '../../components/common/WelcomeHeader';
 import {
@@ -33,6 +29,9 @@ const CampusManagement = () => {
   ];
   const dispatch = useDispatch();
   const { campusData, loading, error } = useSelector((state) => state.admin);
+  // console.log("🚀 ~ CampusManagement ~ campusData:", campusData)
+  // console.log("🚀 ~ CampusManagement ~ error:", error)
+  // console.log("🚀 ~ CampusManagement ~ loading:", loading)
   const [searchText, setSearchText] = useState("");
   const [isAscending, setIsAscending] = useState(true);
   const [createCampusModal, setCreateCampusModal] = useState(false);
@@ -145,12 +144,12 @@ const CampusManagement = () => {
     };
 
     fetchData();
-  }, [page, rowsPerPage, isAscending, searchText, dispatch]);
+  }, [page, rowsPerPage, isAscending, searchText, createCampusModal, dispatch]);
 
   useEffect(() => {
     if (campusData) {
-      setData(campusData?.data?.data?.content);
-      setTotalPages(campusData?.data?.data?.totalPages);
+      setData(campusData?.data?.content);
+      setTotalPages(campusData?.data?.totalPages);
     }
   }, [campusData, page, rowsPerPage]);
 
@@ -590,7 +589,7 @@ const CampusManagement = () => {
               </div>
             </div>
             <div className={`my-10 lg:px-20 md:px-10 px-[7px] md:max-h-[70svh] max-h-[60svh] ${isLoading?.main ? '' : 'overflow-auto cus-scrollbar'}`}>
-              {isLoading?.main ? (
+              {isLoading?.main && loading ? (
                 <div className="flex flex-col items-center justify-center h-[250px]">
                   <svg
                     aria-hidden="true"
@@ -611,7 +610,7 @@ const CampusManagement = () => {
                 </div>
               ) : (
                 <ul className="flex flex-col md:gap-8 gap-6 mt-6">
-                  {data?.length > 0 ? (
+                  {data && data?.length > 0 ? (
                     data?.map((item, index) => (
                       <li className="flex sm:items-center sm:gap-4 gap-2 sm:flex-row flex-col" key={index}>
                         <img src={avatar1 || ""} alt="user profile" className='rounded-md w-[36px] h-[36px] min-w-[36px]' />

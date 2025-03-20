@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const getCampus = async (obj) => {
-  console.log(obj, "Main object For Get Campus");
+  // console.log(obj, "Main object For Get Campus");
   try {
     const response = await axios.get(
       "https://api.testmazing.com/campus/api/campusgroupspagination",
@@ -20,7 +20,7 @@ export const getCampus = async (obj) => {
 };
 
 export const postCampus = async (obj) => {
-  console.log(obj, "Main object Post Campus");
+  // console.log(obj, "Main object Post Campus");
   try {
     const response = await axios.post(
       "https://api.testmazing.com/campus/api/createcampusgroup",
@@ -40,7 +40,7 @@ export const postCampus = async (obj) => {
 };
 
 export const login = async (obj) => {
-  console.log(obj, "Main object Login");
+  // console.log(obj, "Main object Login");
   try {
     const formData = new URLSearchParams();
     for (const key in obj) {
