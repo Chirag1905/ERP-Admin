@@ -1,43 +1,50 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from "redux-saga/effects";
 import {
-  requestGetCampus,
-  receiveGetCampus,
-  requestPostCampus,
-  receivePostCampus,
-  requestLogin,
-  receiveLogin,
-} from './actions';
-import { getCampus, login, postCampus } from './api';
+  fetchCampusRequest,
+  fetchCampusSuccess,
+  fetchCampusFailure,
+  createCampusRequest,
+  createCampusSuccess,
+  createCampusFailure,
+  loginRequest,
+  loginSuccess,
+  loginFailure,
+} from "./campusSlice";
+import { getCampus, postCampus, login } from "./api";
 
-export function* getListcampus(action) {
+// Fetch Campus Saga
+function* fetchCampusSaga(action) {
   try {
     const response = yield call(getCampus, action.payload);
-    yield put(receiveGetCampus(response));
-  } catch (e) {
-    console.log(e.message);
+    yield put(fetchCampusSuccess(response.data));
+  } catch (error) {
+    yield put(fetchCampusFailure(error.message));
   }
 }
 
-export function* createCampus(action) {
+// Create Campus Saga
+function* createCampusSaga(action) {
   try {
     const response = yield call(postCampus, action.payload);
-    yield put(receivePostCampus(response));
-  } catch (e) {
-    console.log(e.message);
+    yield put(createCampusSuccess(response.data));
+  } catch (error) {
+    yield put(createCampusFailure(error.message));
   }
 }
 
-export function* campusLogin(action) {
+// Login Saga
+function* loginSaga(action) {
   try {
     const response = yield call(login, action.payload);
-    yield put(receiveLogin(response));
-  } catch (e) {
-    console.log(e.message);
+    yield put(loginSuccess(response.data));
+  } catch (error) {
+    yield put(loginFailure(error.message));
   }
 }
 
-export default function* mainSaga() {
-  yield takeLatest(requestGetCampus.type, getListcampus);
-  yield takeLatest(requestPostCampus.type, createCampus);
-  yield takeLatest(requestLogin.type, campusLogin);
+// Watcher Saga
+export default function* campusSaga() {
+  yield takeLatest(fetchCampusRequest.type, fetchCampusSaga);
+  yield takeLatest(createCampusRequest.type, createCampusSaga);
+  yield takeLatest(loginRequest.type, loginSaga);
 }

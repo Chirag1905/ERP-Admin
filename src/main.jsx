@@ -1,13 +1,15 @@
-import App from './App.jsx'
-import mainSaga from "./Redux/sagas";
+import App from './App.jsx';
+import rootSaga from "./Redux/sagas";
 import { store, persistor, sagaMiddleware } from "./Redux/store";
 import { PersistGate } from "redux-persist/integration/react";
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 import { Provider } from "react-redux";
 
-sagaMiddleware.run(mainSaga);
+// Run the root saga
+sagaMiddleware.run(rootSaga);
 
+// Render the app
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
@@ -16,4 +18,4 @@ createRoot(document.getElementById('root')).render(
       </PersistGate>
     </Provider>
   </StrictMode>,
-)
+);

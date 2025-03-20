@@ -1,14 +1,13 @@
-// store.js
-import { configureStore } from '@reduxjs/toolkit';
-import { persistStore, persistReducer } from 'redux-persist';
-import createSagaMiddleware from 'redux-saga';
-import storage from 'redux-persist/lib/storage';
-import rootReducer from './reducers'; // Import your rootReducer
-import rootSaga from './sagas'; // Import your rootSaga
+import { configureStore } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
+import createSagaMiddleware from "redux-saga";
+import storage from "redux-persist/lib/storage";
+import rootReducer from "./rootReducer";
+import rootSaga from "./rootSaga";
 
 // Redux Persist Configuration
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage,
 };
 
@@ -18,12 +17,12 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 // Create Saga Middleware
 const sagaMiddleware = createSagaMiddleware();
 
-// Create Store using configureStore
+// Create Store
 const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false, // Required to avoid errors with redux-persist
+      serializableCheck: false, // Required for redux-persist
     }).concat(sagaMiddleware),
 });
 
@@ -33,4 +32,5 @@ sagaMiddleware.run(rootSaga);
 // Create Persistor
 const persistor = persistStore(store);
 
+// Export store, persistor, and sagaMiddleware
 export { store, persistor, sagaMiddleware };

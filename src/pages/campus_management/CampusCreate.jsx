@@ -1,7 +1,12 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import toast, { Toaster } from 'react-hot-toast';
-import { requestGetCampus, requestPostCampus } from '../../Redux/actions';
+import {
+    fetchCampusRequest,
+    createCampusRequest,
+    createCampusFailure,
+    createCampusSuccess,
+} from '../../Redux/campusSlice';
 
 const CampusCreate = (props) => {
     const {
@@ -16,7 +21,6 @@ const CampusCreate = (props) => {
     console.log("🚀 ~ CampusCreate ~ campusData:", campusData);
     // console.log("🚀 ~ CampusCreate ~ error:", error)
     // console.log("🚀 ~ CampusCreate ~ loading:", loading)
-    const [selectedModules, setSelectedModules] = useState([]);
     const [activeTab, setActiveTab] = useState(0);
 
     const [formData, setFormData] = useState({
@@ -42,150 +46,84 @@ const CampusCreate = (props) => {
         }));
     };
 
-    const handleModuleChange = (module) => {
-        if (selectedModules.includes(module)) {
-            setSelectedModules(selectedModules.filter((m) => m !== module));
-        } else {
-            setSelectedModules([...selectedModules, module]);
-        }
-    };
-
-    const modules = [
-        "Instant Fee",
-        "Discussion",
-        "Online Exam",
-        "Data Management",
-        "Gallery",
-        "Custom Report",
-        "Assignment",
-        "Task",
-        "Placement",
-        "Online Meeting",
-        "Moodle",
-        "Applicant Registration",
-        "Blog",
-        "Data Profile",
-        "App Frame",
-    ];
-
-    // const handleSubmit = async () => {
-    //     setIsLoading((prev) => ({ ...prev, add: true }));
-
-    //     const params = {
-    //         campusGroupName: formData.campusGroupName,
-    //         licenseCount: formData.licenseCount,
-    //         gpsEnabled: formData.gpsEnabled,
-    //         zoomEnabled: formData.zoomEnabled,
-    //         isActive: formData.isActive,
-    //     };
-
-    //     // Create a minimum delay of 1 second
-    //     const minDelay = new Promise((resolve) => setTimeout(resolve, 1000));
-
-    //     try {
-    //         // Dispatch API call and wait for both the API response and minimum delay
-    //         await Promise.all([dispatch(requestPostCampus(params)), minDelay]);
-
-    //         // Extract Redux state response
-    //         console.log(campusPostData?.errors)
-    //         if (campusPostData?.statusCode === 200 || campusPostData?.statusCode === 201) {
-    //             // Success case - show success message
-    //             toast.success(campusPostData?.message || 'Data saved successfully!', {
-    //                 position: 'top-right',
-    //                 duration: 3000,
-    //             });
-
-    //             openCreateSchoolModal();
-    //             dispatch(requestGetCampus({
-    //                 data: {
-    //                     page: 0,
-    //                     size: 10,
-    //                     sortBy: "id",
-    //                     ascending: true
-    //                 }
-    //             }));
-    //         } else {
-    //             const errorData = campusPostData?.errors;
-    //             if (Array.isArray(errorData) && errorData?.length > 0) {
-    //                 errorData.forEach((error) => {
-    //                     toast.error(`${error?.field}: ${error?.message}`, {
-    //                         position: "top-right",
-    //                         duration: 5000, // Show each error for a longer time
-    //                     });
-    //                 });
-    //             } else {
-    //                 toast.error("Failed to save data. Please try again.", {
-    //                     position: "top-right",
-    //                     duration: 3000,
-    //                 });
-    //             }
-    //         }
-    //     } catch (error) {
-    //         // Handle unexpected errors
-    //         console.error("Error submitting data:", error);
-    //         toast.error('Something went wrong. Please try again.', {
-    //             position: 'top-right',
-    //             duration: 3000,
-    //         });
-    //     } finally {
-    //         setIsLoading((prev) => ({ ...prev, add: false }));
-    //     }
-    // };
-
     const handleSubmit = async () => {
         setIsLoading((prev) => ({ ...prev, add: true }));
-
+      
         const params = {
-            campusGroupName: formData.campusGroupName,
-            licenseCount: formData.licenseCount,
-            gpsEnabled: formData.gpsEnabled,
-            zoomEnabled: formData.zoomEnabled,
-            isActive: formData.isActive,
+          campusGroupName: formData.campusGroupName,
+          licenseCount: formData.licenseCount,
+          gpsEnabled: formData.gpsEnabled,
+          zoomEnabled: formData.zoomEnabled,
+          isActive: formData.isActive,
         };
-
+      
         // Create a minimum delay of 1 second
         const minDelay = new Promise((resolve) => setTimeout(resolve, 1000));
-
+      
         try {
-            // Use toast.promise to show a loading state and handle success/error messages
-            await toast.promise(
-                Promise.all([dispatch(requestPostCampus(params)), minDelay]),
-                {
-                    loading: 'Saving data...',
-                    success: () => {
-                        if (campusPostData?.statusCode === 200 || campusPostData?.statusCode === 201) {
-                            openCreateSchoolModal();
-                            dispatch(requestGetCampus({
-                                data: {
-                                    page: 0,
-                                    size: 10,
-                                    sortBy: "id",
-                                    ascending: true
-                                }
-                            }));
-                            return campusPostData?.message || 'Data saved successfully!';
-                        } else {
-                            throw campusPostData?.errors || "Failed to save data. Please try again.";
-                        }
-                    },
-                    error: (error) => {
-                        if (Array.isArray(error)) {
-                            return error.map(err => `${err?.field}: ${err?.message}`).join('\n');
-                        }
-                        return "Something went wrong. Please try again.";
-                    },
-                },
-                {
-                    position: "top-right",
-                    duration: 3000,
+          // Use toast.promise to show a loading state and handle success/error messages
+          await toast.promise(
+            // Wrap the dispatch in a custom promise to wait for state updates
+            new Promise((resolve, reject) => {
+              dispatch(createCampusRequest(params))
+                .then((resultAction) => {
+                  if (createCampusSuccess.match(resultAction)) {
+                    resolve(resultAction.payload); // Resolve with the payload
+                  } else if (createCampusFailure.match(resultAction)) {
+                    reject(resultAction.payload); // Reject with the payload
+                  }
+                })
+                .catch((error) => {
+                  reject(error); // Reject with the error
+                });
+            }),
+            {
+              loading: "Saving data...",
+              success: (payload) => {
+                // Check if the payload has a successful status code
+                if (payload?.statusCode === 200 || payload?.statusCode === 201) {
+                  // Close the modal
+                  openCreateSchoolModal();
+      
+                  // Refresh the campus list
+                  dispatch(
+                    fetchCampusRequest({
+                      data: {
+                        page: 0,
+                        size: 10,
+                        sortBy: "id",
+                        ascending: true,
+                      },
+                    })
+                  );
+      
+                  return payload?.message || "Data saved successfully!";
+                } else {
+                  // Throw an error if the status code is not successful
+                  throw payload?.errors || "Failed to save data. Please try again.";
                 }
-            );
+              },
+              error: (error) => {
+                // Handle validation errors or API errors
+                if (Array.isArray(error)) {
+                  return error.map((err) => `${err?.field}: ${err?.message}`).join("\n");
+                }
+                return "Something went wrong. Please try again.";
+              },
+            },
+            {
+              position: "top-right",
+              duration: 3000,
+            }
+          );
         } catch (error) {
-            console.error("Error submitting data:", error);
+          // Handle unexpected errors
+          console.error("Error submitting data:", error);
         } finally {
-            setIsLoading((prev) => ({ ...prev, add: false }));
+          // Reset loading state
+          setIsLoading((prev) => ({ ...prev, add: false }));
         }
-    };
+      };
 
     return (
         <>
@@ -392,7 +330,7 @@ const CampusCreate = (props) => {
                                             </label>
                                         </div>
                                         <div className="grid grid-cols-3 gap-4">
-                                            {modules?.map((module, index) => (
+                                            {/* {modules?.map((module, index) => (
                                                 <div className="form-check border border-border-color rounded-md p-4 bg-body-color" key={index}>
                                                     <div className='ml-2'>
                                                         <input
@@ -408,7 +346,7 @@ const CampusCreate = (props) => {
                                                         {module}
                                                     </label>
                                                 </div>
-                                            ))}
+                                            ))} */}
                                         </div>
                                     </div>
                                 </div>
@@ -563,14 +501,5 @@ const CampusCreate = (props) => {
         </>
     )
 }
-
-// const mapStateToProps = (state) => {
-//     return { admin: state.admin };
-// };
-
-// const mapDispatchToProps = (dispatch) =>
-//     bindActionCreators({ requestGetCampus, requestPostCampus, userLogout }, dispatch);
-
-// export default connect(mapStateToProps, mapDispatchToProps)(CampusCreate);
 
 export default CampusCreate;

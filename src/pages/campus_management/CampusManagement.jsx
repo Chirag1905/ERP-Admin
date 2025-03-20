@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from "react-redux";
-import { requestGetCampus } from "../../Redux/actions";
+// import { useDispatch, useSelector } from "react-redux";
+// import { requestGetCampus } from "../../Redux/campusSlice";
 import Breadcrumb from '../../components/common/Breadcrumb';
 import WelcomeHeader from '../../components/common/WelcomeHeader';
 import {
@@ -27,8 +27,8 @@ const CampusManagement = () => {
       name: "School Management",
     },
   ];
-  const dispatch = useDispatch();
-  const { campusData, loading, error } = useSelector((state) => state.admin);
+  // const dispatch = useDispatch();
+  // const { campusData, loading, error } = useSelector((state) => state.admin);
   // console.log("🚀 ~ CampusManagement ~ campusData:", campusData)
   // console.log("🚀 ~ CampusManagement ~ error:", error)
   // console.log("🚀 ~ CampusManagement ~ loading:", loading)
@@ -118,40 +118,40 @@ const CampusManagement = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading({ ...isLoading, main: true });
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     setIsLoading({ ...isLoading, main: true });
 
-      const params = {
-        page: page || 0,
-        size: rowsPerPage || 10,
-        sortBy: "id",
-        ascending: isAscending,
-        searchFilter: searchText
-      };
+  //     const params = {
+  //       page: page || 0,
+  //       size: rowsPerPage || 10,
+  //       sortBy: "id",
+  //       ascending: isAscending,
+  //       searchFilter: searchText
+  //     };
 
-      // Create a minimum delay of 1 second
-      const minDelay = new Promise(resolve => setTimeout(resolve, 1000));
+  //     // Create a minimum delay of 1 second
+  //     const minDelay = new Promise(resolve => setTimeout(resolve, 1000));
 
-      try {
-        // Wait for both the API call and the minimum delay to complete
-        await Promise.all([dispatch(requestGetCampus({ data: params })), minDelay]);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setIsLoading({ ...isLoading, main: false });
-      }
-    };
+  //     try {
+  //       // Wait for both the API call and the minimum delay to complete
+  //       // await Promise.all([dispatch(requestGetCampus({ data: params })), minDelay]);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     } finally {
+  //       setIsLoading({ ...isLoading, main: false });
+  //     }
+  //   };
 
-    fetchData();
-  }, [page, rowsPerPage, isAscending, searchText, createCampusModal, dispatch]);
+  //   fetchData();
+  // }, [page, rowsPerPage, isAscending, searchText, createCampusModal, dispatch]);
 
-  useEffect(() => {
-    if (campusData) {
-      setData(campusData?.data?.content);
-      setTotalPages(campusData?.data?.totalPages);
-    }
-  }, [campusData, page, rowsPerPage]);
+  // useEffect(() => {
+  //   if (campusData) {
+  //     setData(campusData?.data?.content);
+  //     setTotalPages(campusData?.data?.totalPages);
+  //   }
+  // }, [campusData, page, rowsPerPage]);
 
   return (
     <>
@@ -589,7 +589,7 @@ const CampusManagement = () => {
               </div>
             </div>
             <div className={`my-10 lg:px-20 md:px-10 px-[7px] md:max-h-[70svh] max-h-[60svh] ${isLoading?.main ? '' : 'overflow-auto cus-scrollbar'}`}>
-              {isLoading?.main && loading ? (
+              {isLoading?.main ? (
                 <div className="flex flex-col items-center justify-center h-[250px]">
                   <svg
                     aria-hidden="true"
