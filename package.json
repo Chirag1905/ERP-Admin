@@ -41,6 +41,7 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.1.1",
     "react-scripts": "5.0.1",
+    "react-table": "^7.8.0",
     "react-tabs": "^6.1.0",
     "react-to-print": "^3.0.4",
     "redux-persist": "^6.0.0",

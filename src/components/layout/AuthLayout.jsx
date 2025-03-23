@@ -10,7 +10,12 @@ export default function AuthLayout() {
                 <div className='items-center justify-center w-full lg:flex hidden'>
                     <div className='max-w-[400px]'>
                         <div className='mb-4'>
-                            <CompanyLogo className="text-primary w-[116px] h-auto" />
+                            {/* <CompanyLogo className="text-primary w-[116px] h-auto" /> */}
+                            <span
+                                className="text-primary font-bold text-4xl w-[116px] h-auto text-center bg-transparent border-b border-transparent hover:border-gray-400 focus:outline-none focus:border-white transition-colors placeholder-gray-400"
+                            >
+                                Techvein Admin
+                            </span>
                         </div>
                         <p className='mb-12 text-[32px]/[40px] font-medium'>
                             Build digital products with:

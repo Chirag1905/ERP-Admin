@@ -1,12 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import toast, { Toaster } from 'react-hot-toast';
 import {
-    fetchCampusRequest,
-    createCampusRequest,
-    createCampusFailure,
-    createCampusSuccess,
-} from '../../Redux/campusSlice';
+    getCampusRequest,
+    postCampusRequest,
+    postCampusFailure,
+    postCampusSuccess,
+} from '../../Redux/features/campus/campusSlice';
 
 const CampusCreate = (props) => {
     const {
@@ -16,11 +16,12 @@ const CampusCreate = (props) => {
     } = props;
 
     const dispatch = useDispatch();
-    const { campusData, campusPostData, loading, error } = useSelector((state) => state.admin);
+    const { campusData, validationErrors, campusPostData, loading, error } = useSelector((state) => state.campus);
+    console.log("🚀 ~ CampusCreate ~ validationErrors:", validationErrors)
+    console.log("🚀 ~ CampusCreate ~ error:", error)
+    console.log("🚀 ~ CampusCreate ~ loading:", loading)
     console.log("🚀 ~ CampusCreate ~ campusPostData:", campusPostData);
     console.log("🚀 ~ CampusCreate ~ campusData:", campusData);
-    // console.log("🚀 ~ CampusCreate ~ error:", error)
-    // console.log("🚀 ~ CampusCreate ~ loading:", loading)
     const [activeTab, setActiveTab] = useState(0);
 
     const [formData, setFormData] = useState({
@@ -38,6 +39,122 @@ const CampusCreate = (props) => {
         assignedDomains: "",
     });
 
+    // const handleSubmit = async () => {
+    //     setIsLoading((prev) => ({ ...prev, add: true }));
+
+    //     const params = {
+    //         campusGroupName: formData.campusGroupName,
+    //         licenseCount: formData.licenseCount,
+    //         gpsEnabled: formData.gpsEnabled,
+    //         zoomEnabled: formData.zoomEnabled,
+    //         isActive: formData.isActive,
+    //     };
+
+    //     try {
+    //         // Dispatch the postCampusRequest action
+    //         dispatch(postCampusRequest(params));
+    //         if (validationErrors?.error && validationErrors?.error?.length > 0) {
+    //             validationErrors?.error?.forEach((error) => {
+    //                 toast.error(`${error.field}: ${error.message}`, {
+    //                     position: "top-right",
+    //                     duration: 5000,
+    //                 });
+    //             });
+    //         }
+    //     } catch (error) {
+    //         console.error("Error submitting data:", error);
+    //         toast.error("An unexpected error occurred. Please try again.", {
+    //             position: "top-right",
+    //             duration: 3000,
+    //         });
+    //     } finally {
+    //         setIsLoading((prev) => ({ ...prev, add: false }));
+    //     }
+    // };
+
+
+
+    const handleSubmit = async () => {
+        setIsLoading((prev) => ({ ...prev, add: true }));
+
+        const params = {
+            campusGroupName: formData.campusGroupName,
+            licenseCount: formData.licenseCount,
+            gpsEnabled: formData.gpsEnabled,
+            zoomEnabled: formData.zoomEnabled,
+            isActive: formData.isActive,
+        };
+
+        try {
+            // Dispatch API request action
+            dispatch(postCampusRequest(params));
+
+            // Wait until the Redux state updates
+            await new Promise((resolve) => {
+                const checkState = setInterval(() => {
+                    if (campusPostData || validationErrors) {
+                        clearInterval(checkState);
+                        resolve();
+                    }
+                }, 100); // Check every 100ms
+            });
+
+            // 🔹 If validation errors exist, show them
+            if (validationErrors?.error?.length > 0) {
+                validationErrors.error.forEach((error) => {
+                    toast.error(`${error.field}: ${error.message}`, {
+                        position: "top-right",
+                        duration: 5000,
+                    });
+                });
+            }
+            // 🔹 If API succeeds, show success toast
+            else if (campusPostData?.statusCode === 200) {
+                toast.success(campusPostData.message || "Data saved successfully!", {
+                    position: "top-right",
+                    duration: 3000,
+                });
+
+                openCreateSchoolModal();
+                dispatch(getCampusRequest({
+                    data: {
+                        page: 0,
+                        size: 10,
+                        sortBy: "id",
+                        ascending: true,
+                    },
+                }));
+            }
+            // 🔹 If API fails without validation errors, show generic error
+            else {
+                toast.error("Failed to save data. Please try again.", {
+                    position: "top-right",
+                    duration: 3000,
+                });
+            }
+
+        } catch (error) {
+            console.error("Error submitting data:", error);
+            toast.error("An unexpected error occurred. Please try again.", {
+                position: "top-right",
+                duration: 3000,
+            });
+        } finally {
+            setIsLoading((prev) => ({ ...prev, add: false }));
+        }
+    };
+
+    useEffect(() => {
+        if (validationErrors?.error && validationErrors?.error?.length > 0) {
+            validationErrors?.error?.forEach((error) => {
+                toast.error(`${error.field}: ${error.message}`, {
+                    position: "top-right",
+                    duration: 2000,
+                });
+            });
+        }
+    }, [postCampusSuccess]);
+
     // Function to update form data
     const updateFormData = (key, value) => {
         setFormData((prevData) => ({
@@ -45,85 +162,6 @@ const CampusCreate = (props) => {
             [key]: value,
         }));
     };
-
-    const handleSubmit = async () => {
-        setIsLoading((prev) => ({ ...prev, add: true }));
-      
-        const params = {
-          campusGroupName: formData.campusGroupName,
-          licenseCount: formData.licenseCount,
-          gpsEnabled: formData.gpsEnabled,
-          zoomEnabled: formData.zoomEnabled,
-          isActive: formData.isActive,
-        };
-      
-        // Create a minimum delay of 1 second
-        const minDelay = new Promise((resolve) => setTimeout(resolve, 1000));
-      
-        try {
-          // Use toast.promise to show a loading state and handle success/error messages
-          await toast.promise(
-            // Wrap the dispatch in a custom promise to wait for state updates
-            new Promise((resolve, reject) => {
-              dispatch(createCampusRequest(params))
-                .then((resultAction) => {
-                  if (createCampusSuccess.match(resultAction)) {
-                    resolve(resultAction.payload); // Resolve with the payload
-                  } else if (createCampusFailure.match(resultAction)) {
-                    reject(resultAction.payload); // Reject with the payload
-                  }
-                })
-                .catch((error) => {
-                  reject(error); // Reject with the error
-                });
-            }),
-            {
-              loading: "Saving data...",
-              success: (payload) => {
-                // Check if the payload has a successful status code
-                if (payload?.statusCode === 200 || payload?.statusCode === 201) {
-                  // Close the modal
-                  openCreateSchoolModal();
-      
-                  // Refresh the campus list
-                  dispatch(
-                    fetchCampusRequest({
-                      data: {
-                        page: 0,
-                        size: 10,
-                        sortBy: "id",
-                        ascending: true,
-                      },
-                    })
-                  );
-      
-                  return payload?.message || "Data saved successfully!";
-                } else {
-                  // Throw an error if the status code is not successful
-                  throw payload?.errors || "Failed to save data. Please try again.";
-                }
-              },
-              error: (error) => {
-                // Handle validation errors or API errors
-                if (Array.isArray(error)) {
-                  return error.map((err) => `${err?.field}: ${err?.message}`).join("\n");
-                }
-                return "Something went wrong. Please try again.";
-              },
-            },
-            {
-              position: "top-right",
-              duration: 3000,
-            }
-          );
-        } catch (error) {
-          // Handle unexpected errors
-          console.error("Error submitting data:", error);
-        } finally {
-          // Reset loading state
-          setIsLoading((prev) => ({ ...prev, add: false }));
-        }
-      };
 
     return (
         <>
@@ -167,7 +205,7 @@ const CampusCreate = (props) => {
                                                     type='text'
                                                     placeholder='School Name'
                                                     className='form-input'
-                                                    value={formData.campusGroupName || ""}
+                                                    value={formData?.campusGroupName || ""}
                                                     onChange={(e) => updateFormData("campusGroupName", e.target.value)}
                                                 />
                                             </div>
@@ -181,7 +219,7 @@ const CampusCreate = (props) => {
                                                     type='number'
                                                     placeholder='license count'
                                                     className='form-input'
-                                                    value={formData.licenseCount || ""}
+                                                    value={formData?.licenseCount || ""}
                                                     onChange={(e) => updateFormData("licenseCount", e.target.value)}
                                                 />
                                             </div>
@@ -194,10 +232,10 @@ const CampusCreate = (props) => {
                                                 <input
                                                     type="checkbox"
                                                     className="form-check-input"
-                                                    checked={formData.gpsEnabled || ""}
+                                                    checked={formData?.gpsEnabled || ""}
                                                     onChange={(e) => updateFormData("gpsEnabled", e.target.checked)}
                                                 />
-                                                {/* <label className="form-check-label" htmlFor="lightIndoor1">Kitchen</label> */}
+                                                <label className="form-check-label ml-2" htmlFor="lightIndoor1">{formData?.gpsEnabled === true ? "Enabled" : "Disable"}</label>
                                             </div>
                                         </div>
                                         <div className='flex justify-between px-10'>
@@ -208,9 +246,10 @@ const CampusCreate = (props) => {
                                                 <input
                                                     type='checkbox'
                                                     className='form-check-input'
-                                                    checked={formData.zoomEnabled || ""}
+                                                    checked={formData?.zoomEnabled || ""}
                                                     onChange={(e) => updateFormData("zoomEnabled", e.target.checked)}
                                                 />
+                                                <label className="form-check-label ml-2" htmlFor="lightIndoor1">{formData?.zoomEnabled === true ? "Enabled" : "Disable"}</label>
                                             </div>
                                         </div>
                                         <div className='flex justify-between px-10'>
@@ -221,9 +260,10 @@ const CampusCreate = (props) => {
                                                 <input
                                                     type='checkbox'
                                                     className='form-check-input'
-                                                    checked={formData.isActive || ""}
+                                                    checked={formData?.isActive || ""}
                                                     onChange={(e) => updateFormData("isActive", e.target.checked)}
                                                 />
+                                                <label className="form-check-label ml-2" htmlFor="lightIndoor1">{formData?.isActive === true ? "Enabled" : "Disable"}</label>
                                             </div>
                                         </div>
                                     </div>

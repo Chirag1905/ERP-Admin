@@ -302,23 +302,27 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
     return (
         <>
             <div className='md:py-4 py-3 md:px-6 px-4 flex items-center relative'>
-                <div className='text-white flex items-center justify-between rounded-lg shadow-md xl:w-[260px]'>
-                    <button
+                <div className='text-white flex items-center justify-center rounded-lg shadow-md xl:w-[260px]'>
+                    {/* <button
                         onClick={handleSave}
                         className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
                     >
                         <IconEdit className="w-4 h-4" />
-                    </button>
+                    </button> */}
                     <div className="flex items-center gap-3">
-                        <Link to="/" className="flex items-centerhover:opacity-80 transition-opacity">
+                        <Link to="/" className="flex items-center hover:opacity-80 transition-opacity">
                             {/* <CompanyLogo /> */}
-                            <input
+                            <span
+                                className="p-1 font-semibold text-xl text-white text-center w-full bg-transparent border-b border-transparent hover:border-gray-400 focus:outline-none focus:border-white transition-colors placeholder-gray-400"
+                            >
+                                Techvein Admin
+                            </span>
+                            {/* <input
                                 type="text"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
-                                className="p-1 text-white text-left w-full bg-transparent border-b border-transparent hover:border-gray-400 focus:outline-none focus:border-white transition-colors placeholder-gray-400"
                                 placeholder="Enter title"
-                            />
+                            /> */}
                         </Link>
                         {/* <span className="text-white w-full bg-transparent hover:border-gray-400 transition-colors placeholder-gray-400 hidden sm:block">- Admin</span> */}
                     </div>

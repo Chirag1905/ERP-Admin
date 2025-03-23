@@ -1,42 +1,11 @@
-// import { useEffect } from 'react';
-// import { Outlet, useNavigate } from 'react-router-dom';
-// import PageNotFound from '../pages/auth/PageNotFound';
-
-// const PrivateRoutes = (props) => {
-//     const navigate = useNavigate();
-
-//     const isAuthenticated = !!token;
-//     const isAuthorized = allowedRoles ? allowedRoles.includes(role) : true;
-
-//     useEffect(() => {
-//         if (isAuthenticated) {
-//             const currentPath = location.pathname;
-
-//             if (role === 'admin' && adminRoutes.includes(currentPath)) {
-//                 return;
-//             } else if (role === 'restaurant' && restaurantOwnerRoutes.includes(currentPath)) {
-//                 return;
-//             } else if (role === 'admin') {
-//                 navigate('/admin/dashboard');
-//             } else if (role === 'restaurant') {
-//                 navigate(`/restaurantPanel/dashboard/${rolewiseId}`);
-//             }
-//         } else {
-//             navigate('/auth-signin');
-//         }
-//     }, [isAuthenticated, isAuthorized, navigate]);
-
-//     return isAuthenticated && isAuthorized ? <Outlet /> : <PageNotFound />;
-// };
-
-// export default PrivateRoutes;
-
-import React from 'react'
+import { Navigate, Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const PrivateRoute = () => {
-  return (
-    <div>PrivateRoute</div>
-  )
-}
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  console.log("🚀 ~ PrivateRoute ~ isAuthenticated:", isAuthenticated)
 
-export default PrivateRoute
+  return isAuthenticated ? <Outlet /> : <Navigate to="/auth-signin" replace />;
+};
+
+export default PrivateRoute;

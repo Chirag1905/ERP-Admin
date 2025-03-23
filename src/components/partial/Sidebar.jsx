@@ -54,6 +54,8 @@ import {
   IconChecklist,
   IconTimelineEventPlus,
   IconSchool,
+  IconBooks,
+  IconAdjustmentsDollar,
 } from '@tabler/icons-react'
 import NewProject from '../../pages/app/project/NewProject';
 
@@ -70,10 +72,10 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
   }
 
   const [newProjectSidebar, setNewProjectSidebar] = useState(false)
+
   const toggleNewProject = () => {
     setNewProjectSidebar(!newProjectSidebar)
   }
-
 
   const menuList = [
     {
@@ -83,17 +85,22 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
     },
     {
       icon: IconHome,
-      link: "Overview Page",
+      link: "Overview",
       url: "/",
     },
     {
       icon: IconSchool,
+      link: "Academic Years",
+      url: "/academicYears",
+    },
+    {
+      icon: IconBooks,
       link: "School Manangement",
       url: "/schools",
     },
     {
-      icon: IconSquares,
-      link: "Test",
+      icon: IconAdjustmentsDollar,
+      link: "Finances",
       url: "/test",
     },
     {
@@ -104,56 +111,6 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
         { link: 'Payment Gateway', url: '/app-email' },
         { link: 'SMS Configuration', url: '/app-chat' },
         { link: 'User Management', url: '/app-campaign' },
-      ],
-    },
-    {
-      icon: IconApps,
-      link: 'Other Tabs',
-      children: [
-        { link: 'wallet', url: '/index-wallet' },
-        { link: 'iot', url: '/index-iot' },
-        { link: 'calendar', url: '/app-calendar' },
-        { link: 'calendar-tui', url: '/app-calendar-tui' },
-        { link: 'appemail', url: '/app-email' },
-        { link: 'appemaildetail', url: '/app-email-detail' },
-        { link: 'email-compose', url: '/app-email-compose' },
-        { link: 'chat', url: '/app-chat' },
-        { link: 'campaign', url: '/app-campaign' },
-        { link: 'social', url: '/app-social' },
-        { link: 'file-manager', url: '/app-file-manager' },
-        { link: 'todo', url: '/app-todo' },
-        { link: 'contact', url: '/app-contact' },
-        { link: 'task', url: '/app-task' },
-        { link: 'project', url: '/app-project' },
-        { link: 'project-detail', url: '/app-project-detail' },
-        { link: 'my-profile', url: '/page-my-profile' },
-        { link: 'bookmark', url: '/page-bookmark' },
-        { link: 'timeline', url: '/page-timeline' },
-        { link: 'image-gallery', url: '/page-image-gallery' },
-        { link: 'pricing', url: '/page-pricing' },
-        { link: 'team-board', url: '/page-team-board' },
-        { link: 'support-ticket', url: '/page-support-ticket' },
-        { link: 'faq', url: '/page-faq' },
-        { link: 'search', url: '/page-search' },
-        { link: 'footer', url: '/page-footer' },
-        { link: 'account-setting', url: '/account-setting' },
-        { link: 'invoice', url: '/account-invoice' },
-        { link: 'billing', url: '/account-billing' },
-        { link: 'create-invoice', url: '/account-create-invoice' },
-        { link: 'modals', url: '/modals' },
-        { link: 'doc-overview', url: '/doc-overview' },
-        { link: 'doc-setup', url: '/doc-setup' },
-        { link: 'doc-structure', url: '/doc-structure' },
-        { link: 'doc-references', url: '/doc-references' },
-        { link: 'doc-helperclass', url: '/doc-helperclass' },
-        { link: 'doc-changelog', url: '/doc-changelog' },
-        { link: 'widget', url: '/widget' },
-        { link: 'signin', url: '/auth-signin' },
-        { link: 'signup', url: '/auth-signup' },
-        { link: 'forgot-password', url: '/auth-forgot-password' },
-        { link: 'two-step', url: '/auth-two-step' },
-        { link: 'lockscreen', url: '/auth-lockscreen' },
-        { link: 'maintenance', url: '/auth-maintenance' },
       ],
     },
     // {
@@ -172,29 +129,95 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
     //     { link: 'Smart IOT', url: '/app-contact' },
     //   ],
     // },
-    {
-      devider: "RESOURCES",
-    },
-    {
-      icon: IconSquares,
-      link: "Modals Popups",
-      url: "/modals",
-    },
-    {
-      icon: IconLayout2,
-      link: "Widget's",
-      url: "/widget",
-    },
-    {
-      icon: IconChecklist,
-      link: "Documentation",
-      url: "/doc-overview",
-    },
-    {
-      icon: IconTimelineEventPlus,
-      link: "Changelog",
-      url: "/doc-changelog",
-    },
+    // {
+    //   icon: IconApps,
+    //   link: 'Other Tabs',
+    //   children: [
+    //     { link: 'wallet', url: '/index-wallet' },
+    //     { link: 'iot', url: '/index-iot' },
+    //     { link: 'calendar', url: '/app-calendar' },
+    //     { link: 'calendar-tui', url: '/app-calendar-tui' },
+    //     { link: 'appemail', url: '/app-email' },
+    //     { link: 'appemaildetail', url: '/app-email-detail' },
+    //     { link: 'email-compose', url: '/app-email-compose' },
+    //     { link: 'chat', url: '/app-chat' },
+    //     { link: 'campaign', url: '/app-campaign' },
+    //     { link: 'social', url: '/app-social' },
+    //     { link: 'file-manager', url: '/app-file-manager' },
+    //     { link: 'todo', url: '/app-todo' },
+    //     { link: 'contact', url: '/app-contact' },
+    //     { link: 'task', url: '/app-task' },
+    //     { link: 'project', url: '/app-project' },
+    //     { link: 'project-detail', url: '/app-project-detail' },
+    //     { link: 'my-profile', url: '/page-my-profile' },
+    //     { link: 'bookmark', url: '/page-bookmark' },
+    //     { link: 'timeline', url: '/page-timeline' },
+    //     { link: 'image-gallery', url: '/page-image-gallery' },
+    //     { link: 'pricing', url: '/page-pricing' },
+    //     { link: 'team-board', url: '/page-team-board' },
+    //     { link: 'support-ticket', url: '/page-support-ticket' },
+    //     { link: 'faq', url: '/page-faq' },
+    //     { link: 'search', url: '/page-search' },
+    //     { link: 'footer', url: '/page-footer' },
+    //     { link: 'account-setting', url: '/account-setting' },
+    //     { link: 'invoice', url: '/account-invoice' },
+    //     { link: 'billing', url: '/account-billing' },
+    //     { link: 'create-invoice', url: '/account-create-invoice' },
+    //     { link: 'modals', url: '/modals' },
+    //     { link: 'doc-overview', url: '/doc-overview' },
+    //     { link: 'doc-setup', url: '/doc-setup' },
+    //     { link: 'doc-structure', url: '/doc-structure' },
+    //     { link: 'doc-references', url: '/doc-references' },
+    //     { link: 'doc-helperclass', url: '/doc-helperclass' },
+    //     { link: 'doc-changelog', url: '/doc-changelog' },
+    //     { link: 'widget', url: '/widget' },
+    //     { link: 'signin', url: '/auth-signin' },
+    //     { link: 'signup', url: '/auth-signup' },
+    //     { link: 'forgot-password', url: '/auth-forgot-password' },
+    //     { link: 'two-step', url: '/auth-two-step' },
+    //     { link: 'lockscreen', url: '/auth-lockscreen' },
+    //     { link: 'maintenance', url: '/auth-maintenance' },
+    //   ],
+    // },
+    // {
+    //   icon: IconSitemap,
+    //   link: 'Menu Level',
+    //   children: [
+    //     {
+    //       link: 'Analysis',
+    //       url: '/account-billing',
+    //       children: [
+    //         { link: 'Sub Analysis 1', url: '/account-setting' },
+    //         { link: 'Sub Analysis 2', url: '/account-billing' },
+    //       ],
+    //     },
+    //     { link: 'My Wallet', url: '/app-project' },
+    //     { link: 'Smart IOT', url: '/app-contact' },
+    //   ],
+    // },
+    // {
+    //   devider: "RESOURCES",
+    // },
+    // {
+    //   icon: IconSquares,
+    //   link: "Modals Popups",
+    //   url: "/modals",
+    // },
+    // {
+    //   icon: IconLayout2,
+    //   link: "Widget's",
+    //   url: "/widget",
+    // },
+    // {
+    //   icon: IconChecklist,
+    //   link: "Documentation",
+    //   url: "/doc-overview",
+    // },
+    // {
+    //   icon: IconTimelineEventPlus,
+    //   link: "Changelog",
+    //   url: "/doc-changelog",
+    // },
   ];
 
   // const documentationItem = [
@@ -328,7 +351,7 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
             Sr. Manager
           </span>
           <div className='font-medium'>
-            Allie Grater
+            Prashant Gourav
           </div>
           <div className='flex gap-4 mt-10'>
             <button onClick={toggleSchedule} className={`transition-all duration-300 after:fixed after:z-[4] after:w-full after:h-full after:left-0 after:top-0 after:bg-black-50 after:backdrop-blur-[2px] after:transition-all after:duration-500 after:ease-in-out ${schedule ? 'after:opacity-1 after:visible after:overflow-auto' : 'after:opacity-0 after:invisible after:overflow-hidden'}`}>
@@ -351,18 +374,6 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
             </Link>
           </div>
         </div>
-      </div>
-      <div className='px-6 py-4 flex gap-5'>
-        <select className="form-select cursor-pointer rounded-md bg-card-color py-[6px] ps-15 pe-30 text-[14px]/[20px] w-full appearance-none border border-border-color focus:outline-0 focus:border-primary">
-          <option defaultValue="">Select Project</option>
-          <option value="1">Swift University</option>
-          <option value="2">Book Manager</option>
-          <option value="3">Swift Sass App</option>
-        </select>
-        <button onClick={toggleNewProject} className={`bg-secondary text-white rounded-md p-2 transition-all duration-300 after:fixed after:z-[4] after:w-full after:h-full after:left-0 after:top-0 after:bg-black-50 after:backdrop-blur-[2px] after:transition-all after:duration-500 after:ease-in-out ${newProjectSidebar ? 'after:opacity-1 after:visible after:overflow-auto' : 'after:opacity-0 after:invisible after:overflow-hidden'}`}>
-          <IconPlus className='w-[20px] h-[20px]' />
-        </button>
-        <NewProject newProjectSidebar={newProjectSidebar} toggleNewProject={toggleNewProject} />
       </div>
       <ul className="text-font-color-400 px-6 py-2 overflow-auto xl:h-[calc(100svh-266px)] md:h-[calc(100svh-262px)] h-[calc(100svh-254px)] no-scrollbar">
         {menuList.map((item, parentIndex) => (
