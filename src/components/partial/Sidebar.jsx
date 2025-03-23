@@ -58,9 +58,14 @@ import {
   IconAdjustmentsDollar,
 } from '@tabler/icons-react'
 import NewProject from '../../pages/app/project/NewProject';
+import { useDispatch, useSelector } from 'react-redux';
+import { signOutSuccess } from '../../Redux/features/auth/authSlice';
+import { closeModal } from '../../Redux/features/utils/modalSlice';
 
 
 export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleChat }) {
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.auth);
   const [pinnedItems, setPinnedItems] = useState([]);
   const [menuActive, setMenuActive] = useState(null);
   const [submenuActive, setSubmenuActive] = useState({});
@@ -76,6 +81,13 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
   const toggleNewProject = () => {
     setNewProjectSidebar(!newProjectSidebar)
   }
+
+  const handleLogout = () => {
+    if (isAuthenticated) {
+      dispatch(signOutSuccess());
+      console.log("called")
+    }
+  };
 
   const menuList = [
     {
@@ -280,6 +292,11 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
     }));
   };
 
+  const closeModals = () => {
+    dispatch(closeModal({ modalType: "createCampus" }))
+    dispatch(closeModal({ modalType: "editCampus" }))
+  };
+
   useEffect(() => {
     const findActiveMenu = (url) => {
       for (let i = 0; i < menuList.length; i++) {
@@ -369,8 +386,8 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
                 <IconMessage className='stroke-[1.5] w-[20px] h-[20px]' />
               </span>
             </button>
-            <Link to="/auth-signin" title='Log Out'>
-              <IconPower className='stroke-[1.5] w-[20px] h-[20px]' />
+            <Link to="#" title='Log Out'>
+              <IconPower className='stroke-[1.5] w-[20px] h-[20px]' onClick={() => handleLogout()} />
             </Link>
           </div>
         </div>
@@ -384,7 +401,7 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
                 className={`flex items-center gap-10 w-full py-10 transition-all hover:text-secondary ${menuActive === parentIndex ? 'text-secondary' : ''}`}
               >
                 <item.icon className="stroke-[1.5] w-[22px] h-[22px]" />
-                <span>{item.link}</span>
+                <span onClick={() => closeModals()}>{item.link}</span>
                 <IconChevronRight className={`stroke-[1.5] w-[18px] h-[18px] ms-auto rtl:rotate-180 transition-all ${menuActive === parentIndex ? 'rotate-90 rtl:rotate-90' : ''}`} />
               </button>
               {menuActive === parentIndex && (
@@ -455,7 +472,7 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
             <li key={parentIndex}>
               <Link to={item.url} onClick={() => { window.innerWidth < 1200 && setMobileNav(false) }} className={`flex items-center gap-10 w-full py-2 transition-all hover:text-secondary ${pageUrl === item.url ? 'text-secondary' : ''}`}>
                 {item.icon ? <item.icon className='stroke-[1.5] w-[22px] h-[22px]' /> : <IconChevronRight />}
-                <span>{item.link}</span>
+                <span onClick={() => closeModals()}>{item.link}</span>
               </Link>
             </li>
             :

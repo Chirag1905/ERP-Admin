@@ -7,6 +7,7 @@ import { IconBooksOff } from '@tabler/icons-react';
 const CampusEdit = (props) => {
     const {
         openEditSchoolModal,
+        closeEditSchoolModal,
         isLoading,
         setIsLoading,
         selectedItem,
@@ -553,7 +554,7 @@ const CampusEdit = (props) => {
 
                     {/* Buttons Section */}
                     <div className='flex items-stretch gap-5'>
-                        <button onClick={openEditSchoolModal} className='btn btn-secondary'>
+                        <button onClick={closeEditSchoolModal} className='btn btn-secondary'>
                             Close
                         </button>
                         <button className='btn btn-primary' onClick={handleSubmit}>

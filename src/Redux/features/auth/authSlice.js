@@ -6,6 +6,7 @@ const initialState = {
   loading: false,
   error: null,
   isAuthenticated: false,
+  expiryTime: null,
 };
 
 const authSlice = createSlice({
@@ -21,6 +22,7 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.isAuthenticated = true;
+      state.expiryTime = action.payload.expiryTime;
     },
     signInFailure(state, action) {
       state.loading = false;
@@ -33,6 +35,7 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.isAuthenticated = false;
+      state.expiryTime = null;
     },
   },
 });

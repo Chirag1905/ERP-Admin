@@ -23,6 +23,7 @@ import CampusCreate from './CampusCreate';
 import CustomPagination from '../CustomPagination';
 import toast from 'react-hot-toast';
 import CampusEdit from './CampusEdit';
+import { closeModal, openModal } from '../../Redux/features/utils/modalSlice';
 
 const CampusManagement = () => {
   const breadcrumbItem = [
@@ -38,10 +39,14 @@ const CampusManagement = () => {
     loading,
     error
   } = useSelector((state) => state.campus);
+  const { modals } = useSelector((state) => state.modal);
+  const createCampusModal = modals.createCampus.isOpen;
+  const editCampusModal = modals.editCampus.isOpen;
+
   const [searchText, setSearchText] = useState("");
   const [isAscending, setIsAscending] = useState(true);
-  const [createCampusModal, setCreateCampusModal] = useState(false);
-  const [editSchoolModal, setEditSchoolModal] = useState(false);
+  // const [createCampusModal, setCreateCampusModal] = useState(false);
+  // const [editSchoolModal, setEditSchoolModal] = useState(false);
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState({ main: false, edit: false, add: false });
 
@@ -63,24 +68,34 @@ const CampusManagement = () => {
     setSearchText(e.target.value);
   };
 
+  // Open Create Campus Modal
   const openCreateSchoolModal = () => {
-    setCreateCampusModal(!createCampusModal);
-    setEditSchoolModal(false);
+    dispatch(openModal({ modalType: "createCampus" }));
   };
 
+  // Open Edit Campus Modal
   const openEditSchoolModal = (item) => {
-    setEditSchoolModal(!editSchoolModal);
-    setCreateCampusModal(false);
+    dispatch(openModal({ modalType: "editCampus" }));
     setSelectedItem(item);
   };
 
-  useEffect(() => {
-    document.body.classList[createCampusModal ? "add" : "remove"]("overflow-hidden");
-  }, [createCampusModal]);
+  // Close Create Campus Modal
+  const closeCreateSchoolModal = () => {
+    dispatch(closeModal({ modalType: "createCampus" }));
+  };
 
+  // Close Edit Campus Modal
+  const closeEditSchoolModal = () => {
+    dispatch(closeModal({ modalType: "editCampus" }));
+  };
+  // Prevent body scroll when modals are open
   useEffect(() => {
-    document.body.classList[editSchoolModal ? "add" : "remove"]("overflow-hidden");
-  }, [editSchoolModal]);
+    if (createCampusModal || editCampusModal) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+  }, [createCampusModal, editCampusModal]);
 
   useEffect(() => {
     if (campusData) {
@@ -115,7 +130,7 @@ const CampusManagement = () => {
     };
 
     fetchData();
-  }, [page, rowsPerPage, isAscending, searchText, createCampusModal, editSchoolModal, dispatch]);
+  }, [page, rowsPerPage, isAscending, searchText, createCampusModal, editCampusModal, dispatch]);
 
   useEffect(() => {
     if (validationErrors?.error && validationErrors?.error?.length > 0) {
@@ -144,12 +159,14 @@ const CampusManagement = () => {
       {createCampusModal ? (
         <CampusCreate
           openCreateSchoolModal={openCreateSchoolModal}
+          closeCreateSchoolModal={closeCreateSchoolModal}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
         />
-      ) : editSchoolModal ? (
+      ) : editCampusModal ? (
         <CampusEdit
           openEditSchoolModal={openEditSchoolModal}
+          closeEditSchoolModal={closeEditSchoolModal}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
           selectedItem={selectedItem}

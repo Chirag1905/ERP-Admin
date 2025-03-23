@@ -11,7 +11,15 @@ function* signInSaga(action) {
   try {
     const { username, password } = action.payload;
     const tokens = yield call(signIn, username, password);
-    yield put(signInSuccess({ user: { username }, token: tokens.accessToken }));
+    // Calculate the expiry time
+    const expiryTime = new Date().getTime() + tokens.expiresIn * 1000;
+    yield put(
+      signInSuccess({
+        user: { username },
+        token: tokens.accessToken,
+        expiryTime,
+      })
+    );
   } catch (error) {
     yield put(signInFailure(error.message));
   }

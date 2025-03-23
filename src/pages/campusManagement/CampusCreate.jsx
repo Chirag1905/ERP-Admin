@@ -11,6 +11,7 @@ import {
 const CampusCreate = (props) => {
     const {
         openCreateSchoolModal,
+        closeCreateSchoolModal,
         isLoading,
         setIsLoading
     } = props;
@@ -526,7 +527,7 @@ const CampusCreate = (props) => {
 
                     {/* Buttons Section */}
                     <div className='flex items-stretch gap-5'>
-                        <button onClick={openCreateSchoolModal} className='btn btn-secondary'>
+                        <button onClick={closeCreateSchoolModal} className='btn btn-secondary'>
                             Close
                         </button>
                         <button className='btn btn-primary' onClick={handleSubmit}
