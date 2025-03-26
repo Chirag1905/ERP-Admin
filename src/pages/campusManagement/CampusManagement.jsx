@@ -132,16 +132,7 @@ const CampusManagement = () => {
     fetchData();
   }, [page, rowsPerPage, isAscending, searchText, createCampusModal, editCampusModal, dispatch]);
 
-  useEffect(() => {
-    if (validationErrors?.error && validationErrors?.error?.length > 0) {
-      validationErrors?.error?.forEach((error) => {
-        toast.error(`${error.field}: ${error.message}`, {
-          position: "top-right",
-          duration: 5000,
-        });
-      });
-    }
-  }, [dispatch]);
+
 
   return (
     <>

@@ -35,8 +35,8 @@ function* postCampusSaga(action) {
       // Handle validation errors or other API errors
       yield put(
         postCampusFailure({
-          message: response.data.message, // Optional: Include the error message
-          error: response.data.errors, // Pass the validation errors array
+          message: response.data.message,
+          error: response.data.errors,
         })
       );
     }
@@ -44,8 +44,8 @@ function* postCampusSaga(action) {
     // Handle unexpected errors (e.g., network issues)
     yield put(
       postCampusFailure({
-        message: error, // Optional: Include the error message
-        error: [], // No validation errors for unexpected errors
+        message: error.data.message,
+        error: error.data.errors,
       })
     );
   }

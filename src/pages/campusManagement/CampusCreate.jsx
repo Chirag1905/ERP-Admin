@@ -17,12 +17,9 @@ const CampusCreate = (props) => {
     } = props;
 
     const dispatch = useDispatch();
-    const { campusData, validationErrors, campusPostData, loading, error } = useSelector((state) => state.campus);
-    console.log("🚀 ~ CampusCreate ~ validationErrors:", validationErrors)
+    const { campusPostData, loading, error } = useSelector((state) => state.campus);
+    console.log("🚀 ~ CampusCreate ~ campusPostData:", campusPostData)
     console.log("🚀 ~ CampusCreate ~ error:", error)
-    console.log("🚀 ~ CampusCreate ~ loading:", loading)
-    console.log("🚀 ~ CampusCreate ~ campusPostData:", campusPostData);
-    console.log("🚀 ~ CampusCreate ~ campusData:", campusData);
     const [activeTab, setActiveTab] = useState(0);
 
     const [formData, setFormData] = useState({
@@ -40,83 +37,16 @@ const CampusCreate = (props) => {
         assignedDomains: "",
     });
 
-    // const handleSubmit = async () => {
-    //     setIsLoading((prev) => ({ ...prev, add: true }));
-
-    //     const params = {
-    //         campusGroupName: formData.campusGroupName,
-    //         licenseCount: formData.licenseCount,
-    //         gpsEnabled: formData.gpsEnabled,
-    //         zoomEnabled: formData.zoomEnabled,
-    //         isActive: formData.isActive,
-    //     };
-
-    //     try {
-    //         // Dispatch the postCampusRequest action
-    //         dispatch(postCampusRequest(params));
-    //         if (validationErrors?.error && validationErrors?.error?.length > 0) {
-    //             validationErrors?.error?.forEach((error) => {
-    //                 toast.error(`${error.field}: ${error.message}`, {
-    //                     position: "top-right",
-    //                     duration: 5000,
-    //                 });
-    //             });
-    //         }
-    //     } catch (error) {
-    //         console.error("Error submitting data:", error);
-    //         toast.error("An unexpected error occurred. Please try again.", {
-    //             position: "top-right",
-    //             duration: 3000,
-    //         });
-    //     } finally {
-    //         setIsLoading((prev) => ({ ...prev, add: false }));
-    //     }
-    // };
-
-
-
-    const handleSubmit = async () => {
-        setIsLoading((prev) => ({ ...prev, add: true }));
-
-        const params = {
-            campusGroupName: formData.campusGroupName,
-            licenseCount: formData.licenseCount,
-            gpsEnabled: formData.gpsEnabled,
-            zoomEnabled: formData.zoomEnabled,
-            isActive: formData.isActive,
-        };
-
-        try {
-            // Dispatch API request action
-            dispatch(postCampusRequest(params));
-
-            // Wait until the Redux state updates
-            await new Promise((resolve) => {
-                const checkState = setInterval(() => {
-                    if (campusPostData || validationErrors) {
-                        clearInterval(checkState);
-                        resolve();
-                    }
-                }, 100); // Check every 100ms
-            });
-
-            // 🔹 If validation errors exist, show them
-            if (validationErrors?.error?.length > 0) {
-                validationErrors.error.forEach((error) => {
-                    toast.error(`${error.field}: ${error.message}`, {
-                        position: "top-right",
-                        duration: 5000,
-                    });
-                });
-            }
-            // 🔹 If API succeeds, show success toast
-            else if (campusPostData?.statusCode === 200) {
-                toast.success(campusPostData.message || "Data saved successfully!", {
+    // Handle API responses
+    useEffect(() => {
+        if (campusPostData) {
+            if (campusPostData.message) {
+                toast.success(campusPostData.message, {
                     position: "top-right",
                     duration: 3000,
                 });
 
-                openCreateSchoolModal();
+                // Refresh campus data
                 dispatch(getCampusRequest({
                     data: {
                         page: 0,
@@ -125,18 +55,58 @@ const CampusCreate = (props) => {
                         ascending: true,
                     },
                 }));
+                dispatch(postCampusSuccess(null));
+                closeCreateSchoolModal();
             }
-            // 🔹 If API fails without validation errors, show generic error
-            else {
-                toast.error("Failed to save data. Please try again.", {
+        }               
+    }, [campusPostData, dispatch, closeCreateSchoolModal]);
+
+    // Handle errors
+    useEffect(() => {
+        if (error) {
+            // Handle field-specific errors
+            if (Array.isArray(error.error)) {
+                error.error.forEach((err) => {
+                    toast.error(`${err.field || 'Error'}: ${err.message}`, {
+                        position: "top-right",
+                        duration: 3000,
+                    });
+                });
+            }
+            // Handle general error message
+            else if (error.message) {
+                toast.error(error.message, {
                     position: "top-right",
                     duration: 3000,
                 });
             }
+            // Fallback for unexpected error format
+            else {
+                toast.error("An unexpected error occurred", {
+                    position: "top-right",
+                    duration: 3000,
+                });
+            }
+        }
+    }, [error]);
 
-        } catch (error) {
-            console.error("Error submitting data:", error);
-            toast.error("An unexpected error occurred. Please try again.", {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsLoading((prev) => ({ ...prev, add: true }));
+
+        try {
+            const params = {
+                campusGroupName: formData.campusGroupName,
+                licenseCount: formData.licenseCount,
+                gpsEnabled: formData.gpsEnabled,
+                zoomEnabled: formData.zoomEnabled,
+                isActive: formData.isActive,
+            };
+
+            dispatch(postCampusRequest(params));
+        } catch (err) {
+            console.error("Error submitting data:", err);
+            toast.error("Failed to submit data. Please try again.", {
                 position: "top-right",
                 duration: 3000,
             });
@@ -144,18 +114,6 @@ const CampusCreate = (props) => {
             setIsLoading((prev) => ({ ...prev, add: false }));
         }
     };
-
-    useEffect(() => {
-        if (validationErrors?.error && validationErrors?.error?.length > 0) {
-            validationErrors?.error?.forEach((error) => {
-                toast.error(`${error.field}: ${error.message}`, {
-                    position: "top-right",
-                    duration: 2000,
-                });
-            });
-        }
-    }, [postCampusSuccess]);
-
     // Function to update form data
     const updateFormData = (key, value) => {
         setFormData((prevData) => ({

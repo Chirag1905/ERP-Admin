@@ -7,7 +7,6 @@ const campusSlice = createSlice({
     campusPostData: [],
     loading: false,
     error: null,
-    validationErrors: [],
   },
   reducers: {
     getCampusRequest: (state) => {
@@ -25,22 +24,19 @@ const campusSlice = createSlice({
     postCampusRequest: (state) => {
       state.loading = true;
       state.error = null;
-      state.validationErrors = [];
     },
     postCampusSuccess: (state, action) => {
       state.campusPostData = action.payload;
       state.loading = false;
     },
     postCampusFailure: (state, action) => {
-      state.error = action.payload;
-      state.validationErrors = action.payload || [];
+      state.error = action.payload || [];
       state.loading = false;
     },
     // Add new actions for updating campus data
     putCampusRequest: (state) => {
       state.loading = true;
       state.error = null;
-      state.validationErrors = [];
     },
     putCampusSuccess: (state, action) => {
       state.campusData = state.campusData.map((campus) =>
@@ -49,8 +45,7 @@ const campusSlice = createSlice({
       state.loading = false;
     },
     putCampusFailure: (state, action) => {
-      state.error = action.payload;
-      state.validationErrors = action.payload || [];
+      state.error = action.payload || [];
       state.loading = false;
     },
   },

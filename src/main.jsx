@@ -10,7 +10,7 @@ import { signOutSuccess } from './Redux/features/auth/authSlice.js';
 const setupAutoLogout = () => {
   const state = store.getState();
   const expiryTime = state.auth.expiryTime;
-  console.log("🚀 ~ setupAutoLogout ~ expiryTime:", expiryTime)
+  // console.log("🚀 ~ setupAutoLogout ~ expiryTime:", expiryTime)
 
   if (expiryTime) {
     const currentTime = new Date().getTime();

@@ -14,7 +14,7 @@ export default function AuthLayout() {
                             <span
                                 className="text-primary font-bold text-4xl w-[116px] h-auto text-center bg-transparent border-b border-transparent hover:border-gray-400 focus:outline-none focus:border-white transition-colors placeholder-gray-400"
                             >
-                                Techvein Admin
+                             Admin
                             </span>
                         </div>
                         <p className='mb-12 text-[32px]/[40px] font-medium'>

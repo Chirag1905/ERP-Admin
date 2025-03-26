@@ -8,12 +8,12 @@ import rootSaga from "./rootSaga";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ['auth'],
+  whitelist: ["auth"],
 };
 
 // const persistedReducer = persistReducer(persistConfig, rootReducer);
 const persistedReducer = persistReducer(persistConfig, (state, action) => {
-  console.log('Redux Persist State:', state); // Debugging line
+  // console.log('Redux Persist State:', state); // Debugging line
   return rootReducer(state, action);
 });
 
@@ -29,7 +29,7 @@ const store = configureStore({
 
 // Debugging: Log the store state after rehydration
 persistStore(store, null, () => {
-  console.log('Rehydrated State:', store.getState());
+  // console.log('Rehydrated State:', store.getState());
 });
 
 sagaMiddleware.run(rootSaga);

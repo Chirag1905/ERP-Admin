@@ -14,7 +14,7 @@ import PageNotFound from "../pages/auth/PageNotFound";
 import CampusManagement from "../pages/campusManagement/CampusManagement";
 import Test from "../pages/Test";
 import PrivateRoute from "./PrivateRoute";
-import AcademicYearListPage from "../pages/AcademicYear/AcademicYearListPage";
+import AcademicYearListPage from "../pages/academicYear/AcademicYearListPage";
 
 export default function Routers() {
   const RouterContent = () => {
@@ -42,13 +42,13 @@ export default function Routers() {
         </Route>
 
         {/* Private Routes (Protected) */}
-        <Route element={<PrivateRoute />}>
+        {/* <Route element={<PrivateRoute />}> */}
           <Route element={<Layout />}>
             <Route path="/" element={<Analysis />} />
             <Route path="/test" element={<Test />} />
             <Route path="/academicYears" element={<AcademicYearListPage />} />
             <Route path="/schools" element={<CampusManagement />} />
-          </Route>
+          {/* </Route> */}
         </Route>
       </Routes>
     );
