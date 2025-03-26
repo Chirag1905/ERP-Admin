@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const getCampus = async (obj) => {
+export const getCampusGroup = async (obj) => {
   try {
     const response = await axios.get(
       "https://api.testmazing.com/campus/api/campusgroupspagination",
@@ -18,7 +18,7 @@ export const getCampus = async (obj) => {
   }
 };
 
-export const postCampus = async (obj) => {
+export const postCampusGroup = async (obj) => {
   // console.log(obj, "Main object Post Campus");
   try {
     const response = await axios.post(
@@ -37,10 +37,10 @@ export const postCampus = async (obj) => {
   }
 };
 
-export const putCampus = async (id, data) => {
+export const putCampusGroup = async (id, data) => {
   try {
     const response = await axios.put(
-      `https://api.testmazing.com/campus/api/updatecampus/${id}`,
+      `https://api.testmazing.com/campus/api/updatecampusgroup/${id}`,
       data,
       {
         headers: {

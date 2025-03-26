@@ -1,40 +1,44 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import {
-  getCampusRequest,
-  getCampusSuccess,
-  getCampusFailure,
-  postCampusRequest,
-  postCampusSuccess,
-  postCampusFailure,
-  putCampusSuccess,
-  putCampusFailure,
-  putCampusRequest,
-} from "./campusSlice";
-import { getCampus, postCampus, putCampus } from "./campusApi";
+  getCampusGroupRequest,
+  getCampusGroupSuccess,
+  getCampusGroupFailure,
+  postCampusGroupRequest,
+  postCampusGroupSuccess,
+  postCampusGroupFailure,
+  putCampusGroupSuccess,
+  putCampusGroupFailure,
+  putCampusGroupRequest,
+} from "./campusGroupSlice";
+import {
+  getCampusGroup,
+  postCampusGroup,
+  putCampusGroup,
+} from "./campusGroupApi";
 
 function* getCampusSaga(action) {
   try {
-    const response = yield call(getCampus, action.payload);
-    yield put(getCampusSuccess(response.data));
+    const response = yield call(getCampusGroup, action.payload);
+    yield put(getCampusGroupSuccess(response.data));
   } catch (error) {
-    yield put(getCampusFailure(error.message));
+    yield put(getCampusGroupFailure(error.message));
   }
 }
 
 function* postCampusSaga(action) {
   try {
-    const response = yield call(postCampus, action.payload);
+    const response = yield call(postCampusGroup, action.payload);
     if (response.status === 200 || response.status === 201) {
-      yield put(postCampusSuccess(response.data));
+      yield put(postCampusGroupSuccess(response.data));
       yield put(
-        getCampusRequest({
+        getCampusGroupRequest({
           data: { page: 0, size: 10, sortBy: "id", ascending: true },
         })
       );
     } else {
       // Handle validation errors or other API errors
       yield put(
-        postCampusFailure({
+        postCampusGroupFailure({
           message: response.data.message,
           error: response.data.errors,
         })
@@ -43,7 +47,7 @@ function* postCampusSaga(action) {
   } catch (error) {
     // Handle unexpected errors (e.g., network issues)
     yield put(
-      postCampusFailure({
+      postCampusGroupFailure({
         message: error.data.message,
         error: error.data.errors,
       })
@@ -55,17 +59,17 @@ function* postCampusSaga(action) {
 function* putCampusSaga(action) {
   try {
     const { id, data } = action.payload;
-    const response = yield call(putCampus, id, data);
+    const response = yield call(putCampusGroup, id, data);
     if (response.status === 200 || response.status === 201) {
-      yield put(putCampusSuccess(response.data));
+      yield put(putCampusGroupSuccess(response.data));
       yield put(
-        getCampusRequest({
+        getCampusGroupRequest({
           data: { page: 0, size: 10, sortBy: "id", ascending: true },
         })
       );
     } else {
       yield put(
-        putCampusFailure({
+        putCampusGroupFailure({
           message: response.data.message,
           error: response.data.errors,
         })
@@ -73,7 +77,7 @@ function* putCampusSaga(action) {
     }
   } catch (error) {
     yield put(
-      putCampusFailure({
+      putCampusGroupFailure({
         message: error,
         error: [],
       })
@@ -82,7 +86,7 @@ function* putCampusSaga(action) {
 }
 
 export default function* campusSaga() {
-  yield takeLatest(getCampusRequest.type, getCampusSaga);
-  yield takeLatest(postCampusRequest.type, postCampusSaga);
-  yield takeLatest(putCampusRequest.type, putCampusSaga);
+  yield takeLatest(getCampusGroupRequest.type, getCampusSaga);
+  yield takeLatest(postCampusGroupRequest.type, postCampusSaga);
+  yield takeLatest(putCampusGroupRequest.type, putCampusSaga);
 }

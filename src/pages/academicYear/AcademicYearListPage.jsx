@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { getCampusRequest } from "../../Redux/features/campus/campusSlice";
 import Breadcrumb from '../../components/common/Breadcrumb';
 import WelcomeHeader from '../../components/common/WelcomeHeader';
 import {
@@ -30,14 +29,14 @@ const AcademicYearListPage = () => {
       name: "Academic Years",
     },
   ];
-  const dispatch = useDispatch();
-  const {
-    campusData,
-    validationErrors,
-    campusPostData,
-    loading,
-    error
-  } = useSelector((state) => state.campus);
+  // const dispatch = useDispatch();
+  // const {
+  //   campusData,
+  //   validationErrors,
+  //   campusPostData,
+  //   loading,
+  //   error
+  // } = useSelector((state) => state.campus);
   const [searchText, setSearchText] = useState("");
   const [isAscending, setIsAscending] = useState(true);
   const [createAcademicModal, setCreateAcademicModal] = useState(false);

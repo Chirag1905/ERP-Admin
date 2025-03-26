@@ -4,8 +4,8 @@ const modalSlice = createSlice({
   name: "modal",
   initialState: {
     modals: {
-      createCampus: { isOpen: false },
-      editCampus: { isOpen: false }, // Example: Additional data for edit modal
+      createCampusGroup: { isOpen: false },
+      editCampusGroup: { isOpen: false }, // Example: Additional data for edit modal
     },
   },
   reducers: {

@@ -1,25 +1,28 @@
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import toast, { Toaster } from 'react-hot-toast';
 import {
-    getCampusRequest,
-    postCampusRequest,
-    postCampusFailure,
-    postCampusSuccess,
-} from '../../Redux/features/campus/campusSlice';
+    getCampusGroupRequest,
+    putCampusGroupRequest,
+    putCampusGroupSuccess
+} from '../../Redux/features/campusGroup/campusGroupSlice';
+import toast from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { IconBooksOff } from '@tabler/icons-react';
 
-const CampusCreate = (props) => {
+const CampusGroupEdit = (props) => {
     const {
-        openCreateSchoolModal,
-        closeCreateSchoolModal,
+        openEditSchoolModal,
+        closeEditSchoolModal,
         isLoading,
-        setIsLoading
+        setIsLoading,
+        selectedItem,
+        setSelectedItem
     } = props;
-
     const dispatch = useDispatch();
-    const { campusPostData, loading, error } = useSelector((state) => state.campus);
-    console.log("🚀 ~ CampusCreate ~ campusPostData:", campusPostData)
-    console.log("🚀 ~ CampusCreate ~ error:", error)
+    const {
+        campusPutGroupData,
+        loading,
+        error
+    } = useSelector((state) => state.campusGroup);
     const [activeTab, setActiveTab] = useState(0);
 
     const [formData, setFormData] = useState({
@@ -37,17 +40,70 @@ const CampusCreate = (props) => {
         assignedDomains: "",
     });
 
+    // Function to update form data
+    const updateFormData = (key, value) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            [key]: value,
+        }));
+    };
+
+    //  const modules = [
+    //     "Instant Fee",
+    //     "Discussion",
+    //     "Online Exam",
+    //     "Data Management",
+    //     "Gallery",
+    //     "Custom Report",
+    //     "Assignment",
+    //     "Task",
+    //     "Placement",
+    //     "Online Meeting",
+    //     "Moodle",
+    //     "Applicant Registration",
+    //     "Blog",
+    //     "Data Profile",
+    //     "App Frame",
+    //   ];
+
+    //  const handleModuleChange = (module) => {
+    //     if (selectedModules.includes(module)) {
+    //       setSelectedModules(selectedModules.filter((m) => m !== module));
+    //     } else {
+    //       setSelectedModules([...selectedModules, module]);
+    //     }
+    //   };
+
+    useEffect(() => {
+        if (selectedItem) {
+            setFormData({
+                campusGroupName: selectedItem?.campusGroupName || "",
+                licenseCount: selectedItem?.licenseCount || "",
+                gpsEnabled: selectedItem?.gpsEnabled || false,
+                zoomEnabled: selectedItem?.zoomEnabled || false,
+                isActive: selectedItem?.isActive || false,
+                inheritEmailSettings: selectedItem?.inheritEmailSettings || false,
+                inheritGoogleOAuth: selectedItem?.inheritGoogleOAuth || false,
+                enableGPS: selectedItem?.enableGPS || false,
+                enableGoogleMeet: selectedItem?.enableGoogleMeet || false,
+                enableSMSTemplateEdit: selectedItem?.enableSMSTemplateEdit || false,
+                enableSMSTemplateID: selectedItem?.enableSMSTemplateID || false,
+                assignedDomains: selectedItem?.assignedDomains || "",
+            });
+        }
+    }, [selectedItem])
+
     // Handle API responses
     useEffect(() => {
-        if (campusPostData) {
-            if (campusPostData.message) {
-                toast.success(campusPostData.message, {
+        if (campusPutGroupData) {
+            if (campusPutGroupData.message) {
+                toast.success(campusPutGroupData.message, {
                     position: "top-right",
                     duration: 3000,
                 });
 
                 // Refresh campus data
-                dispatch(getCampusRequest({
+                dispatch(getCampusGroupRequest({
                     data: {
                         page: 0,
                         size: 10,
@@ -55,11 +111,11 @@ const CampusCreate = (props) => {
                         ascending: true,
                     },
                 }));
-                dispatch(postCampusSuccess(null));
-                closeCreateSchoolModal();
+                dispatch(putCampusGroupSuccess(null));
+                closeEditSchoolModal();
             }
-        }               
-    }, [campusPostData, dispatch, closeCreateSchoolModal]);
+        }
+    }, [campusPutGroupData, dispatch, closeEditSchoolModal]);
 
     // Handle errors
     useEffect(() => {
@@ -93,20 +149,12 @@ const CampusCreate = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading((prev) => ({ ...prev, add: true }));
-
         try {
-            const params = {
-                campusGroupName: formData.campusGroupName,
-                licenseCount: formData.licenseCount,
-                gpsEnabled: formData.gpsEnabled,
-                zoomEnabled: formData.zoomEnabled,
-                isActive: formData.isActive,
-            };
-
-            dispatch(postCampusRequest(params));
-        } catch (err) {
-            console.error("Error submitting data:", err);
-            toast.error("Failed to submit data. Please try again.", {
+            // Dispatch API request action
+            dispatch(putCampusGroupRequest({ id: selectedItem?.id, data: formData }));
+        } catch (error) {
+            console.error("Error submitting data:", error);
+            toast.error("An unexpected error occurred. Please try again.", {
                 position: "top-right",
                 duration: 3000,
             });
@@ -114,23 +162,22 @@ const CampusCreate = (props) => {
             setIsLoading((prev) => ({ ...prev, add: false }));
         }
     };
-    // Function to update form data
-    const updateFormData = (key, value) => {
-        setFormData((prevData) => ({
-            ...prevData,
-            [key]: value,
-        }));
-    };
 
     return (
         <>
-            <Toaster />
             <div className='py-10 md:px-10 mt-10 px-[7px] bg-card-color rounded-lg'>
                 <div className='my-10 lg:px-20 md:px-10 px-[7px] md:max-h-[80svh] max-h-[60svh] overflow-auto cus-scrollbar'>
                     <div className="flex justify-between items-center">
                         <div className='text-[24px]/[30px] font-medium mb-2'>
-                            New School
+                            Edit School
                         </div>
+                        <button
+                            onClick={openEditSchoolModal}
+                            className="flex gap-1 btn btn-light-primary mt-2"
+                        >
+                            <IconBooksOff />
+                            <span className="md:block hidden">Deactivate School</span>
+                        </button>
                     </div>
 
                     {/* Flex container for tabs and content */}
@@ -164,7 +211,7 @@ const CampusCreate = (props) => {
                                                     type='text'
                                                     placeholder='School Name'
                                                     className='form-input'
-                                                    value={formData?.campusGroupName || ""}
+                                                    value={formData.campusGroupName || ""}
                                                     onChange={(e) => updateFormData("campusGroupName", e.target.value)}
                                                 />
                                             </div>
@@ -178,7 +225,7 @@ const CampusCreate = (props) => {
                                                     type='number'
                                                     placeholder='license count'
                                                     className='form-input'
-                                                    value={formData?.licenseCount || ""}
+                                                    value={formData.licenseCount || ""}
                                                     onChange={(e) => updateFormData("licenseCount", e.target.value)}
                                                 />
                                             </div>
@@ -191,7 +238,7 @@ const CampusCreate = (props) => {
                                                 <input
                                                     type="checkbox"
                                                     className="form-check-input"
-                                                    checked={formData?.gpsEnabled || ""}
+                                                    checked={formData.gpsEnabled || ""}
                                                     onChange={(e) => updateFormData("gpsEnabled", e.target.checked)}
                                                 />
                                                 <label className="form-check-label ml-2" htmlFor="lightIndoor1">{formData?.gpsEnabled === true ? "Enabled" : "Disable"}</label>
@@ -205,7 +252,7 @@ const CampusCreate = (props) => {
                                                 <input
                                                     type='checkbox'
                                                     className='form-check-input'
-                                                    checked={formData?.zoomEnabled || ""}
+                                                    checked={formData.zoomEnabled || ""}
                                                     onChange={(e) => updateFormData("zoomEnabled", e.target.checked)}
                                                 />
                                                 <label className="form-check-label ml-2" htmlFor="lightIndoor1">{formData?.zoomEnabled === true ? "Enabled" : "Disable"}</label>
@@ -219,7 +266,7 @@ const CampusCreate = (props) => {
                                                 <input
                                                     type='checkbox'
                                                     className='form-check-input'
-                                                    checked={formData?.isActive || ""}
+                                                    checked={formData.isActive || ""}
                                                     onChange={(e) => updateFormData("isActive", e.target.checked)}
                                                 />
                                                 <label className="form-check-label ml-2" htmlFor="lightIndoor1">{formData?.isActive === true ? "Enabled" : "Disable"}</label>
@@ -353,7 +400,38 @@ const CampusCreate = (props) => {
                             {activeTab === 3 && (
                                 <div>
                                     {/* Email Content */}
-                                    <div className='form-control mb-15'>
+                                    <div className="flex flex-col space-y-4">
+                                        <div className='flex justify-between px-10'>
+                                            <label htmlFor='campaignsTitle' className='form-label'>
+                                                Inherit Email Settings <span className="text-red-500"> *</span>
+                                            </label>
+                                            <div className='form-check form-switch h-full w-3/5 mb-15'>
+                                                <input
+                                                    type="checkbox"
+                                                    className="form-check-input"
+                                                    checked={formData.gpsEnabled || ""}
+                                                    onChange={(e) => updateFormData("gpsEnabled", e.target.checked)}
+                                                />
+                                                <label className="form-check-label ml-2" htmlFor="lightIndoor1">{formData?.gpsEnabled === true ? "Enable" : "Disable"}</label>
+                                            </div>
+                                        </div>
+                                        <div className='flex justify-between px-10'>
+                                            <label htmlFor='campaignsTitle' className='form-label'>
+                                                Inherit Google OAuth
+                                                {/* <span className="text-red-500"> *</span> */}
+                                            </label>
+                                            <div className='form-check form-switch h-full w-3/5 mb-15'>
+                                                <input
+                                                    type="checkbox"
+                                                    className="form-check-input"
+                                                    checked={formData.gpsEnabled || ""}
+                                                    onChange={(e) => updateFormData("gpsEnabled", e.target.checked)}
+                                                />
+                                                <label className="form-check-label ml-2" htmlFor="lightIndoor1">{formData?.gpsEnabled === true ? "Enable" : "Disable"}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/* <div className='form-control mb-15'>
                                         <div className='relative w-full flex'>
                                             <div className="flex items-center justify-center gap-4 border border-border-color rounded-s-md mr-[-1px] py-[6px] px-[12px] bg-body-color">
                                                 <div className="form-check">
@@ -366,6 +444,7 @@ const CampusCreate = (props) => {
                                                     />
                                                     <label className="form-check-label !text-[16px]/[24px] ml-2" htmlFor="campaignsEmail">Inherit Email Settings</label>
                                                 </div>
+                                              
                                                 <div className="form-check">
                                                     <input
                                                         type="checkbox"
@@ -378,7 +457,7 @@ const CampusCreate = (props) => {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             )}
                             {activeTab === 4 && (
@@ -485,14 +564,11 @@ const CampusCreate = (props) => {
 
                     {/* Buttons Section */}
                     <div className='flex items-stretch gap-5'>
-                        <button onClick={closeCreateSchoolModal} className='btn btn-secondary'>
+                        <button onClick={closeEditSchoolModal} className='btn btn-secondary'>
                             Close
                         </button>
-                        <button className='btn btn-primary' onClick={handleSubmit}
-                        // disabled={isLoading.add}
-                        >
-                            {/* {isLoading.add ? 'Loading...' : 'Submit'} */}
-                            Submit
+                        <button className='btn btn-primary' onClick={handleSubmit}>
+                            Save
                         </button>
                     </div>
                 </div>
@@ -501,4 +577,4 @@ const CampusCreate = (props) => {
     )
 }
 
-export default CampusCreate;
+export default CampusGroupEdit;

@@ -293,8 +293,8 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
   };
 
   const closeModals = () => {
-    dispatch(closeModal({ modalType: "createCampus" }))
-    dispatch(closeModal({ modalType: "editCampus" }))
+    dispatch(closeModal({ modalType: "createCampusGroup" }))
+    dispatch(closeModal({ modalType: "editCampusGroup" }))
   };
 
   useEffect(() => {

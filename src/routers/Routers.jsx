@@ -11,10 +11,10 @@ import TwoStep from "../pages/auth/TwoStep";
 import Lockscreen from "../pages/auth/Lockscreen";
 import Maintenance from "../pages/auth/Maintenance";
 import PageNotFound from "../pages/auth/PageNotFound";
-import CampusManagement from "../pages/campusManagement/CampusManagement";
 import Test from "../pages/Test";
 import PrivateRoute from "./PrivateRoute";
 import AcademicYearListPage from "../pages/academicYear/AcademicYearListPage";
+import CampusGroupManagement from "../pages/campusGroup/CampusGroupManagement";
 
 export default function Routers() {
   const RouterContent = () => {
@@ -43,11 +43,11 @@ export default function Routers() {
 
         {/* Private Routes (Protected) */}
         {/* <Route element={<PrivateRoute />}> */}
-          <Route element={<Layout />}>
-            <Route path="/" element={<Analysis />} />
-            <Route path="/test" element={<Test />} />
-            <Route path="/academicYears" element={<AcademicYearListPage />} />
-            <Route path="/schools" element={<CampusManagement />} />
+        <Route element={<Layout />}>
+          <Route path="/" element={<Analysis />} />
+          <Route path="/test" element={<Test />} />
+          <Route path="/academicYears" element={<AcademicYearListPage />} />
+          <Route path="/schools" element={<CampusGroupManagement />} />
           {/* </Route> */}
         </Route>
       </Routes>

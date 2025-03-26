@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { getCampusRequest } from "../../Redux/features/campus/campusSlice";
+import { getCampusGroupRequest } from "../../Redux/features/campusGroup/campusGroupSlice";
 import Breadcrumb from '../../components/common/Breadcrumb';
 import WelcomeHeader from '../../components/common/WelcomeHeader';
 import {
@@ -19,13 +19,12 @@ import {
   IconCaretUpFilled,
   IconBooksOff,
 } from '@tabler/icons-react';
-import CampusCreate from './CampusCreate';
+import CampusCreate from './CampusGroupCreate';
+import CampusEdit from './CampusGroupEdit';
 import CustomPagination from '../CustomPagination';
-import toast from 'react-hot-toast';
-import CampusEdit from './CampusEdit';
 import { closeModal, openModal } from '../../Redux/features/utils/modalSlice';
 
-const CampusManagement = () => {
+const CampusGroupManagement = () => {
   const breadcrumbItem = [
     {
       name: "School Management",
@@ -33,20 +32,17 @@ const CampusManagement = () => {
   ];
   const dispatch = useDispatch();
   const {
-    campusData,
-    validationErrors,
-    campusPostData,
+    campusGroupData,
     loading,
     error
-  } = useSelector((state) => state.campus);
+  } = useSelector((state) => state.campusGroup);
+  console.log("🚀 ~ CampusGroupManagement ~ campusGroupData:", campusGroupData)
   const { modals } = useSelector((state) => state.modal);
-  const createCampusModal = modals.createCampus.isOpen;
-  const editCampusModal = modals.editCampus.isOpen;
+  const createCampusModal = modals.createCampusGroup.isOpen;
+  const editCampusModal = modals.editCampusGroup.isOpen;
 
   const [searchText, setSearchText] = useState("");
   const [isAscending, setIsAscending] = useState(true);
-  // const [createCampusModal, setCreateCampusModal] = useState(false);
-  // const [editSchoolModal, setEditSchoolModal] = useState(false);
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState({ main: false, edit: false, add: false });
 
@@ -70,23 +66,25 @@ const CampusManagement = () => {
 
   // Open Create Campus Modal
   const openCreateSchoolModal = () => {
-    dispatch(openModal({ modalType: "createCampus" }));
+    dispatch(openModal({ modalType: "createCampusGroup" }));
+    dispatch(closeModal({ modalType: "editCampusGroup" }));
   };
 
   // Open Edit Campus Modal
   const openEditSchoolModal = (item) => {
-    dispatch(openModal({ modalType: "editCampus" }));
+    dispatch(openModal({ modalType: "editCampusGroup" }));
+    dispatch(closeModal({ modalType: "createCampusGroup" }));
     setSelectedItem(item);
   };
 
   // Close Create Campus Modal
   const closeCreateSchoolModal = () => {
-    dispatch(closeModal({ modalType: "createCampus" }));
+    dispatch(closeModal({ modalType: "createCampusGroup" }));
   };
 
   // Close Edit Campus Modal
   const closeEditSchoolModal = () => {
-    dispatch(closeModal({ modalType: "editCampus" }));
+    dispatch(closeModal({ modalType: "editCampusGroup" }));
   };
   // Prevent body scroll when modals are open
   useEffect(() => {
@@ -98,11 +96,11 @@ const CampusManagement = () => {
   }, [createCampusModal, editCampusModal]);
 
   useEffect(() => {
-    if (campusData) {
-      setData(campusData?.data?.content);
-      setTotalPages(campusData?.data?.totalPages);
+    if (campusGroupData) {
+      setData(campusGroupData?.data?.content);
+      setTotalPages(campusGroupData?.data?.totalPages);
     }
-  }, [campusData, page, rowsPerPage]);
+  }, [campusGroupData, page, rowsPerPage]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -121,7 +119,7 @@ const CampusManagement = () => {
 
       try {
         // Wait for both the API call and the minimum delay to complete
-        await Promise.all([dispatch(getCampusRequest({ data: params })), minDelay]);
+        await Promise.all([dispatch(getCampusGroupRequest({ data: params })), minDelay]);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -131,8 +129,6 @@ const CampusManagement = () => {
 
     fetchData();
   }, [page, rowsPerPage, isAscending, searchText, createCampusModal, editCampusModal, dispatch]);
-
-
 
   return (
     <>
@@ -253,4 +249,4 @@ const CampusManagement = () => {
   );
 }
 
-export default CampusManagement;
+export default CampusGroupManagement;

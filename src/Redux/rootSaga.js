@@ -1,10 +1,10 @@
 import { all } from "redux-saga/effects";
-import campusSaga from "./features/campus/campusSaga";
+import campusGroupSaga from "./features/campusGroup/campusGroupSaga";
 import authSaga from "./features/auth/authSaga";
 
 export default function* rootSaga() {
   yield all([
-    campusSaga(),
+    campusGroupSaga(),
     authSaga(),
   ]);
 }

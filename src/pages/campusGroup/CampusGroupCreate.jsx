@@ -1,26 +1,24 @@
-import React, { useEffect, useState } from 'react'
-import { getCampusRequest, putCampusRequest } from '../../Redux/features/campus/campusSlice';
-import toast from 'react-hot-toast';
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { IconBooksOff } from '@tabler/icons-react';
+import toast, { Toaster } from 'react-hot-toast';
+import {
+    getCampusGroupRequest,
+    postCampusGroupRequest,
+    postCampusGroupSuccess,
+} from '../../Redux/features/campusGroup/campusGroupSlice';
 
-const CampusEdit = (props) => {
+const CampusGroupCreate = (props) => {
     const {
-        openEditSchoolModal,
-        closeEditSchoolModal,
+        openCreateSchoolModal,
+        closeCreateSchoolModal,
         isLoading,
-        setIsLoading,
-        selectedItem,
-        setSelectedItem
+        setIsLoading
     } = props;
+
     const dispatch = useDispatch();
-    const {
-        campusData,
-        validationErrors,
-        campusPostData,
-        loading,
-        error
-    } = useSelector((state) => state.campus);
+    const { campusPostGroupData, loading, error } = useSelector((state) => state.campusGroup);
+    console.log("🚀 ~ CampusCreate ~ campucampusPostGroupDatasPostData:", campusPostGroupData)
+    console.log("🚀 ~ CampusCreate ~ error:", error)
     const [activeTab, setActiveTab] = useState(0);
 
     const [formData, setFormData] = useState({
@@ -38,6 +36,83 @@ const CampusEdit = (props) => {
         assignedDomains: "",
     });
 
+    // Handle API responses
+    useEffect(() => {
+        if (campusPostGroupData) {
+            if (campusPostGroupData.message) {
+                toast.success(campusPostGroupData.message, {
+                    position: "top-right",
+                    duration: 3000,
+                });
+
+                // Refresh campus data
+                dispatch(getCampusGroupRequest({
+                    data: {
+                        page: 0,
+                        size: 10,
+                        sortBy: "id",
+                        ascending: true,
+                    },
+                }));
+                dispatch(postCampusGroupSuccess(null));
+                closeCreateSchoolModal();
+            }
+        }               
+    }, [campusPostGroupData, dispatch, closeCreateSchoolModal]);
+
+    // Handle errors
+    useEffect(() => {
+        if (error) {
+            // Handle field-specific errors
+            if (Array.isArray(error.error)) {
+                error.error.forEach((err) => {
+                    toast.error(`${err.field || 'Error'}: ${err.message}`, {
+                        position: "top-right",
+                        duration: 3000,
+                    });
+                });
+            }
+            // Handle general error message
+            else if (error.message) {
+                toast.error(error.message, {
+                    position: "top-right",
+                    duration: 3000,
+                });
+            }
+            // Fallback for unexpected error format
+            else {
+                toast.error("An unexpected error occurred", {
+                    position: "top-right",
+                    duration: 3000,
+                });
+            }
+        }
+    }, [error]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsLoading((prev) => ({ ...prev, add: true }));
+
+        try {
+            const params = {
+                campusGroupName: formData.campusGroupName,
+                licenseCount: formData.licenseCount,
+                gpsEnabled: formData.gpsEnabled,
+                zoomEnabled: formData.zoomEnabled,
+                isActive: formData.isActive,
+            };
+
+            dispatch(postCampusGroupRequest(params));
+        } catch (err) {
+            console.error("Error submitting data:", err);
+            toast.error("Failed to submit data. Please try again.", {
+                position: "top-right",
+                duration: 3000,
+            });
+        } finally {
+            setIsLoading((prev) => ({ ...prev, add: false }));
+        }
+    };
     // Function to update form data
     const updateFormData = (key, value) => {
         setFormData((prevData) => ({
@@ -46,128 +121,15 @@ const CampusEdit = (props) => {
         }));
     };
 
-    //  const modules = [
-    //     "Instant Fee",
-    //     "Discussion",
-    //     "Online Exam",
-    //     "Data Management",
-    //     "Gallery",
-    //     "Custom Report",
-    //     "Assignment",
-    //     "Task",
-    //     "Placement",
-    //     "Online Meeting",
-    //     "Moodle",
-    //     "Applicant Registration",
-    //     "Blog",
-    //     "Data Profile",
-    //     "App Frame",
-    //   ];
-
-    //  const handleModuleChange = (module) => {
-    //     if (selectedModules.includes(module)) {
-    //       setSelectedModules(selectedModules.filter((m) => m !== module));
-    //     } else {
-    //       setSelectedModules([...selectedModules, module]);
-    //     }
-    //   };
-
-    useEffect(() => {
-        if (selectedItem) {
-            setFormData({
-                campusGroupName: selectedItem?.campusGroupName || "",
-                licenseCount: selectedItem?.licenseCount || "",
-                gpsEnabled: selectedItem?.gpsEnabled || false,
-                zoomEnabled: selectedItem?.zoomEnabled || false,
-                isActive: selectedItem?.isActive || false,
-                inheritEmailSettings: selectedItem?.inheritEmailSettings || false,
-                inheritGoogleOAuth: selectedItem?.inheritGoogleOAuth || false,
-                enableGPS: selectedItem?.enableGPS || false,
-                enableGoogleMeet: selectedItem?.enableGoogleMeet || false,
-                enableSMSTemplateEdit: selectedItem?.enableSMSTemplateEdit || false,
-                enableSMSTemplateID: selectedItem?.enableSMSTemplateID || false,
-                assignedDomains: selectedItem?.assignedDomains || "",
-            });
-        }
-    }, [selectedItem])
-
-    const handleSubmit = async () => {
-        setIsLoading((prev) => ({ ...prev, add: true }));
-
-        try {
-            // Dispatch API request action
-            dispatch(putCampusRequest({ id: selectedItem?.id, data: formData }));
-
-            // Wait until the Redux state updates
-            await new Promise((resolve) => {
-                const checkState = setInterval(() => {
-                    if (campusPostData || validationErrors) {
-                        clearInterval(checkState);
-                        resolve();
-                    }
-                }, 100); // Check every 100ms
-            });
-
-            // 🔹 If validation errors exist, show them
-            if (validationErrors?.error?.length > 0) {
-                validationErrors.error.forEach((error) => {
-                    toast.error(`${error.field}: ${error.message}`, {
-                        position: "top-right",
-                        duration: 5000,
-                    });
-                });
-            }
-            // 🔹 If API succeeds, show success toast
-            else if (campusPostData?.statusCode === 200) {
-                toast.success(campusPostData.message || "Data saved successfully!", {
-                    position: "top-right",
-                    duration: 3000,
-                });
-
-                openEditSchoolModal();
-                dispatch(getCampusRequest({
-                    data: {
-                        page: 0,
-                        size: 10,
-                        sortBy: "id",
-                        ascending: true,
-                    },
-                }));
-            }
-            // 🔹 If API fails without validation errors, show generic error
-            else {
-                toast.error("Failed to save data. Please try again.", {
-                    position: "top-right",
-                    duration: 3000,
-                });
-            }
-
-        } catch (error) {
-            console.error("Error submitting data:", error);
-            toast.error("An unexpected error occurred. Please try again.", {
-                position: "top-right",
-                duration: 3000,
-            });
-        } finally {
-            setIsLoading((prev) => ({ ...prev, add: false }));
-        }
-    };
-
     return (
         <>
+            <Toaster />
             <div className='py-10 md:px-10 mt-10 px-[7px] bg-card-color rounded-lg'>
                 <div className='my-10 lg:px-20 md:px-10 px-[7px] md:max-h-[80svh] max-h-[60svh] overflow-auto cus-scrollbar'>
                     <div className="flex justify-between items-center">
                         <div className='text-[24px]/[30px] font-medium mb-2'>
-                            Edit School
+                            New School
                         </div>
-                        <button
-                            onClick={openEditSchoolModal}
-                            className="flex gap-1 btn btn-light-primary mt-2"
-                        >
-                            <IconBooksOff />
-                            <span className="md:block hidden">Deactivate School</span>
-                        </button>
                     </div>
 
                     {/* Flex container for tabs and content */}
@@ -201,7 +163,7 @@ const CampusEdit = (props) => {
                                                     type='text'
                                                     placeholder='School Name'
                                                     className='form-input'
-                                                    value={formData.campusGroupName || ""}
+                                                    value={formData?.campusGroupName || ""}
                                                     onChange={(e) => updateFormData("campusGroupName", e.target.value)}
                                                 />
                                             </div>
@@ -215,7 +177,7 @@ const CampusEdit = (props) => {
                                                     type='number'
                                                     placeholder='license count'
                                                     className='form-input'
-                                                    value={formData.licenseCount || ""}
+                                                    value={formData?.licenseCount || ""}
                                                     onChange={(e) => updateFormData("licenseCount", e.target.value)}
                                                 />
                                             </div>
@@ -228,7 +190,7 @@ const CampusEdit = (props) => {
                                                 <input
                                                     type="checkbox"
                                                     className="form-check-input"
-                                                    checked={formData.gpsEnabled || ""}
+                                                    checked={formData?.gpsEnabled || ""}
                                                     onChange={(e) => updateFormData("gpsEnabled", e.target.checked)}
                                                 />
                                                 <label className="form-check-label ml-2" htmlFor="lightIndoor1">{formData?.gpsEnabled === true ? "Enabled" : "Disable"}</label>
@@ -242,7 +204,7 @@ const CampusEdit = (props) => {
                                                 <input
                                                     type='checkbox'
                                                     className='form-check-input'
-                                                    checked={formData.zoomEnabled || ""}
+                                                    checked={formData?.zoomEnabled || ""}
                                                     onChange={(e) => updateFormData("zoomEnabled", e.target.checked)}
                                                 />
                                                 <label className="form-check-label ml-2" htmlFor="lightIndoor1">{formData?.zoomEnabled === true ? "Enabled" : "Disable"}</label>
@@ -256,7 +218,7 @@ const CampusEdit = (props) => {
                                                 <input
                                                     type='checkbox'
                                                     className='form-check-input'
-                                                    checked={formData.isActive || ""}
+                                                    checked={formData?.isActive || ""}
                                                     onChange={(e) => updateFormData("isActive", e.target.checked)}
                                                 />
                                                 <label className="form-check-label ml-2" htmlFor="lightIndoor1">{formData?.isActive === true ? "Enabled" : "Disable"}</label>
@@ -390,38 +352,7 @@ const CampusEdit = (props) => {
                             {activeTab === 3 && (
                                 <div>
                                     {/* Email Content */}
-                                    <div className="flex flex-col space-y-4">
-                                        <div className='flex justify-between px-10'>
-                                            <label htmlFor='campaignsTitle' className='form-label'>
-                                                Inherit Email Settings <span className="text-red-500"> *</span>
-                                            </label>
-                                            <div className='form-check form-switch h-full w-3/5 mb-15'>
-                                                <input
-                                                    type="checkbox"
-                                                    className="form-check-input"
-                                                    checked={formData.gpsEnabled || ""}
-                                                    onChange={(e) => updateFormData("gpsEnabled", e.target.checked)}
-                                                />
-                                                <label className="form-check-label ml-2" htmlFor="lightIndoor1">{formData?.gpsEnabled === true ? "Enable" : "Disable"}</label>
-                                            </div>
-                                        </div>
-                                        <div className='flex justify-between px-10'>
-                                            <label htmlFor='campaignsTitle' className='form-label'>
-                                                Inherit Google OAuth
-                                                {/* <span className="text-red-500"> *</span> */}
-                                            </label>
-                                            <div className='form-check form-switch h-full w-3/5 mb-15'>
-                                                <input
-                                                    type="checkbox"
-                                                    className="form-check-input"
-                                                    checked={formData.gpsEnabled || ""}
-                                                    onChange={(e) => updateFormData("gpsEnabled", e.target.checked)}
-                                                />
-                                                <label className="form-check-label ml-2" htmlFor="lightIndoor1">{formData?.gpsEnabled === true ? "Enable" : "Disable"}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {/* <div className='form-control mb-15'>
+                                    <div className='form-control mb-15'>
                                         <div className='relative w-full flex'>
                                             <div className="flex items-center justify-center gap-4 border border-border-color rounded-s-md mr-[-1px] py-[6px] px-[12px] bg-body-color">
                                                 <div className="form-check">
@@ -434,7 +365,6 @@ const CampusEdit = (props) => {
                                                     />
                                                     <label className="form-check-label !text-[16px]/[24px] ml-2" htmlFor="campaignsEmail">Inherit Email Settings</label>
                                                 </div>
-                                              
                                                 <div className="form-check">
                                                     <input
                                                         type="checkbox"
@@ -447,7 +377,7 @@ const CampusEdit = (props) => {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> */}
+                                    </div>
                                 </div>
                             )}
                             {activeTab === 4 && (
@@ -554,11 +484,14 @@ const CampusEdit = (props) => {
 
                     {/* Buttons Section */}
                     <div className='flex items-stretch gap-5'>
-                        <button onClick={closeEditSchoolModal} className='btn btn-secondary'>
+                        <button onClick={closeCreateSchoolModal} className='btn btn-secondary'>
                             Close
                         </button>
-                        <button className='btn btn-primary' onClick={handleSubmit}>
-                            Save
+                        <button className='btn btn-primary' onClick={handleSubmit}
+                        // disabled={isLoading.add}
+                        >
+                            {/* {isLoading.add ? 'Loading...' : 'Submit'} */}
+                            Submit
                         </button>
                     </div>
                 </div>
@@ -567,4 +500,4 @@ const CampusEdit = (props) => {
     )
 }
 
-export default CampusEdit
+export default CampusGroupCreate;
