@@ -10,21 +10,18 @@ import { IconBooksOff } from '@tabler/icons-react';
 
 const CampusGroupEdit = (props) => {
     const {
-        openEditSchoolModal,
-        closeEditSchoolModal,
-        isLoading,
-        setIsLoading,
+        openModal,
+        closeModal,
         selectedItem,
         setSelectedItem
     } = props;
-    const dispatch = useDispatch();
-    const {
-        campusPutGroupData,
-        loading,
-        error
-    } = useSelector((state) => state.campusGroup);
-    const [activeTab, setActiveTab] = useState(0);
 
+    // Redux state
+    const dispatch = useDispatch();
+    const { campusGroupPutData, loading, error } = useSelector((state) => state.campusGroup);
+
+    // Component state
+    const [activeTab, setActiveTab] = useState(0);
     const [formData, setFormData] = useState({
         campusGroupName: "",
         licenseCount: "",
@@ -47,6 +44,20 @@ const CampusGroupEdit = (props) => {
             [key]: value,
         }));
     };
+
+    // Form submission handler
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            dispatch(putCampusGroupRequest({ id: selectedItem?.id, data: formData }));
+        } catch (err) {
+            console.error("Error submitting data:", err);
+            toast.error(err || "An unexpected error occurred. Please try again.", {
+                position: "top-right",
+                duration: 2000,
+            });
+        };
+    }
 
     //  const modules = [
     //     "Instant Fee",
@@ -93,75 +104,46 @@ const CampusGroupEdit = (props) => {
         }
     }, [selectedItem])
 
-    // Handle API responses
+    // Handle successful API response
     useEffect(() => {
-        if (campusPutGroupData) {
-            if (campusPutGroupData.message) {
-                toast.success(campusPutGroupData.message, {
-                    position: "top-right",
-                    duration: 3000,
-                });
+        if (!campusGroupPutData?.message) return;
 
-                // Refresh campus data
-                dispatch(getCampusGroupRequest({
-                    data: {
-                        page: 0,
-                        size: 10,
-                        sortBy: "id",
-                        ascending: true,
-                    },
-                }));
-                dispatch(putCampusGroupSuccess(null));
-                closeEditSchoolModal();
-            }
-        }
-    }, [campusPutGroupData, dispatch, closeEditSchoolModal]);
+        toast.success(campusGroupPutData.message, {
+            position: "top-right",
+            duration: 5000,
+        });
 
-    // Handle errors
+        // Refresh campus data
+        dispatch(getCampusGroupRequest({
+            data: {
+                page: 0,
+                size: 10,
+                sortBy: "id",
+                ascending: true,
+            },
+        }));
+
+        dispatch(putCampusGroupSuccess(null));
+        closeModal();
+    }, [campusGroupPutData, dispatch, closeModal]);
+
+    // Handle API errors
     useEffect(() => {
-        if (error) {
-            // Handle field-specific errors
-            if (Array.isArray(error.error)) {
-                error.error.forEach((err) => {
-                    toast.error(`${err.field || 'Error'}: ${err.message}`, {
-                        position: "top-right",
-                        duration: 3000,
-                    });
-                });
-            }
-            // Handle general error message
-            else if (error.message) {
-                toast.error(error.message, {
+        if (!error) return;
+
+        if (Array.isArray(error.error)) {
+            error.error.forEach((err) => {
+                toast.error(`${err.field || 'Error'}: ${err.message}`, {
                     position: "top-right",
-                    duration: 3000,
+                    duration: 2000,
                 });
-            }
-            // Fallback for unexpected error format
-            else {
-                toast.error("An unexpected error occurred", {
-                    position: "top-right",
-                    duration: 3000,
-                });
-            }
+            });
+        } else if (error.message) {
+            toast.error(error.message, { position: "top-right", duration: 2000 });
+        } else {
+            toast.error("An unexpected error occurred", { position: "top-right", duration: 2000 });
         }
     }, [error]);
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setIsLoading((prev) => ({ ...prev, add: true }));
-        try {
-            // Dispatch API request action
-            dispatch(putCampusGroupRequest({ id: selectedItem?.id, data: formData }));
-        } catch (error) {
-            console.error("Error submitting data:", error);
-            toast.error("An unexpected error occurred. Please try again.", {
-                position: "top-right",
-                duration: 3000,
-            });
-        } finally {
-            setIsLoading((prev) => ({ ...prev, add: false }));
-        }
-    };
 
     return (
         <>
@@ -172,7 +154,7 @@ const CampusGroupEdit = (props) => {
                             Edit School
                         </div>
                         <button
-                            onClick={openEditSchoolModal}
+                            onClick={openModal}
                             className="flex gap-1 btn btn-light-primary mt-2"
                         >
                             <IconBooksOff />
@@ -564,11 +546,11 @@ const CampusGroupEdit = (props) => {
 
                     {/* Buttons Section */}
                     <div className='flex items-stretch gap-5'>
-                        <button onClick={closeEditSchoolModal} className='btn btn-secondary'>
+                        <button onClick={closeModal} className='btn btn-secondary'>
                             Close
                         </button>
                         <button className='btn btn-primary' onClick={handleSubmit}>
-                            Save
+                            {loading ? 'Loading...' : 'Update'}
                         </button>
                     </div>
                 </div>
@@ -576,5 +558,4 @@ const CampusGroupEdit = (props) => {
         </>
     )
 }
-
 export default CampusGroupEdit;
