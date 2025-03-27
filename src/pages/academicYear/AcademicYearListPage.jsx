@@ -134,17 +134,21 @@ const AcademicYearListPage = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center">
-        <Breadcrumb breadcrumbItem={breadcrumbItem} />
-        <button
-          onClick={openCreateAcademicModal}
-          className="flex gap-1 btn btn-light-primary"
-        >
-          <IconPlus />
-          <span className="md:block hidden">Add</span>
-        </button>
+      <div>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 md:gap-0">
+          <Breadcrumb breadcrumbItem={breadcrumbItem} />
+          <button
+            onClick={openCreateAcademicModal}
+            className="flex gap-1 btn btn-light-primary w-full md:w-auto"
+          >
+            <IconPlus />
+            <span className="md:block hidden">Add</span>
+            <span className="md:hidden block">Add Academic Year</span>
+          </button>
+        </div>
+        <div className="md:hidden h-4"></div>
+        <WelcomeHeader />
       </div>
-      <WelcomeHeader />
       {createAcademicModal ? (
         <AcademicYearCreateForm
           openCreateAcademicModal={openCreateAcademicModal}
@@ -161,28 +165,30 @@ const AcademicYearListPage = () => {
         />
       ) : (
         <>
-          <div className='min-h-screen py-9 md:px-10 px-[7px] bg-card-color rounded-lg'>
-            <div className='flex justify-between items-start gap-4 mr-6'>
-              <h5 className='text-[20px]/[30px] font-medium ml-6 mr-1'>
+          <div className='min-h-screen py-4 md:py-9 md:px-10 px-4 bg-card-color rounded-lg'>
+            <div className='flex flex-col md:flex-row justify-between items-start gap-4 md:mr-6'>
+              <h5 className='text-lg md:text-[20px] md:leading-[30px] font-medium md:ml-6'>
                 Academic Years Listing
               </h5>
-              <div className='card bg-card-color rounded-xl form-control flex'>
-                <input
-                  type="text"
-                  id="team_board_search"
-                  className="form-input !rounded-e-none !py-[6px]"
-                  placeholder="Search years..."
-                  value={searchText}
-                  onChange={handleSearch}
-                />
-                <button className="btn border border-border-color !rounded-s-none">
-                  <IconSearch className='w-[20px] h-[20px]' />
-                </button>
+              <div className='w-full md:w-auto card bg-card-color rounded-xl form-control flex'>
+                <div className='flex w-full'>
+                  <input
+                    type="text"
+                    id="team_board_search"
+                    className="form-input !rounded-e-none !py-[6px] flex-grow"
+                    placeholder="Search years..."
+                    value={searchText}
+                    onChange={handleSearch}
+                  />
+                  <button className="btn border border-border-color !rounded-s-none">
+                    <IconSearch className='w-[20px] h-[20px]' />
+                  </button>
+                </div>
               </div>
             </div>
-            <div className={`my-10 lg:px-20 md:px-10 px-[7px] md:max-h-[70svh] max-h-[60svh] ${isLoading?.main ? '' : 'overflow-auto cus-scrollbar'}`}>
+            <div className={`my-6 md:my-10 px-2 sm:px-4 md:px-10 h-[60vh] md:h-[70vh] ${isLoading?.main ? '' : 'overflow-auto cus-scrollbar'}`}>
               {isLoading?.main ? (
-                <div className="flex flex-col items-center justify-center h-[250px]">
+                <div className="flex flex-col items-center justify-center h-full">
                   <svg
                     aria-hidden="true"
                     className="w-9 h-12 text-gray-200 animate-spin bg-card-color fill-[#8B2433]"
@@ -201,83 +207,85 @@ const AcademicYearListPage = () => {
                   </svg>
                 </div>
               ) : (
-                <table className="w-full">
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[600px]">
                   <thead>
-                    <tr>
-                      <th className="text-left py-2">
-                        <div className="flex items-center gap-1">
-                          SL
-                          {isAscending ? (
-                            <IconCaretDownFilled onClick={() => setIsAscending(false)} className="cursor-pointer" />
-                          ) : (
-                            <IconCaretUpFilled onClick={() => setIsAscending(true)} className="cursor-pointer" />
-                          )}
-                        </div>
-                      </th>
-                      <th className="text-left py-2">
-                        <div className="flex items-center gap-1">
-                          Name
-                          {isAscending ? (
-                            <IconCaretDownFilled onClick={() => setIsAscending(false)} className="cursor-pointer" />
-                          ) : (
-                            <IconCaretUpFilled onClick={() => setIsAscending(true)} className="cursor-pointer" />
-                          )}
-                        </div>
-                      </th>
-                      <th className="text-left py-2">
-                        <div className="flex items-center gap-1">
-                          Start Date
-                          {isAscending ? (
-                            <IconCaretDownFilled onClick={() => setIsAscending(false)} className="cursor-pointer" />
-                          ) : (
-                            <IconCaretUpFilled onClick={() => setIsAscending(true)} className="cursor-pointer" />
-                          )}
-                        </div>
-                      </th>
-                      <th className="text-left py-2">
-                        <div className="flex items-center gap-1">
-                          End Date
-                          {isAscending ? (
-                            <IconCaretDownFilled onClick={() => setIsAscending(false)} className="cursor-pointer" />
-                          ) : (
-                            <IconCaretUpFilled onClick={() => setIsAscending(true)} className="cursor-pointer" />
-                          )}
-                        </div>
-                      </th>
-                      <th className="text-left py-2">
-                        <div className="flex items-center gap-1">
-                          Actions
-                        </div>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data && data?.length > 0 ? (
-                      data?.map((item, index) => (
-                        <tr key={index} className="border-b border-border-color">
-                          <td className="py-4">{index + 1}</td>
-                          <td className="py-4">{item?.name || ""}</td>
-                          <td className="py-4">{item?.start_date || ""}</td>
-                          <td className="py-4">{item?.start_date || ""}</td>
-                          <td className="py-4">
-                            <div className="flex items-stretch gap-2">
-                              <button className="btn btn-light-primary" onClick={() => { openEditAcademicModal(item) }}>
-                                <IconEdit className='w-[18px] h-[18px] min-w-[18px]' />
-                              </button>
-                              <button className="btn btn-light-danger">
-                                <IconTrash className='w-[18px] h-[18px] min-w-[18px]' />
-                              </button>
-                            </div>
-                          </td>
+  <tr>
+    <th className="py-2 px-2 md:px-4">
+      <div className="flex justify-center items-center gap-1">
+        SL
+        {isAscending ? (
+          <IconCaretDownFilled onClick={() => setIsAscending(false)} className="cursor-pointer w-3 h-3" />
+        ) : (
+          <IconCaretUpFilled onClick={() => setIsAscending(true)} className="cursor-pointer w-3 h-3" />
+        )}
+      </div>
+    </th>
+    <th className="py-2 px-2 md:px-4">
+      <div className="flex justify-center items-center gap-1">
+        Name
+        {isAscending ? (
+          <IconCaretDownFilled onClick={() => setIsAscending(false)} className="cursor-pointer w-3 h-3" />
+        ) : (
+          <IconCaretUpFilled onClick={() => setIsAscending(true)} className="cursor-pointer w-3 h-3" />
+        )}
+      </div>
+    </th>
+    <th className="py-2 px-2 md:px-4">
+      <div className="flex justify-center items-center gap-1">
+        Start Date
+        {isAscending ? (
+          <IconCaretDownFilled onClick={() => setIsAscending(false)} className="cursor-pointer w-3 h-3" />
+        ) : (
+          <IconCaretUpFilled onClick={() => setIsAscending(true)} className="cursor-pointer w-3 h-3" />
+        )}
+      </div>
+    </th>
+    <th className="py-2 px-2 md:px-4">
+      <div className="flex justify-center items-center gap-1">
+        End Date
+        {isAscending ? (
+          <IconCaretDownFilled onClick={() => setIsAscending(false)} className="cursor-pointer w-3 h-3" />
+        ) : (
+          <IconCaretUpFilled onClick={() => setIsAscending(true)} className="cursor-pointer w-3 h-3" />
+        )}
+      </div>
+    </th>
+    <th className="py-2 px-2 md:px-4">
+      <div className="flex justify-center items-center gap-1">
+        Actions
+      </div>
+    </th>
+  </tr>
+</thead>
+                    <tbody>
+                      {data && data?.length > 0 ? (
+                        data?.map((item, index) => (
+                          <tr key={index} className="border-b border-border-color">
+                            <td className="py-4 px-2 md:px-4 text-center">{index + 1}</td>
+                            <td className="py-4 px-2 md:px-4 text-center">{item?.name || ""}</td>
+                            <td className="py-4 px-2 md:px-4 text-center">{item?.start_date || ""}</td>
+                            <td className="py-4 px-2 md:px-4 text-center">{item?.start_date || ""}</td>
+                            <td className="py-4 px-2 md:px-4 text-center">
+                              <div className="flex items-center justify-center gap-2"> {/* Center buttons */}
+                                <button className="btn btn-light-primary p-2" onClick={() => { openEditAcademicModal(item) }}>
+                                  <IconEdit className='w-[16px] h-[16px] md:w-[18px] md:h-[18px] min-w-[16px]' />
+                                </button>
+                                <button className="btn btn-light-danger p-2">
+                                  <IconTrash className='w-[16px] h-[16px] md:w-[18px] md:h-[18px] min-w-[16px]' />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="5" className="text-center text-gray-500 py-4 px-2 md:px-4">No schools available</td>
                         </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="5" className="text-center text-gray-500 py-4">No schools available</td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               )}
             </div>
           </div>

@@ -175,7 +175,7 @@ const CampusGroupManagement = () => {
       {!isCreateModalOpen && !isEditModalOpen && (
         <div className="pt-6 md:pt-9 px-4 sm:px-6 md:px-10 bg-card-color rounded-lg">
           {/* Header Section */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+          <div className="flex flex-col md:mx-6 md:flex-row justify-between items-start md:items-center gap-4 mb-6">
             <div className="flex items-center w-full md:w-auto">
               <h5 className="text-lg sm:text-xl font-medium">
                 Schools Listing
@@ -211,11 +211,11 @@ const CampusGroupManagement = () => {
 
           {/* Content Section */}
           <div
-            className={`my-6 md:my-10 px-2 sm:px-4 md:px-10 max-h-[60vh] md:max-h-[70vh] ${loading ? '' : 'overflow-auto cus-scrollbar'
+            className={`my-6 md:my-10 px-2 sm:px-4 md:px-10 h-[60vh] md:h-[70vh] ${loading ? '' : 'overflow-auto cus-scrollbar'
               }`}
           >
             {loading ? (
-              <div className="flex flex-col items-center justify-center h-[250px]">
+              <div className="flex flex-col items-center justify-center h-full">
                 <svg
                   aria-hidden="true"
                   className="w-9 h-12 text-gray-200 animate-spin bg-card-color fill-[#8B2433]"
@@ -234,11 +234,11 @@ const CampusGroupManagement = () => {
                 </svg>
               </div>
             ) : (
-              <ul className="flex flex-col gap-4 md:gap-6 mt-4">
+              <ul className="flex flex-col gap-4 md:gap-6 h-full">
                 {data?.length > 0 ? (
                   data?.map((item, index) => (
                     <li
-                      className="flex items-center justify-between gap-3 p-3 bg-white/10 rounded-lg"
+                      className="flex items-center justify-between gap-3 p-3 bg-white/10 rounded-lg border"
                       key={`school-${item.id || index}`}
                     >
                       <div className="flex items-center gap-3 min-w-0">
@@ -267,12 +267,13 @@ const CampusGroupManagement = () => {
                     </li>
                   ))
                 ) : (
-                  <li className="text-center py-10 text-gray-500">No schools available</li>
+                  <li className="flex items-center justify-center h-full text-gray-500">
+                    No schools available
+                  </li>
                 )}
               </ul>
             )}
           </div>
-
           {/* Pagination */}
           <div className="mt-6">
             <CustomPagination
