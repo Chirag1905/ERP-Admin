@@ -18,9 +18,9 @@ const createAsyncReducers = (prefix, stateKey) => ({
 });
 
 const academicYearSlice = createSlice({
-  name: "AcademicYear",
+  name: "academicYear",
   initialState: {
-    academicYear: null,
+    academicYearData: null,
     academicYearPostData: null,
     academicYearPutData: null,
     loading: false,

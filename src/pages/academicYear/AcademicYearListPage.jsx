@@ -3,134 +3,140 @@ import { useDispatch, useSelector } from "react-redux";
 import Breadcrumb from '../../components/common/Breadcrumb';
 import WelcomeHeader from '../../components/common/WelcomeHeader';
 import {
-  avatar1,
-  avatar2,
-  avatar3,
-  avatar4,
-} from '../../assets/images';
-import {
   IconEdit,
   IconPlus,
-  IconLogin2,
   IconTrash,
   IconSearch,
   IconCaretDownFilled,
-  IconCaretUpFilled,
-  IconBooksOff,
+  IconCaretUpFilled
 } from '@tabler/icons-react';
 import AcademicYearCreateForm from './AcademicYearCreateForm';
 import CustomPagination from '../CustomPagination';
 import toast from 'react-hot-toast';
 import AcademicYearEditForm from './AcademicYearEditForm';
+import { closeModal, openModal } from '../../Redux/features/utils/modalSlice';
 
 const AcademicYearListPage = () => {
-  const breadcrumbItem = [
-    {
-      name: "Academic Years",
-    },
-  ];
-  // const dispatch = useDispatch();
-  // const {
-  //   campusData,
-  //   validationErrors,
-  //   campusPostData,
-  //   loading,
-  //   error
-  // } = useSelector((state) => state.campus);
-  const [searchText, setSearchText] = useState("");
-  const [isAscending, setIsAscending] = useState(true);
-  const [createAcademicModal, setCreateAcademicModal] = useState(false);
-  const [editAcademicModal, setEditAcademicModal] = useState(false);
+  const breadcrumbItem = [{ name: "Academic Years" }];
+
+  // Redux state
+  const dispatch = useDispatch();
+  const { academicYearData, loading, error } = useSelector((state) => state.academicYear);
+  const { modals } = useSelector((state) => state.modal);
+
+  // Modal states
+  const isCreateModalOpen = modals.createAcademicYear.isOpen;
+  const isEditModalOpen = modals.editAcademicYear.isOpen;
+
+  // Component state
   const [data, setData] = useState([
     { id: 1, name: "2024-25", start_date: "2024-04-01", end_date: "2025-03-31" },
     { id: 2, name: "2024-25", start_date: "2024-04-01", end_date: "2025-03-31" },
     { id: 3, name: "2024-25", start_date: "2024-04-01", end_date: "2025-03-31" }
   ]);
-
-  const [isLoading, setIsLoading] = useState({ main: false, edit: false, add: false });
-
-  const [page, setPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [searchText, setSearchText] = useState("");
+  const [isAscending, setIsAscending] = useState(true);
+  const [pagination, setPagination] = useState({
+    page: 0,
+    rowsPerPage: 10,
+    totalPages: 0,
+    totalElements: 0,
+  });
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const handleChange = (event, value) => {
-    setPage(value);
+  // Modal handlers
+  const handleCreateModal = {
+    open: () => {
+      dispatch(openModal({ modalType: "createAcademicYear" }));
+      dispatch(closeModal({ modalType: "editAcademicYear" }));
+    },
+    close: () => dispatch(closeModal({ modalType: "createAcademicYear" }))
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+  const handleEditModal = {
+    open: (item) => {
+      dispatch(openModal({ modalType: "editAcademicYear" }));
+      dispatch(closeModal({ modalType: "createAcademicYear" }));
+      setSelectedItem(item);
+    },
+    close: () => dispatch(closeModal({ modalType: "editAcademicYear" }))
   };
 
-  const handleSearch = (e) => {
-    setSearchText(e.target.value);
+  // Pagination handlers
+  const handlePageChange = (event, value) => {
+    setPagination(prev => ({ ...prev, page: value }));
   };
 
-  const openCreateAcademicModal = () => {
-    setCreateAcademicModal(!createAcademicModal);
-    setEditAcademicModal(false);
+  const handleRowsPerPageChange = (event) => {
+    setPagination(prev => ({
+      ...prev,
+      rowsPerPage: parseInt(event.target.value, 10),
+      page: 0
+    }));
   };
 
-  const openEditAcademicModal = (item) => {
-    setEditAcademicModal(!editAcademicModal);
-    setCreateAcademicModal(false);
-    setSelectedItem(item);
-  };
+  // Search handler
+  const handleSearch = (e) => setSearchText(e.target.value);
 
+  // Effect for body scroll lock
   useEffect(() => {
-    document.body.classList[createAcademicModal ? "add" : "remove"]("overflow-hidden");
-  }, [createAcademicModal]);
+    document.body.classList.toggle("overflow-hidden", isCreateModalOpen || isEditModalOpen);
+    return () => document.body.classList.remove("overflow-hidden");
+  }, [isCreateModalOpen, isEditModalOpen]);
 
+  // Effect for data update
   useEffect(() => {
-    document.body.classList[editAcademicModal ? "add" : "remove"]("overflow-hidden");
-  }, [editAcademicModal]);
+    if (academicYearData) {
+      setData(academicYearData?.data?.content || []);
+      setPagination(prev => ({
+        ...prev,
+        totalPages: academicYearData?.data?.totalPages || 0,
+        totalElements: academicYearData?.data?.totalElements || 0
+      }));
+    }
+  }, [academicYearData]);
 
-  // useEffect(() => {
-  //   if (campusData) {
-  //     setData(campusData?.data?.content);
-  //     setTotalPages(campusData?.data?.totalPages);
-  //   }
-  // }, [campusData, page, rowsPerPage]);
+  // Effect for data fetching
+  useEffect(() => {
+    const fetchData = async () => {
+      const params = {
+        page: pagination.page,
+        size: pagination.rowsPerPage,
+        sortBy: "id",
+        ascending: isAscending,
+        searchFilter: searchText
+      };
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     setIsLoading({ ...isLoading, main: true });
+      try {
+        // dispatch(getCampusGroupRequest({ data: params }));
+      } catch (error) {
+        console.error("Error fetching campus group data:", error);
+        toast.error("Failed to load campus group data");
+      }
+    };
 
-  //     const params = {
-  //       page: page || 0,
-  //       size: rowsPerPage || 10,
-  //       sortBy: "id",
-  //       ascending: isAscending,
-  //       searchFilter: searchText
-  //     };
+    fetchData();
+  }, [
+    pagination.page,
+    pagination.rowsPerPage,
+    isAscending,
+    searchText,
+    isCreateModalOpen,
+    isEditModalOpen,
+    dispatch
+  ]);
 
-  //     // Create a minimum delay of 1 second
-  //     const minDelay = new Promise(resolve => setTimeout(resolve, 1000));
-
-  //     try {
-  //       // Wait for both the API call and the minimum delay to complete
-  //       await Promise.all([dispatch(getCampusRequest({ data: params })), minDelay]);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     } finally {
-  //       setIsLoading({ ...isLoading, main: false });
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [page, rowsPerPage, isAscending, searchText, createAcademicModal, editAcademicModal, dispatch]);
-
-  // useEffect(() => {
-  //   if (validationErrors?.error && validationErrors?.error?.length > 0) {
-  //     validationErrors?.error?.forEach((error) => {
-  //       toast.error(`${error.field}: ${error.message}`, {
-  //         position: "top-right",
-  //         duration: 5000,
-  //       });
-  //     });
-  //   }
-  // }, [dispatch]);
+  // Handle API errors
+  useEffect(() => {
+    if (!error) return;
+    if (Array.isArray(error.error)) {
+      toast.error('Error Fetching Data', { position: "top-right", duration: 2000, });
+    } else if (error.message) {
+      toast.error(error.message, { position: "top-right", duration: 2000 });
+    } else {
+      toast.error("An unexpected error occurred", { position: "top-right", duration: 2000 });
+    }
+  }, [error]);
 
   return (
     <>
@@ -138,56 +144,58 @@ const AcademicYearListPage = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 md:gap-0">
           <Breadcrumb breadcrumbItem={breadcrumbItem} />
           <button
-            onClick={openCreateAcademicModal}
+            onClick={handleCreateModal.open}
             className="flex gap-1 btn btn-light-primary w-full md:w-auto"
           >
             <IconPlus />
-            <span className="md:block hidden">Add</span>
-            <span className="md:hidden block">Add Academic Year</span>
+            <span className="block">Add Academic Year</span>
           </button>
         </div>
         <div className="md:hidden h-4"></div>
         <WelcomeHeader />
       </div>
-      {createAcademicModal ? (
+      {isCreateModalOpen && (
         <AcademicYearCreateForm
-          openCreateAcademicModal={openCreateAcademicModal}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
+          openModal={handleCreateModal.open}
+          closeModal={handleCreateModal.close}
         />
-      ) : editAcademicModal ? (
+      )}
+
+      {isEditModalOpen && (
         <AcademicYearEditForm
-          openEditAcademicModal={openEditAcademicModal}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
+          openModal={handleCreateModal.open}
+          closeModal={handleCreateModal.close}
           selectedItem={selectedItem}
           setSelectedItem={setSelectedItem}
         />
-      ) : (
+      )}
+      {!isCreateModalOpen && !isEditModalOpen && (
         <>
-          <div className='min-h-screen py-4 md:py-9 md:px-10 px-4 bg-card-color rounded-lg'>
-            <div className='flex flex-col md:flex-row justify-between items-start gap-4 md:mr-6'>
-              <h5 className='text-lg md:text-[20px] md:leading-[30px] font-medium md:ml-6'>
+          <div className="pt-6 md:pt-9 px-4 sm:px-6 md:px-10 bg-card-color rounded-lg">
+            {/* Header Section */}
+            <div className="flex flex-col md:mx-6 md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+              <h5 className="text-lg sm:text-xl font-medium">
                 Academic Years Listing
               </h5>
+              {/* Search Input */}
               <div className='w-full md:w-auto card bg-card-color rounded-xl form-control flex'>
-                <div className='flex w-full'>
-                  <input
-                    type="text"
-                    id="team_board_search"
-                    className="form-input !rounded-e-none !py-[6px] flex-grow"
-                    placeholder="Search years..."
-                    value={searchText}
-                    onChange={handleSearch}
-                  />
-                  <button className="btn border border-border-color !rounded-s-none">
-                    <IconSearch className='w-[20px] h-[20px]' />
-                  </button>
-                </div>
+                <input
+                  type="text"
+                  id="team_board_search"
+                  className="form-input !rounded-e-none !py-[6px]"
+                  placeholder="Search Schools..."
+                  value={searchText}
+                  onChange={handleSearch}
+                />
+                <button className="btn border border-border-color !rounded-s-none">
+                  <IconSearch className='w-[20px] h-[20px]' />
+                </button>
               </div>
             </div>
-            <div className={`my-6 md:my-10 px-2 sm:px-4 md:px-10 h-[60vh] md:h-[70vh] ${isLoading?.main ? '' : 'overflow-auto cus-scrollbar'}`}>
-              {isLoading?.main ? (
+
+            {/* Content Section */}
+            <div className={`my-6 md:my-10 px-2 sm:px-4 md:px-10 h-fit md:h-[70vh] ${loading ? '' : 'overflow-auto cus-scrollbar'}`}>
+              {loading ? (
                 <div className="flex flex-col items-center justify-center h-full">
                   <svg
                     aria-hidden="true"
@@ -209,55 +217,55 @@ const AcademicYearListPage = () => {
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full min-w-[600px]">
-                  <thead>
-  <tr>
-    <th className="py-2 px-2 md:px-4">
-      <div className="flex justify-center items-center gap-1">
-        SL
-        {isAscending ? (
-          <IconCaretDownFilled onClick={() => setIsAscending(false)} className="cursor-pointer w-3 h-3" />
-        ) : (
-          <IconCaretUpFilled onClick={() => setIsAscending(true)} className="cursor-pointer w-3 h-3" />
-        )}
-      </div>
-    </th>
-    <th className="py-2 px-2 md:px-4">
-      <div className="flex justify-center items-center gap-1">
-        Name
-        {isAscending ? (
-          <IconCaretDownFilled onClick={() => setIsAscending(false)} className="cursor-pointer w-3 h-3" />
-        ) : (
-          <IconCaretUpFilled onClick={() => setIsAscending(true)} className="cursor-pointer w-3 h-3" />
-        )}
-      </div>
-    </th>
-    <th className="py-2 px-2 md:px-4">
-      <div className="flex justify-center items-center gap-1">
-        Start Date
-        {isAscending ? (
-          <IconCaretDownFilled onClick={() => setIsAscending(false)} className="cursor-pointer w-3 h-3" />
-        ) : (
-          <IconCaretUpFilled onClick={() => setIsAscending(true)} className="cursor-pointer w-3 h-3" />
-        )}
-      </div>
-    </th>
-    <th className="py-2 px-2 md:px-4">
-      <div className="flex justify-center items-center gap-1">
-        End Date
-        {isAscending ? (
-          <IconCaretDownFilled onClick={() => setIsAscending(false)} className="cursor-pointer w-3 h-3" />
-        ) : (
-          <IconCaretUpFilled onClick={() => setIsAscending(true)} className="cursor-pointer w-3 h-3" />
-        )}
-      </div>
-    </th>
-    <th className="py-2 px-2 md:px-4">
-      <div className="flex justify-center items-center gap-1">
-        Actions
-      </div>
-    </th>
-  </tr>
-</thead>
+                    <thead>
+                      <tr>
+                        <th className="py-2 px-2 md:px-4">
+                          <div className="flex justify-center items-center gap-1">
+                            SL
+                            {isAscending ? (
+                              <IconCaretDownFilled onClick={() => setIsAscending(false)} className="cursor-pointer w-3 h-3" />
+                            ) : (
+                              <IconCaretUpFilled onClick={() => setIsAscending(true)} className="cursor-pointer w-3 h-3" />
+                            )}
+                          </div>
+                        </th>
+                        <th className="py-2 px-2 md:px-4">
+                          <div className="flex justify-center items-center gap-1">
+                            Name
+                            {isAscending ? (
+                              <IconCaretDownFilled onClick={() => setIsAscending(false)} className="cursor-pointer w-3 h-3" />
+                            ) : (
+                              <IconCaretUpFilled onClick={() => setIsAscending(true)} className="cursor-pointer w-3 h-3" />
+                            )}
+                          </div>
+                        </th>
+                        <th className="py-2 px-2 md:px-4">
+                          <div className="flex justify-center items-center gap-1">
+                            Start Date
+                            {isAscending ? (
+                              <IconCaretDownFilled onClick={() => setIsAscending(false)} className="cursor-pointer w-3 h-3" />
+                            ) : (
+                              <IconCaretUpFilled onClick={() => setIsAscending(true)} className="cursor-pointer w-3 h-3" />
+                            )}
+                          </div>
+                        </th>
+                        <th className="py-2 px-2 md:px-4">
+                          <div className="flex justify-center items-center gap-1">
+                            End Date
+                            {isAscending ? (
+                              <IconCaretDownFilled onClick={() => setIsAscending(false)} className="cursor-pointer w-3 h-3" />
+                            ) : (
+                              <IconCaretUpFilled onClick={() => setIsAscending(true)} className="cursor-pointer w-3 h-3" />
+                            )}
+                          </div>
+                        </th>
+                        <th className="py-2 px-2 md:px-4">
+                          <div className="flex justify-center items-center gap-1">
+                            Actions
+                          </div>
+                        </th>
+                      </tr>
+                    </thead>
                     <tbody>
                       {data && data?.length > 0 ? (
                         data?.map((item, index) => (
@@ -268,7 +276,7 @@ const AcademicYearListPage = () => {
                             <td className="py-4 px-2 md:px-4 text-center">{item?.start_date || ""}</td>
                             <td className="py-4 px-2 md:px-4 text-center">
                               <div className="flex items-center justify-center gap-2"> {/* Center buttons */}
-                                <button className="btn btn-light-primary p-2" onClick={() => { openEditAcademicModal(item) }}>
+                                <button className="btn btn-light-primary p-2" onClick={() => { handleEditModal.open(item) }}>
                                   <IconEdit className='w-[16px] h-[16px] md:w-[18px] md:h-[18px] min-w-[16px]' />
                                 </button>
                                 <button className="btn btn-light-danger p-2">
@@ -290,12 +298,12 @@ const AcademicYearListPage = () => {
             </div>
           </div>
           <CustomPagination
-            page={page}
-            totalPages={totalPages}
-            handleChange={handleChange}
-            data={data}
-            rowsPerPage={rowsPerPage}
-            handleChangeRowsPerPage={handleChangeRowsPerPage}
+            page={pagination.page}
+            totalPages={pagination.totalPages}
+            handleChange={handlePageChange}
+            totalElements={pagination?.totalElements}
+            rowsPerPage={pagination.rowsPerPage}
+            handleChangeRowsPerPage={handleRowsPerPageChange}
           />
         </>
       )}

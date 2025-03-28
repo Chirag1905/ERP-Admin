@@ -143,7 +143,7 @@ const CampusGroupManagement = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center">
+      {/* <div className="flex justify-between items-center">
         <Breadcrumb breadcrumbItem={breadcrumbItem} />
         <button
           onClick={handleCreateModal.open}
@@ -153,8 +153,21 @@ const CampusGroupManagement = () => {
           <span className="md:block hidden">New School</span>
         </button>
       </div>
-
-      <WelcomeHeader />
+      <WelcomeHeader /> */}
+      <div>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 md:gap-0">
+          <Breadcrumb breadcrumbItem={breadcrumbItem} />
+          <button
+            onClick={handleCreateModal.open}
+            className="flex gap-1 btn btn-light-primary w-full md:w-auto"
+          >
+            <IconPlus />
+            <span className="block">Add School</span>
+          </button>
+        </div>
+        <div className="md:hidden h-4"></div>
+        <WelcomeHeader />
+      </div>
 
       {isCreateModalOpen && (
         <CampusCreate
