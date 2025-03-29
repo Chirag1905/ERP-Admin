@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
     --font-family: Mulish;
@@ -187,11 +189,11 @@ input[type=number] {
 }
 
 [data-theme="light"] .form-select {
-    background-image: url('../assets/images/chevron_down_dark.svg');
+    background-image: url('../images/chevron_down_dark.svg');
 }
 
 [data-theme="dark"] .form-select {
-    background-image: url('../assets/images/chevron_down_light.svg');
+    background-image: url('../images/chevron_down_light.svg');
 }
 
 .dynamic-color-setting {
@@ -653,7 +655,7 @@ body .react-data-table.striped .rdt_TableCol:not(:last-of-type) {
 .form-check .form-check-input:checked {
     background-color: var(--primary);
     border-color: var(--primary);
-    background-image: url('../assets/images/check_solid.svg');
+    background-image: url('../images/check_solid.svg');
     background-size: 12px 12px;
     background-position: center;
     background-repeat: no-repeat;
@@ -755,7 +757,7 @@ body .react-data-table.striped .rdt_TableCol:not(:last-of-type) {
 .form-radio .form-radio-input:checked {
     background-color: var(--primary);
     border-color: var(--primary);
-    background-image: url('../assets/images/round_solid.svg');
+    background-image: url('../images/round_solid.svg');
     background-size: 12px 12px;
     background-position: center;
     background-repeat: no-repeat;
@@ -946,252 +948,4 @@ body .apexcharts-legend-marker {
         width: 5px;
         height: 5px;
     }
-}
-
-
-
-/* Font */
-
-/* ---- mali ---- */
-@font-face {
-  font-family: 'Mali';
-  src: url('../assets/fonts/mali/Mali-Light.woff2') format('woff2'),
-      url('../assets/fonts/mali/Mali-Light.woff') format('woff'),
-      url('../assets/fonts/mali/Mali-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Mali';
-  src: url('../assets/fonts/mali/Mali-ExtraLight.woff2') format('woff2'),
-      url('../assets/fonts/mali/Mali-ExtraLight.woff') format('woff'),
-      url('../assets/fonts/mali/Mali-ExtraLight.ttf') format('truetype');
-  font-weight: 200;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Mali';
-  src: url('../assets/fonts/mali/Mali-Bold.woff2') format('woff2'),
-      url('../assets/fonts/mali/Mali-Bold.woff') format('woff'),
-      url('../assets/fonts/mali/Mali-Bold.ttf') format('truetype');
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Mali';
-  src: url('../assets/fonts/mali/Mali-Medium.woff2') format('woff2'),
-      url('../assets/fonts/mali/Mali-Medium.woff') format('woff'),
-      url('../assets/fonts/mali/Mali-Medium.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Mali';
-  src: url('../assets/fonts/mali/Mali-Regular.woff2') format('woff2'),
-      url('../assets/fonts/mali/Mali-Regular.woff') format('woff'),
-      url('../assets/fonts/mali/Mali-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Mali';
-  src: url('../assets/fonts/mali/Mali-SemiBold.woff2') format('woff2'),
-      url('../assets/fonts/mali/Mali-SemiBold.woff') format('woff'),
-      url('../assets/fonts/mali/Mali-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* quicksand */
-@font-face {
-  font-family: 'Quicksand';
-  src: url('../assets/fonts/quicksand/Quicksand-Light.woff2') format('woff2'),
-      url('../assets/fonts/quicksand/Quicksand-Light.woff') format('woff'),
-      url('../assets/fonts/quicksand/Quicksand-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Quicksand';
-  src: url('../assets/fonts/quicksand/Quicksand-Medium.woff2') format('woff2'),
-      url('../assets/fonts/quicksand/Quicksand-Medium.woff') format('woff'),
-      url('../assets/fonts/quicksand/Quicksand-Medium.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Quicksand';
-  src: url('../assets/fonts/quicksand/Quicksand-Regular.woff2') format('woff2'),
-      url('../assets/fonts/quicksand/Quicksand-Regular.woff') format('woff'),
-      url('../assets/fonts/quicksand/Quicksand-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Quicksand';
-  src: url('../assets/fonts/quicksand/Quicksand-SemiBold.woff2') format('woff2'),
-      url('../assets/fonts/quicksand/Quicksand-SemiBold.woff') format('woff'),
-      url('../assets/fonts/quicksand/Quicksand-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Quicksand';
-  src: url('../assets/fonts/quicksand/Quicksand-Bold.woff2') format('woff2'),
-      url('../assets/fonts/quicksand/Quicksand-Bold.woff') format('woff'),
-      url('../assets/fonts/quicksand/Quicksand-Bold.ttf') format('truetype');
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* ---- mulish ---- */
-@font-face {
-  font-family: 'Mulish';
-  src: url('../assets/fonts/mulish/Mulish-ExtraLight.woff2') format('woff2'),
-      url('../assets/fonts/mulish/Mulish-ExtraLight.woff') format('woff'),
-      url('../assets/fonts/mulish/Mulish-ExtraLight.ttf') format('truetype');
-  font-weight: 200;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Mulish';
-  src: url('../assets/fonts/mulish/Mulish-Light.woff2') format('woff2'),
-      url('../assets/fonts/mulish/Mulish-Light.woff') format('woff'),
-      url('../assets/fonts/mulish/Mulish-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Mulish';
-  src: url('../assets/fonts/mulish/Mulish-Regular.woff2') format('woff2'),
-      url('../assets/fonts/mulish/Mulish-Regular.woff') format('woff'),
-      url('../assets/fonts/mulish/Mulish-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Mulish';
-  src: url('../assets/fonts/mulish/Mulish-Medium.woff2') format('woff2'),
-      url('../assets/fonts/mulish/Mulish-Medium.woff') format('woff'),
-      url('../assets/fonts/mulish/Mulish-Medium.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Mulish';
-  src: url('../assets/fonts/mulish/Mulish-SemiBold.woff2') format('woff2'),
-      url('../assets/fonts/mulish/Mulish-SemiBold.woff') format('woff'),
-      url('../assets/fonts/mulish/Mulish-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Mulish';
-  src: url('../assets/fonts/mulish/Mulish-Bold.woff2') format('woff2'),
-      url('../assets/fonts/mulish/Mulish-Bold.woff') format('woff'),
-      url('../assets/fonts/mulish/Mulish-Bold.ttf') format('truetype');
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Mulish';
-  src: url('../assets/fonts/mulish/Mulish-ExtraBold.woff2') format('woff2'),
-      url('../assets/fonts/mulish/Mulish-ExtraBold.woff') format('woff'),
-      url('../assets/fonts/mulish/Mulish-ExtraBold.ttf') format('truetype');
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Mulish';
-  src: url('../assets/fonts/mulish/Mulish-Black.woff2') format('woff2'),
-      url('../assets/fonts/mulish/Mulish-Black.woff') format('woff'),
-      url('../assets/fonts/mulish/Mulish-Black.ttf') format('truetype');
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* jura */
-@font-face {
-  font-family: 'Jura';
-  src: url('../assets/fonts/jura/Jura-Light.woff2') format('woff2'),
-      url('../assets/fonts/jura/Jura-Light.woff') format('woff'),
-      url('../assets/fonts/jura/Jura-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Jura';
-  src: url('../assets/fonts/jura/Jura-Regular.woff2') format('woff2'),
-      url('../assets/fonts/jura/Jura-Regular.woff') format('woff'),
-      url('../assets/fonts/jura/Jura-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Jura';
-  src: url('../assets/fonts/jura/Jura-SemiBold.woff2') format('woff2'),
-      url('../assets/fonts/jura/Jura-SemiBold.woff') format('woff'),
-      url('../assets/fonts/jura/Jura-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Jura';
-  src: url('../assets/fonts/jura/Jura-Medium.woff2') format('woff2'),
-      url('../assets/fonts/jura/Jura-Medium.woff') format('woff'),
-      url('../assets/fonts/jura/Jura-Medium.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Jura';
-  src: url('../assets/fonts/jura/Jura-Bold.woff2') format('woff2'),
-      url('../assets/fonts/jura/Jura-Bold.woff') format('woff'),
-      url('../assets/fonts/jura/Jura-Bold.ttf') format('truetype');
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
 }
