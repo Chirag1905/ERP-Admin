@@ -32,7 +32,7 @@ export default function Analysis() {
     },
     {
       id: 3,
-      title: "All Schools",
+      title: "All Schoolss",
       image: "avatar3",
       description: "9 mutual connections Laravel Developer at Linkedin",
     }
