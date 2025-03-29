@@ -19,7 +19,11 @@ import CampusGroupManagement from "../pages/campusGroup/CampusGroupManagement";
 export default function Routers() {
   const RouterContent = () => {
     const pageUrl = useLocation().pathname;
+    // const subdomain = window.location.hostname.split(".")[0]; // Extract "admin"
+    // const subdomain2 = window.location.href.split('//')[1].split('.')[0]
+    // console.log("🚀 ~ RouterContent ~ subdomain2:", subdomain2)
 
+    // console.log("🚀 ~ RouterContent ~ subdomain:", subdomain);
     useEffect(() => {
       const pageClass = pageUrl.substring(1).replace(/\//g, "-");
       document.body.classList.add(pageClass ? pageClass : "dashboard");

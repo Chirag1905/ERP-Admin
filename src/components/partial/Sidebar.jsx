@@ -295,6 +295,8 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
   const closeModals = () => {
     dispatch(closeModal({ modalType: "createCampusGroup" }))
     dispatch(closeModal({ modalType: "editCampusGroup" }))
+    dispatch(closeModal({ modalType: "createAcademicYear" }))
+    dispatch(closeModal({ modalType: "editAcademicYear" }))
   };
 
   useEffect(() => {

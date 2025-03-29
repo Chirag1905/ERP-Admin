@@ -163,8 +163,8 @@ const AcademicYearListPage = () => {
 
       {isEditModalOpen && (
         <AcademicYearEditForm
-          openModal={handleCreateModal.open}
-          closeModal={handleCreateModal.close}
+          openModal={handleEditModal.open}
+          closeModal={handleEditModal.close}
           selectedItem={selectedItem}
           setSelectedItem={setSelectedItem}
         />

@@ -136,8 +136,8 @@ const AcademicYearCreateForm = (props) => {
       </div>
       <div className="flex flex-col md:flex-row justify-start gap-4 ml-2 md:ml-8 mt-6 md:mt-8">
         <button
-          onClick={closeModal}
           className="btn btn-white w-full md:w-auto px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition duration-300"
+          onClick={closeModal}
         >
           Close
         </button>
