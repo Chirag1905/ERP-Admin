@@ -1,5 +1,5 @@
 import axios from "axios";
-import Keycloak from "keycloak-js";
+// import Keycloak from "keycloak-js";
 
 const keycloakConfig = {
   url: "https://api.testmazing.com/auth",
@@ -8,7 +8,7 @@ const keycloakConfig = {
   clientSecret: "JPwfUjOQkfq1oy9RKOUIqToLQF9Egc2I",
 };
 
-const keycloak = new Keycloak(keycloakConfig);
+// const keycloak = new Keycloak(keycloakConfig);
 
 const signIn = async (username, password) => {
   try {

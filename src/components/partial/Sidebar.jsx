@@ -63,7 +63,8 @@ import { signOutSuccess } from '../../Redux/features/auth/authSlice';
 import { closeModal } from '../../Redux/features/utils/modalSlice';
 
 
-export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleChat }) {
+export default function Sidebar(props) {
+  const { setMobileNav, note, toggleNote, chat, toggleChat } = props;
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.auth);
   const [pinnedItems, setPinnedItems] = useState([]);
@@ -335,32 +336,32 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
               <div className="text-danger text-[12px]/[18px] mt-10">Last login: 1 Hours Ago</div>
             </div>
             <div className='p-1 m-1 overflow-auto max-h-[calc(80svh-279px)] cus-scrollbar'>
-              <Link to="#" className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
+              <Link href="#" className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
                 <IconUser className='w-[16px] h-[16px]' />
                 My Profile
               </Link>
-              <Link to="#" className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
+              <Link href="#" className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
                 <IconSettings className='w-[16px] h-[16px]' />
                 Settings
               </Link>
-              <Link to="#" className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
+              <Link href="#" className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
                 <IconCreditCard className='w-[16px] h-[16px]' />
                 Billing
               </Link>
-              <Link to="#" className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
+              <Link href="#" className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
                 <IconUsersGroup className='w-[16px] h-[16px]' />
                 Manage Team
               </Link>
-              <Link to="#" className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
+              <Link href="#" className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
                 <IconCalendarFilled className='w-[16px] h-[16px]' />
                 My Events
               </Link>
-              <Link to="#" className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
+              <Link href="#" className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
                 <IconTag className='w-[16px] h-[16px]' />
                 Support Ticket
               </Link>
             </div>
-            <Link to="auth-signin" className='bg-secondary uppercase text-[14px]/[20px] text-white py-5 px-10 text-center w-full inline-block'>
+            <Link href="auth-signin" className='bg-secondary uppercase text-[14px]/[20px] text-white py-5 px-10 text-center w-full inline-block'>
               Sign Out
             </Link>
           </div>
@@ -388,7 +389,7 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
                 <IconMessage className='stroke-[1.5] w-[20px] h-[20px]' />
               </span>
             </button>
-            <Link to="#" title='Log Out'>
+            <Link href="#" title='Log Out'>
               <IconPower className='stroke-[1.5] w-[20px] h-[20px]' onClick={() => handleLogout()} />
             </Link>
           </div>
@@ -415,7 +416,7 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
                           className={`py-1 text-[14px]/[20px] flex relative before:hidden before:absolute before:h-full before:w-[1px] ltr:before:left-[-20px] rtl:before:right-[-20px] before:top-0 before:bg-secondary hover:text-secondary hover:before:block transition-all ${pageUrl === res.url ? 'text-secondary before:!block' : ''}`}
                         >
                           <Link
-                            to={res.url}
+                            href={res.url}
                             onClick={() => window.innerWidth < 1200 && setMobileNav(false)}
                             className={`py-1 text-[14px]/[20px] flex relative before:hidden before:absolute before:h-full before:w-[1px] ltr:before:left-[-20px] rtl:before:right-[-20px] before:top-0 before:bg-secondary hover:text-secondary hover:before:block transition-all ${pageUrl === res.url ? 'text-secondary before:!block' : ''}`}
                           >
@@ -445,7 +446,7 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
                                   className="py-1 text-[13px]/[18px] flex hover:text-secondary transition-all"
                                 >
                                   <Link
-                                    to={subItem.url}
+                                    href={subItem.url}
                                     onClick={() => window.innerWidth < 1200 && setMobileNav(false)}
                                   >
                                     {subItem.link}
@@ -472,7 +473,7 @@ export default function Sidebar({ setMobileNav, note, toggleNote, chat, toggleCh
             </li>
           ) : item.url ?
             <li key={parentIndex}>
-              <Link to={item.url} onClick={() => { window.innerWidth < 1200 && setMobileNav(false) }} className={`flex items-center gap-10 w-full py-2 transition-all hover:text-secondary ${pageUrl === item.url ? 'text-secondary' : ''}`}>
+              <Link href={item.url} onClick={() => { window.innerWidth < 1200 && setMobileNav(false) }} className={`flex items-center gap-10 w-full py-2 transition-all hover:text-secondary ${pageUrl === item.url ? 'text-secondary' : ''}`}>
                 {item.icon ? <item.icon className='stroke-[1.5] w-[22px] h-[22px]' /> : <IconChevronRight />}
                 <span onClick={() => closeModals()}>{item.link}</span>
               </Link>

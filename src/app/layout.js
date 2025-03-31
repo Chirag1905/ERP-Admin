@@ -1,21 +1,13 @@
 "use client";
 import React, { useState } from 'react';
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "../assets/css/main.css"
+import "../assets/css/font.css"
+// import 'react-quill/dist/quill.snow.css';
 import Header from '../components/partial/Header';
 import Sidebar from '../components/partial/Sidebar';
 import Footer from '../components/partial/Footer';
 import ReduxProvider from './ReduxProvider'; // Import the Redux provider
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export default function RootLayout({ children }) {
   // toggle mobile nav
@@ -38,7 +30,7 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body>
         <ReduxProvider> {/* Wrap everything with Redux provider */}
           <div className='admin-wrapper bg-dark overflow-hidden before:fixed before:left-0 before:right-0 before:top-0 before:h-[198px]'>
             <Header
