@@ -1,5 +1,4 @@
 import React from 'react';
-import Breadcrumb from '../components/common/Breadcrumb';
 import {
   IconBriefcase,
   IconCash,
@@ -7,8 +6,9 @@ import {
   IconCreditCard,
   IconUserScan,
 } from '@tabler/icons-react';
+import Breadcrumb from '@/components/common/Breadcrumb';
+import WelcomeHeader from '@/components/common/WelcomeHeader';
 // import { avatar1, avatar2, avatar3 } from '@/assets/images';
-import WelcomeHeader from '../components/common/WelcomeHeader';
 
 export default function Analysis() {
   const breadcrumbItem = [

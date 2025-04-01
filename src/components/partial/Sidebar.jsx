@@ -16,7 +16,7 @@ import {
   gallery2,
   gallery3,
   gallery4,
-  profile_av,
+  profile_av
 } from '@/assets/images';
 import {
   IconHome,
@@ -61,6 +61,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { signOutSuccess } from '../../Redux/features/auth/authSlice';
 import { closeModal } from '../../Redux/features/utils/modalSlice';
+import Image from 'next/image';
 
 export default function Sidebar(props) {
   const { setMobileNav, note, toggleNote, chat, toggleChat } = props;
@@ -103,17 +104,17 @@ export default function Sidebar(props) {
     {
       icon: IconSchool,
       link: "Academic Years",
-      url: "/academicYears",
+      url: "/AcademicYear",
     },
     {
       icon: IconBooks,
       link: "School Manangement",
-      url: "/schools",
+      url: "/CampusGroup",
     },
     {
       icon: IconAdjustmentsDollar,
       link: "Finances",
-      url: "/test",
+      url: "/auth/signin",
     },
     {
       icon: IconApps,
@@ -322,7 +323,13 @@ export default function Sidebar(props) {
       <div className='p-6 flex items-start gap-4'>
         <div className='relative group flex'>
           <button>
-            <img src={profile_av} alt='profile' width="56" height="56" className='bg-white shadow-shadow-lg p-1 rounded-lg saturate-50 transition-all hover:filter-none' />
+            <Image
+              src={profile_av}
+              alt='profile'
+              width={56}
+              height={56}
+              className='bg-white shadow-shadow-lg p-1 rounded-lg saturate-50 transition-all hover:filter-none'
+            />
           </button>
           <div className='bg-card-color text-font-color rounded-xl overflow-hidden w-[240px] text-start shadow-shadow-lg absolute start-0 top-full origin-top-left rtl:origin-top-right z-[1] opacity-0 invisible scale-0 transition-all duration-300 group-hover:opacity-100 group-hover:visible group-hover:scale-100'>
             <div className='p-4 border-b border-border-color'>
@@ -855,7 +862,7 @@ export default function Sidebar(props) {
             <TabPanel>
               <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-10 border-b border-border-color'>
                 <div className='flex gap-4'>
-                  <img src={avatar1} width="36" height="36" alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
+                  <Image src={avatar1} width={36} height={36} alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                   <div>
                     <div className='mb-2 text-[16px]/[1]'>
                       Orlando Lentz
@@ -885,7 +892,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar1} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar1} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:10 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -912,7 +919,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar1} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar1} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -926,7 +933,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar1} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar1} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -953,14 +960,14 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar1} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar1} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:16 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
                         <div className="message">Please find attached images</div>
                         <div className='flex flex-wrap gap-5 mt-4'>
-                          <img src={gallery3} width="110" height="69" alt='chat attachment' className='p-1 border border-border-color rounded-md' />
-                          <img src={gallery4} width="110" height="69" alt='chat attachment' className='p-1 border border-border-color rounded-md' />
+                          <Image src={gallery3} width={110} height={69} alt='chat attachment' className='p-1 border border-border-color rounded-md' />
+                          <Image src={gallery4} width={110} height={69} alt='chat attachment' className='p-1 border border-border-color rounded-md' />
                         </div>
                       </div>
                     </div>
@@ -993,7 +1000,7 @@ export default function Sidebar(props) {
             <TabPanel>
               <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-10 border-b border-border-color'>
                 <div className='flex gap-4'>
-                  <img src={avatar2} width="36" height="36" alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
+                  <Image src={avatar2} width={36} height={36} alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                   <div>
                     <div className='mb-2 text-[16px]/[1]'>
                       Issa Bell
@@ -1036,7 +1043,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar2} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar2} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -1063,14 +1070,14 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar2} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar2} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:16 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
                         <div className="message">Please find attached images</div>
                         <div className='flex flex-wrap gap-5 mt-4'>
-                          <img src={gallery1} width="110" height="69" alt='chat attachment' className='p-1 border border-border-color rounded-md' />
-                          <img src={gallery2} width="110" height="69" alt='chat attachment' className='p-1 border border-border-color rounded-md' />
+                          <Image src={gallery1} width={110} height={69} alt='chat attachment' className='p-1 border border-border-color rounded-md' />
+                          <Image src={gallery2} width={110} height={69} alt='chat attachment' className='p-1 border border-border-color rounded-md' />
                         </div>
                       </div>
                     </div>
@@ -1094,7 +1101,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar2} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar2} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -1108,7 +1115,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar2} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar2} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -1131,7 +1138,7 @@ export default function Sidebar(props) {
             <TabPanel>
               <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-10 border-b border-border-color'>
                 <div className='flex gap-4'>
-                  <img src={avatar3} width="36" height="36" alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
+                  <Image src={avatar3} width={36} height={36} alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                   <div>
                     <div className='mb-2 text-[16px]/[1]'>
                       Orlando Lentz
@@ -1161,7 +1168,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar3} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar3} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:10 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -1188,7 +1195,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar3} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar3} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -1202,7 +1209,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar3} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar3} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -1229,14 +1236,14 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar3} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar3} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:16 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
                         <div className="message">Please find attached images</div>
                         <div className='flex flex-wrap gap-5 mt-4'>
-                          <img src={gallery3} width="110" height="69" alt='chat attachment' className='p-1 border border-border-color rounded-md' />
-                          <img src={gallery4} width="110" height="69" alt='chat attachment' className='p-1 border border-border-color rounded-md' />
+                          <Image src={gallery3} width={110} height={69} alt='chat attachment' className='p-1 border border-border-color rounded-md' />
+                          <Image src={gallery4} width={110} height={69} alt='chat attachment' className='p-1 border border-border-color rounded-md' />
                         </div>
                       </div>
                     </div>
@@ -1269,7 +1276,7 @@ export default function Sidebar(props) {
             <TabPanel>
               <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-10 border-b border-border-color'>
                 <div className='flex gap-4'>
-                  <img src={avatar4} width="36" height="36" alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
+                  <Image src={avatar4} width={36} height={36} alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                   <div>
                     <div className='mb-2 text-[16px]/[1]'>
                       Issa Bell
@@ -1312,7 +1319,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar4} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar4} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -1339,14 +1346,14 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar4} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar4} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:16 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
                         <div className="message">Please find attached images</div>
                         <div className='flex flex-wrap gap-5 mt-4'>
-                          <img src={gallery1} width="110" height="69" alt='chat attachment' className='p-1 border border-border-color rounded-md' />
-                          <img src={gallery2} width="110" height="69" alt='chat attachment' className='p-1 border border-border-color rounded-md' />
+                          <Image src={gallery1} width={110} height={69} alt='chat attachment' className='p-1 border border-border-color rounded-md' />
+                          <Image src={gallery2} width={110} height={69} alt='chat attachment' className='p-1 border border-border-color rounded-md' />
                         </div>
                       </div>
                     </div>
@@ -1370,7 +1377,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar4} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar4} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -1384,7 +1391,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar4} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar4} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -1407,7 +1414,7 @@ export default function Sidebar(props) {
             <TabPanel>
               <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-10 border-b border-border-color'>
                 <div className='flex gap-4'>
-                  <img src={avatar5} width="36" height="36" alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
+                  <Image src={avatar5} width={36} height={36} alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                   <div>
                     <div className='mb-2 text-[16px]/[1]'>
                       Orlando Lentz
@@ -1437,7 +1444,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar5} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar5} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:10 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -1464,7 +1471,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar5} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar5} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -1478,7 +1485,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar5} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar5} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -1505,14 +1512,14 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar5} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar5} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:16 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
                         <div className="message">Please find attached images</div>
                         <div className='flex flex-wrap gap-5 mt-4'>
-                          <img src={gallery3} width="110" height="69" alt='chat attachment' className='p-1 border border-border-color rounded-md' />
-                          <img src={gallery4} width="110" height="69" alt='chat attachment' className='p-1 border border-border-color rounded-md' />
+                          <Image src={gallery3} width={110} height={69} alt='chat attachment' className='p-1 border border-border-color rounded-md' />
+                          <Image src={gallery4} width={110} height={69} alt='chat attachment' className='p-1 border border-border-color rounded-md' />
                         </div>
                       </div>
                     </div>
@@ -1545,7 +1552,7 @@ export default function Sidebar(props) {
             <TabPanel>
               <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-10 border-b border-border-color'>
                 <div className='flex gap-4'>
-                  <img src={avatar6} width="36" height="36" alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
+                  <Image src={avatar6} width={36} height={36} alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                   <div>
                     <div className='mb-2 text-[16px]/[1]'>
                       Issa Bell
@@ -1588,7 +1595,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar6} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar6} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -1615,14 +1622,14 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar6} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar6} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:16 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
                         <div className="message">Please find attached images</div>
                         <div className='flex flex-wrap gap-5 mt-4'>
-                          <img src={gallery1} width="110" height="69" alt='chat attachment' className='p-1 border border-border-color rounded-md' />
-                          <img src={gallery2} width="110" height="69" alt='chat attachment' className='p-1 border border-border-color rounded-md' />
+                          <Image src={gallery1} width={110} height={69} alt='chat attachment' className='p-1 border border-border-color rounded-md' />
+                          <Image src={gallery2} width={110} height={69} alt='chat attachment' className='p-1 border border-border-color rounded-md' />
                         </div>
                       </div>
                     </div>
@@ -1646,7 +1653,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar6} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar6} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -1660,7 +1667,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar6} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar6} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -1683,7 +1690,7 @@ export default function Sidebar(props) {
             <TabPanel>
               <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-10 border-b border-border-color'>
                 <div className='flex gap-4'>
-                  <img src={avatar7} width="36" height="36" alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
+                  <Image src={avatar7} width={36} height={36} alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                   <div>
                     <div className='mb-2 text-[16px]/[1]'>
                       Orlando Lentz
@@ -1713,7 +1720,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar7} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar7} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:10 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -1740,7 +1747,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar7} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar7} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -1754,7 +1761,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar7} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar7} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -1781,14 +1788,14 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar7} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar7} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:16 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
                         <div className="message">Please find attached images</div>
                         <div className='flex flex-wrap gap-5 mt-4'>
-                          <img src={gallery3} width="110" height="69" alt='chat attachment' className='p-1 border border-border-color rounded-md' />
-                          <img src={gallery4} width="110" height="69" alt='chat attachment' className='p-1 border border-border-color rounded-md' />
+                          <Image src={gallery3} width={110} height={69} alt='chat attachment' className='p-1 border border-border-color rounded-md' />
+                          <Image src={gallery4} width={110} height={69} alt='chat attachment' className='p-1 border border-border-color rounded-md' />
                         </div>
                       </div>
                     </div>
@@ -1821,7 +1828,7 @@ export default function Sidebar(props) {
             <TabPanel>
               <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-10 border-b border-border-color'>
                 <div className='flex gap-4'>
-                  <img src={avatar8} width="36" height="36" alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
+                  <Image src={avatar8} width={36} height={36} alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                   <div>
                     <div className='mb-2 text-[16px]/[1]'>
                       Issa Bell
@@ -1864,7 +1871,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar8} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar8} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -1891,14 +1898,14 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar8} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar8} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:16 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
                         <div className="message">Please find attached images</div>
                         <div className='flex flex-wrap gap-5 mt-4'>
-                          <img src={gallery1} width="110" height="69" alt='chat attachment' className='p-1 border border-border-color rounded-md' />
-                          <img src={gallery2} width="110" height="69" alt='chat attachment' className='p-1 border border-border-color rounded-md' />
+                          <Image src={gallery1} width={110} height={69} alt='chat attachment' className='p-1 border border-border-color rounded-md' />
+                          <Image src={gallery2} width={110} height={69} alt='chat attachment' className='p-1 border border-border-color rounded-md' />
                         </div>
                       </div>
                     </div>
@@ -1922,7 +1929,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar8} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar8} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -1936,7 +1943,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar8} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar8} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -1959,7 +1966,7 @@ export default function Sidebar(props) {
             <TabPanel>
               <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-10 border-b border-border-color'>
                 <div className='flex gap-4'>
-                  <img src={avatar9} width="36" height="36" alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
+                  <Image src={avatar9} width={36} height={36} alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                   <div>
                     <div className='mb-2 text-[16px]/[1]'>
                       Orlando Lentz
@@ -1989,7 +1996,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar9} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar9} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:10 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -2016,7 +2023,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar9} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar9} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -2030,7 +2037,7 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar9} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar9} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:13 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
@@ -2057,14 +2064,14 @@ export default function Sidebar(props) {
                   <li className='flex flex-row items-end'>
                     <div>
                       <div className='mb-2 flex gap-1'>
-                        <img src={avatar9} width="16" height="16" alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
+                        <Image src={avatar9} width={16} height={16} alt='chat profile' className='w-[16px] h-[16px] min-w-[16px] rounded' />
                         <span className="text-[14px]/[1] text-font-color-100">10:16 AM, Today</span>
                       </div>
                       <div className='p-3 rounded-lg'>
                         <div className="message">Please find attached images</div>
                         <div className='flex flex-wrap gap-5 mt-4'>
-                          <img src={gallery3} width="110" height="69" alt='chat attachment' className='p-1 border border-border-color rounded-md' />
-                          <img src={gallery4} width="110" height="69" alt='chat attachment' className='p-1 border border-border-color rounded-md' />
+                          <Image src={gallery3} width={110} height={69} alt='chat attachment' className='p-1 border border-border-color rounded-md' />
+                          <Image src={gallery4} width={110} height={69} alt='chat attachment' className='p-1 border border-border-color rounded-md' />
                         </div>
                       </div>
                     </div>
@@ -2097,31 +2104,31 @@ export default function Sidebar(props) {
           </div>
           <TabList className="flex items-center flex-col gap-2 sm:p-4 p-2">
             <Tab className="cursor-pointer p-1 rounded-full focus:outline-0" selectedClassName='bg-primary'>
-              <img src={avatar1} width="26" height="26" alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
+              <Image src={avatar1} width={26} height={26} alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
             </Tab>
             <Tab className="cursor-pointer p-1 rounded-full focus:outline-0" selectedClassName='bg-primary'>
-              <img src={avatar2} width="26" height="26" alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
+              <Image src={avatar2} width={26} height={26} alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
             </Tab>
             <Tab className="cursor-pointer p-1 rounded-full focus:outline-0" selectedClassName='bg-primary'>
-              <img src={avatar3} width="26" height="26" alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
+              <Image src={avatar3} width={26} height={26} alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
             </Tab>
             <Tab className="cursor-pointer p-1 rounded-full focus:outline-0" selectedClassName='bg-primary'>
-              <img src={avatar4} width="26" height="26" alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
+              <Image src={avatar4} width={26} height={26} alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
             </Tab>
             <Tab className="cursor-pointer p-1 rounded-full focus:outline-0" selectedClassName='bg-primary'>
-              <img src={avatar5} width="26" height="26" alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
+              <Image src={avatar5} width={26} height={26} alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
             </Tab>
             <Tab className="cursor-pointer p-1 rounded-full focus:outline-0" selectedClassName='bg-primary'>
-              <img src={avatar6} width="26" height="26" alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
+              <Image src={avatar6} width={26} height={26} alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
             </Tab>
             <Tab className="cursor-pointer p-1 rounded-full focus:outline-0" selectedClassName='bg-primary'>
-              <img src={avatar7} width="26" height="26" alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
+              <Image src={avatar7} width={26} height={26} alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
             </Tab>
             <Tab className="cursor-pointer p-1 rounded-full focus:outline-0" selectedClassName='bg-primary'>
-              <img src={avatar8} width="26" height="26" alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
+              <Image src={avatar8} width={26} height={26} alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
             </Tab>
             <Tab className="cursor-pointer p-1 rounded-full focus:outline-0" selectedClassName='bg-primary'>
-              <img src={avatar9} width="26" height="26" alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
+              <Image src={avatar9} width={26} height={26} alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
             </Tab>
           </TabList>
         </Tabs>

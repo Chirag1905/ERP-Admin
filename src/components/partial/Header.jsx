@@ -33,7 +33,6 @@ import {
     font_quicksand,
     font_mulish,
     font_jura,
-    profile_av,
     avatar5,
     avatar6,
     avatar1,
@@ -46,7 +45,8 @@ import {
     flag_in,
     flag_sa,
 } from '@assets/images';
-
+import profile_av from '../../assets/images/profile_av.png'
+import Image from 'next/image';
 export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleChat }) {
 
     // full screen
@@ -428,7 +428,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                     <TabPanel>
                                         <ul>
                                             <li className='py-10 border-b border-border-color flex gap-4'>
-                                                <img src={avatar5} alt='notification icon' width="36" height="36" className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
+                                                <Image src={avatar5} alt='notification icon' width="36" height="36" className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                                                 <div className='w-full'>
                                                     <div className='flex justify-between gap-10'>
                                                         <div className='font-medium'>
@@ -444,7 +444,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                                 </div>
                                             </li>
                                             <li className='py-10 border-b border-border-color flex gap-4'>
-                                                <img src={avatar6} alt='notification icon' width="36" height="36" className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
+                                                <Image src={avatar6} alt='notification icon' width="36" height="36" className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                                                 <div className='w-full'>
                                                     <div className='flex justify-between gap-10'>
                                                         <div className='font-medium'>
@@ -460,7 +460,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                                 </div>
                                             </li>
                                             <li className='py-10 border-b border-border-color flex gap-4'>
-                                                <img src={avatar1} alt='notification icon' width="36" height="36" className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
+                                                <Image src={avatar1} alt='notification icon' width="36" height="36" className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                                                 <div className='w-full'>
                                                     <div className='flex justify-between gap-10'>
                                                         <div className='font-medium'>
@@ -494,7 +494,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                                 </div>
                                             </li>
                                             <li className='py-10 border-b border-border-color flex gap-4'>
-                                                <img src={avatar3} alt='notification icon' width="36" height="36" className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
+                                                <Image src={avatar3} alt='notification icon' width="36" height="36" className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                                                 <div className='w-full'>
                                                     <div className='flex justify-between gap-10'>
                                                         <div className='font-medium'>
@@ -510,7 +510,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                                 </div>
                                             </li>
                                             <li className='py-10 border-b border-border-color flex gap-4'>
-                                                <img src={avatar4} alt='notification icon' width="36" height="36" className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
+                                                <Image src={avatar4} alt='notification icon' width="36" height="36" className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                                                 <div className='w-full'>
                                                     <div className='flex justify-between gap-10'>
                                                         <div className='font-medium'>
@@ -526,7 +526,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                                 </div>
                                             </li>
                                             <li className='py-10 border-b border-border-color flex gap-4'>
-                                                <img src={avatar7} alt='notification icon' width="36" height="36" className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
+                                                <Image src={avatar7} alt='notification icon' width="36" height="36" className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                                                 <div className='w-full'>
                                                     <div className='flex justify-between gap-10'>
                                                         <div className='font-medium'>
@@ -615,31 +615,31 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                             <ul>
                                 <li className='py-10 px-15 border-b border-dashed border-border-color transition-all hover:bg-primary-10'>
                                     <Link href="#" className='flex items-center gap-2'>
-                                        <img src={flag_uk} width="" height="" alt='language' className='w-[20px] h-[15px] min-w-[20px]' />
+                                        <Image src={flag_uk} width="" height="" alt='language' className='w-[20px] h-[15px] min-w-[20px]' />
                                         UK English
                                     </Link>
                                 </li>
                                 <li className='py-10 px-15 border-b border-dashed border-border-color transition-all hover:bg-primary-10'>
                                     <Link href="#" className='flex items-center gap-2'>
-                                        <img src={flag_us} width="" height="" alt='language' className='w-[20px] h-[15px] min-w-[20px]' />
+                                        <Image src={flag_us} width="" height="" alt='language' className='w-[20px] h-[15px] min-w-[20px]' />
                                         US English
                                     </Link>
                                 </li>
                                 <li className='py-10 px-15 border-b border-dashed border-border-color transition-all hover:bg-primary-10'>
                                     <Link href="#" className='flex items-center gap-2'>
-                                        <img src={flag_de} width="" height="" alt='language' className='w-[20px] h-[15px] min-w-[20px]' />
+                                        <Image src={flag_de} width="" height="" alt='language' className='w-[20px] h-[15px] min-w-[20px]' />
                                         Germany
                                     </Link>
                                 </li>
                                 <li className='py-10 px-15 border-b border-dashed border-border-color transition-all hover:bg-primary-10'>
                                     <Link href="#" className='flex items-center gap-2'>
-                                        <img src={flag_in} width="" height="" alt='language' className='w-[20px] h-[15px] min-w-[20px]' />
+                                        <Image src={flag_in} width="" height="" alt='language' className='w-[20px] h-[15px] min-w-[20px]' />
                                         Hindi
                                     </Link>
                                 </li>
                                 <li className='py-10 px-15 transition-all hover:bg-primary-10'>
                                     <Link href="#" className='flex items-center gap-2'>
-                                        <img src={flag_sa} width="" height="" alt='language' className='w-[20px] h-[15px] min-w-[20px]' />
+                                        <Image src={flag_sa} width="" height="" alt='language' className='w-[20px] h-[15px] min-w-[20px]' />
                                         Saudi Arabia
                                     </Link>
                                 </li>
@@ -657,7 +657,8 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                     </button>
                     <div className='relative group flex'>
                         <button className='xl:hidden md:px-3 px-2'>
-                            <img src={profile_av} alt='profile' width="36" height="36" className='bg-white shadow-shadow-lg p-1 rounded-full saturate-50 transition-all hover:filter-none' />
+                            <Image src={profile_av} width="36" height="36" alt='jkadgshs' />
+                            {/* <Image src={profile_av} alt='profile' width="36" height="36" className='bg-white shadow-shadow-lg p-1 rounded-full saturate-50 transition-all hover:filter-none' /> */}
                         </button>
                         <div className='bg-card-color text-font-color rounded-xl overflow-hidden md:w-[240px] w-[calc(100%-30px)] shadow-shadow-lg md:absolute fixed md:right-0 right-15 md:top-full top-[55px] origin-top-right z-[1] opacity-0 invisible scale-0 transition-all duration-300 group-hover:opacity-100 group-hover:visible group-hover:scale-100'>
                             <div className='p-4 border-b border-border-color'>
@@ -771,19 +772,19 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                     onClick={toggleDarkMode}
                                     className={`p-2 m-1 rounded-xl border cursor-pointer hover:bg-primary-10 ${!darkMode ? 'bg-primary-10 border-dashed border-primary' : 'bg-card-color border-transparent'}`}
                                 >
-                                    <img src={light_version} alt='light version' width="300" height="168" />
+                                    <Image src={light_version} alt='light version' width="300" height="168" />
                                 </div>
                                 <div
                                     onClick={toggleDarkMode}
                                     className={`p-2 m-1 rounded-xl border cursor-pointer hover:bg-primary-10 ${darkMode ? 'bg-primary-10 border-dashed border-primary' : 'bg-card-color border-transparent'}`}
                                 >
-                                    <img src={dark_version} alt='dark version' width="300" height="168" />
+                                    <Image src={dark_version} alt='dark version' width="300" height="168" />
                                 </div>
                                 <div
                                     onClick={toggleRtlMode}
                                     className={`p-2 m-1 rounded-xl border cursor-pointer hover:bg-primary-10 ${rtlMode ? 'bg-primary-10 border-dashed border-primary' : 'bg-card-color border-transparent'}`}
                                 >
-                                    <img src={rtl_version} alt='rtl version' width="300" height="168" />
+                                    <Image src={rtl_version} alt='rtl version' width="300" height="168" />
                                 </div>
                             </div>
                         </div>
@@ -798,7 +799,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                         onClick={() => toggleFontFamily(item.font)}
                                         className={`p-2 m-1 rounded-xl border cursor-pointer hover:bg-primary-10 ${selectedFontFamily === item.font ? 'bg-primary-10 border-dashed border-primary' : 'bg-card-color border-transparent'}`}
                                     >
-                                        <img src={item.image} alt='font mali' width="79" height="44" />
+                                        <Image src={item.image} alt='font mali' width="79" height="44" />
                                     </div>
                                 ))}
                             </div>
