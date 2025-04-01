@@ -2,7 +2,9 @@ import React from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import CompanyLogo from '../common/CompanyLogo'
 import { IconBrandFacebookFilled, IconBrandGithubFilled, IconBrandTwitterFilled, IconBrandYoutubeFilled } from '@tabler/icons-react'
+import TechveinLogo from '../../assets/images/Techvein_logo.png'; // or the correct file extension
 
+<img src={TechveinLogo} className="text-primary w-[116px] h-auto" />
 export default function AuthLayout() {
     return (
         <div className='admin-wrapper min-h-svh py-6 px-4 flex items-center justify-center bg-body-color before:fixed before:w-[450px] before:h-full before:end-[18%] before:top-0 after:fixed after:w-[30px] after:h-full after:end-[18%] after:top-0 after:bg-black-50'>
@@ -10,11 +12,11 @@ export default function AuthLayout() {
                 <div className='items-center justify-center w-full lg:flex hidden'>
                     <div className='max-w-[400px]'>
                         <div className='mb-4'>
-                            {/* <CompanyLogo className="text-primary w-[116px] h-auto" /> */}
+                            <img src={TechveinLogo} className="text-primary w-[116px] h-auto ml-4" />
                             <span
                                 className="text-primary font-bold text-4xl w-[116px] h-auto text-center bg-transparent border-b border-transparent hover:border-gray-400 focus:outline-none focus:border-white transition-colors placeholder-gray-400"
                             >
-                             Admin
+                                Techvein Admin
                             </span>
                         </div>
                         <p className='mb-12 text-[32px]/[40px] font-medium'>

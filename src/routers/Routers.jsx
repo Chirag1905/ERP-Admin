@@ -15,6 +15,7 @@ import Test from "../pages/Test";
 import PrivateRoute from "./PrivateRoute";
 import AcademicYearListPage from "../pages/academicYear/AcademicYearListPage";
 import CampusGroupManagement from "../pages/campusGroup/CampusGroupManagement";
+import ResetPassword from "../pages/auth/ResetPassword";
 
 export default function Routers() {
   const RouterContent = () => {
@@ -38,6 +39,7 @@ export default function Routers() {
         <Route element={<AuthLayout />}>
           <Route path="/auth-signin" element={<Signin />} />
           <Route path="/auth-signup" element={<Signup />} />
+          <Route path="/auth-reset-password" element={<ResetPassword />} />
           <Route path="/auth-forgot-password" element={<ForgotPassword />} />
           <Route path="/auth-two-step" element={<TwoStep />} />
           <Route path="/auth-lockscreen" element={<Lockscreen />} />
