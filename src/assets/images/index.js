@@ -47,8 +47,10 @@ import modal_connection from "./modal_connection.svg"
 import modal_event from "./modal_event.svg"
 import modal_joblisting from "./modal_joblisting.svg"
 import modal_ordertracking from "./modal_ordertracking.svg"
+import Techvein_logo from "./Techvein_logo.png"
 
 export {
+    Techvein_logo,
     profile_av,
     light_version,
     dark_version,

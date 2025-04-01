@@ -1,7 +1,9 @@
+'use client';
 import React from 'react'
 import Link from 'next/link'
 import CompanyLogo from '../common/CompanyLogo'
-
+// import TechveinLogo from '@/assets/images';
+import { Techvein_logo } from '@/assets/images'
 export default function Footer({ className }) {
 
   const CurrentYear = new Date().getFullYear()
@@ -13,6 +15,14 @@ export default function Footer({ className }) {
       </p>
       <Link href="/">
         <CompanyLogo className="w-[53px] h-[18px] text-primary transition-all hover:text-secondary" />
+        {/* <Image
+          src={Techvein_logo}
+          alt="Techvein IT Solutions Logo"
+          className="text-primary ml-4"
+          width={116}
+          height={90}
+          priority
+        /> */}
       </Link>
       <ul className='flex items-center gap-x-20 gap-y-5 flex-wrap justify-center'>
         <li>
@@ -25,7 +35,7 @@ export default function Footer({ className }) {
             Licenses
           </Link>
         </li>
-        {/* <li>
+        <li>
           <Link href="#" className='text-font-color-100 transition-all hover:text-blue'>
             Support
           </Link>
@@ -34,7 +44,7 @@ export default function Footer({ className }) {
           <Link href="#" className='text-font-color-100 transition-all hover:text-blue'>
             FAQs
           </Link>
-        </li> */}
+        </li>
       </ul>
     </div>
   )

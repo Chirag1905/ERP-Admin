@@ -1,9 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { getCampusGroupRequest } from "../../../Redux/features/campusGroup/campusGroupSlice";
-import Breadcrumb from '../../../components/common/Breadcrumb';
-import WelcomeHeader from '../../../components/common/WelcomeHeader';
 import {
   avatar1,
   avatar2,
@@ -19,11 +16,14 @@ import {
   IconCaretUpFilled,
 } from '@tabler/icons-react';
 import toast from 'react-hot-toast';
-import CustomPagination from '../../../components/common/CustomPagination';
-import { closeModal, openModal } from '../../../Redux/features/utils/modalSlice';
-import CampusGroupEdit from './_components/CampusGroupEdit';
-import CampusGroupCreate from './_components/CampusGroupCreate';
 import Image from 'next/image';
+import { closeModal, openModal } from '@/Redux/features/utils/modalSlice';
+import { getCampusGroupRequest } from '@/Redux/features/campusGroup/campusGroupSlice';
+import Breadcrumb from '@/components/common/Breadcrumb';
+import WelcomeHeader from '@/components/common/WelcomeHeader';
+import CampusGroupCreate from './_components/CampusGroupCreate';
+import CampusGroupEdit from './_components/CampusGroupEdit';
+import CustomPagination from '@/components/common/CustomPagination';
 
 const CampusGroupManagement = () => {
   const breadcrumbItem = [{ name: "School Management" }];

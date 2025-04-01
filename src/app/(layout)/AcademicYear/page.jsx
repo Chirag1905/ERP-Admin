@@ -1,7 +1,6 @@
+'use client';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import Breadcrumb from '../../../components/common/Breadcrumb';
-import WelcomeHeader from '../../../components/common/WelcomeHeader';
 import {
   IconEdit,
   IconPlus,
@@ -10,11 +9,13 @@ import {
   IconCaretDownFilled,
   IconCaretUpFilled
 } from '@tabler/icons-react';
-import CustomPagination from '../CustomPagination';
 import toast from 'react-hot-toast';
-import { closeModal, openModal } from '../../../Redux/features/utils/modalSlice';
+import { closeModal, openModal } from '@/Redux/features/utils/modalSlice';
+import Breadcrumb from '@/components/common/Breadcrumb';
+import WelcomeHeader from '@/components/common/WelcomeHeader';
 import AcademicYearCreate from './_components/AcademicYearCreate';
 import AcademicYearEdit from './_components/AcademicYearEdit';
+import CustomPagination from '@/components/common/CustomPagination';
 
 const AcademicYearListPage = () => {
   const breadcrumbItem = [{ name: "Academic Years" }];
