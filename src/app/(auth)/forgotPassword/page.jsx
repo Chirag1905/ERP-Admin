@@ -1,6 +1,6 @@
 'use client';
 import React from 'react'
-import { auth_forgot_password } from '../../assets/images'
+import { auth_forgot_password } from '@/assets/images'
 import Link from 'next/link';
 
 export default function ForgotPassword() {

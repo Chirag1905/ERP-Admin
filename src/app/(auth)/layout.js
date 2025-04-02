@@ -12,14 +12,14 @@ export default function AuthLayout({ children }) {
                 <div className='items-center justify-center w-full lg:flex hidden'>
                     <div className='max-w-[400px]'>
                         <div className='mb-4'>
-                            <Image
+                            {/* <Image
                                 src={TechveinLogo}
                                 alt="Techvein IT Solutions Logo"
                                 className="text-primary ml-4"
                                 width={116}
                                 height={90}
                                 priority
-                            />
+                            /> */}
                             <span
                                 className="text-primary font-bold text-4xl w-[116px] h-auto text-center bg-transparent border-b border-transparent hover:border-gray-400 focus:outline-none focus:border-white transition-colors placeholder-gray-400"
                             >

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React, { useState } from 'react';
 import "./globals.css";
 import "../assets/css/main.css"
@@ -8,6 +8,7 @@ import { Toaster } from 'react-hot-toast';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from '@/Redux/store';
+import PrivateRoute from './PrivateRoute';
 
 export default function RootLayout({ children }) {
 
@@ -15,10 +16,12 @@ export default function RootLayout({ children }) {
     <html lang="en" data-theme="light">
       <body data-swift-theme="blush">
         <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
+          {/* <PersistGate loading={null} persistor={persistor}> */}
             <Toaster />
-            {children}
-          </PersistGate>
+            {/* <PrivateRoute> */}
+              {children}
+            {/* </PrivateRoute> */}
+          {/* </PersistGate> */}
         </Provider>
       </body>
     </html>
