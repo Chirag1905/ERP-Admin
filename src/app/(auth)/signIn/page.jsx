@@ -20,12 +20,10 @@ const Signin = () => {
 
     const handleSubmit = async () => {
         const params = {
-            grant_type: "password",
-            client_id: "saas-ui-app",
-            client_secret: "JPwfUjOQkfq1oy9RKOUIqToLQF9Egc2I",
             username: username,
             password: password,
-            scope: "openid profile email"
+            // clientId: "admin-cli",
+            // realmName: "master"
         };
 
         dispatch(signInRequest(params));
