@@ -4,12 +4,12 @@ const signIn = async (username, password) => {
   try {
     const response = await axios.post(
       `https://api.testmazing.com/api/auth/login`,
-      new URLSearchParams({
+      {
         username: username,
         password: password,
         clientId: "admin-cli",
         realmName: "master"
-      }),
+      },
       {
         headers: {
           "Content-Type": "application/json",
@@ -17,16 +17,10 @@ const signIn = async (username, password) => {
       }
     );
 
-    return {
-      accessToken: response.data.access_token,
-      // refreshToken: response.data.refresh_token,
-      // idToken: response.data.id_token,
-      // expiresIn: response.data.expires_in,
-    };
-  } catch (error) {
-    const errorMessage =
-      error.response?.data?.error_description || error.message;
-    throw new Error(`Authentication failed: ${errorMessage}`);
+    return response;
+  } catch (err) {
+    console.log(err, "err");
+    return err.response;
   }
 };
 

@@ -4,12 +4,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IconBrandGoogleFilled, IconEye, IconEyeOff } from '@tabler/icons-react';
 import { signInRequest } from '@/Redux/features/auth/authSlice';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const Signin = () => {
     const dispatch = useDispatch();
     // const navigate = useNavigate();
-    const { loading, error } = useSelector((state) => state.auth);
-
+    const { isAuthenticated, loading, error, token, isTempPass } = useSelector((state) => state.auth);
+    console.log("🚀 ~ Signin ~ isAuthenticated:", isAuthenticated)
+    console.log("🚀 ~ Signin ~ isTempPass:", isTempPass)
+    console.log("🚀 ~ Signin ~ token:", token)
+    const router = useRouter();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -27,7 +31,10 @@ const Signin = () => {
         };
 
         dispatch(signInRequest(params));
-        // navigate("/")
+        {
+            isAuthenticated ? router.push("/") : router.push("/signIn")
+
+        }
 
         // Show a loading, success, or error toast
         //  toast.promise(loginPromise, {

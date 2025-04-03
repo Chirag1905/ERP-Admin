@@ -7,6 +7,7 @@ const initialState = {
   error: null,
   isAuthenticated: false,
   expiryTime: null,
+  isTempPass: Boolean
 };
 
 const authSlice = createSlice({
@@ -19,10 +20,11 @@ const authSlice = createSlice({
     },
     signInSuccess(state, action) {
       state.loading = false;
-      state.user = action.payload.user;
+      // state.user = action.payload.user;
       state.token = action.payload.token;
+      state.isTempPass = action.payload.requiresPasswordUpdate;
       state.isAuthenticated = true;
-      state.expiryTime = action.payload.expiryTime;
+      // state.expiryTime = action.payload.expiryTime;
     },
     signInFailure(state, action) {
       state.loading = false;

@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 const PrivateRoute = ({ children }) => {
   const router = useRouter();
   const { isAuthenticated, loading } = useSelector(state => state.auth);
-  console.log("🚀 ~ PrivateRoute ~ loading:", loading)
+  console.log("🚀 ~ PrivateRoute ~ loading:", loading);
 
   useEffect(() => {
     // setTimeout(() => {
