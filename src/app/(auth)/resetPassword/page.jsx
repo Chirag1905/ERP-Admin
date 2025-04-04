@@ -1,9 +1,9 @@
 'use client';
 import React from 'react'
-import { auth_forgot_password } from '../../assets/images'
+import { auth_forgot_password } from '../../../assets/images'
 import Link from 'next/link';
 
-export default function ForgotPassword() {
+export default function ResetPassword() {
     return (
         <>
             <div className='flex justify-center sm:mb-6 mb-4'>
@@ -25,7 +25,7 @@ export default function ForgotPassword() {
                 Submit
             </Link>
             <div className='text-center sm:mt-30 mt-6'>
-                <Link href="/auth-signin" className='text-primary'>
+                <Link href="/signIn" className='text-primary'>
                     Back to Sign in
                 </Link>
             </div>

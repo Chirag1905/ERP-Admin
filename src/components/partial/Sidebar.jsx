@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link'
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import {
   avatar1,
@@ -67,6 +67,7 @@ import Image from 'next/image';
 export default function Sidebar(props) {
   const { setMobileNav, note, toggleNote, chat, toggleChat } = props;
   const dispatch = useDispatch();
+  const router = useRouter();
   const { isAuthenticated } = useSelector((state) => state.auth);
   const [pinnedItems, setPinnedItems] = useState([]);
   const [menuActive, setMenuActive] = useState(null);
@@ -87,7 +88,8 @@ export default function Sidebar(props) {
   const handleLogout = () => {
     if (isAuthenticated) {
       dispatch(signOutSuccess());
-      console.log("called")
+      console.log("called");
+      router.push('/signIn');
     }
   };
 
@@ -372,7 +374,8 @@ export default function Sidebar(props) {
             Sr. Manager
           </span>
           <div className='font-medium'>
-            Prashant Gourav
+            {/* Prashant Gourav */}
+            Tester
           </div>
           <div className='flex gap-4 mt-10'>
             <button onClick={toggleSchedule} className={`transition-all duration-300 after:fixed after:z-[4] after:w-full after:h-full after:left-0 after:top-0 after:bg-black-50 after:backdrop-blur-[2px] after:transition-all after:duration-500 after:ease-in-out ${schedule ? 'after:opacity-1 after:visible after:overflow-auto' : 'after:opacity-0 after:invisible after:overflow-hidden'}`}>

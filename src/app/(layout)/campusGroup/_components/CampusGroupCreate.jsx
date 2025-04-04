@@ -4,7 +4,8 @@ import toast from 'react-hot-toast';
 import {
     getCampusGroupRequest,
     postCampusGroupRequest,
-    postCampusGroupSuccess
+    postCampusGroupSuccess,
+    postRealmRequest
 } from '@/Redux/features/campusGroup/campusGroupSlice';
 
 const CampusGroupCreate = (props) => {
@@ -225,6 +226,8 @@ const CampusGroupCreate = (props) => {
                                             <input
                                                 type='text'
                                                 className='form-input'
+                                                checked={formData?.domain || ""}
+                                                onChange={(e) => updateFormData("domain", e.target.value)}
                                             />
                                         </div>
                                     </div>

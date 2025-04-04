@@ -1,5 +1,4 @@
 import axios from "axios";
-
 export const getCampusGroup = async (obj) => {
   try {
     const response = await axios.get(
@@ -7,6 +6,7 @@ export const getCampusGroup = async (obj) => {
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${obj.token}`,
         },
         params: obj.data,
       }
@@ -19,7 +19,6 @@ export const getCampusGroup = async (obj) => {
 };
 
 export const postCampusGroup = async (obj) => {
-  // console.log(obj, "Main object Post Campus");
   try {
     const response = await axios.post(
       "https://api.testmazing.com/campus/api/createcampusgroup",
@@ -27,6 +26,7 @@ export const postCampusGroup = async (obj) => {
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${obj.token}`,
         },
       }
     );
@@ -45,6 +45,7 @@ export const putCampusGroup = async (id, data) => {
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${data.token}`,
         },
       }
     );
@@ -54,3 +55,22 @@ export const putCampusGroup = async (id, data) => {
     return err.response;
   }
 };
+
+// export const postRealm = async (obj) => {
+//   try {
+//     const response = await axios.post(
+//       "https://api.testmazing.com/api/auth/realm",
+//       obj,
+//       {
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${obj.token}`,
+//         },
+//       }
+//     );
+//     return response;
+//   } catch (err) {
+//     console.log(err, "err");
+//     return err.response;
+//   }
+// };

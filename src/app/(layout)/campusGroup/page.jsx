@@ -31,6 +31,8 @@ const CampusGroupManagement = () => {
   // Redux state
   const dispatch = useDispatch();
   const { campusGroupData, loading, error } = useSelector((state) => state.campusGroup);
+  const { token } = useSelector((state) => state.auth);
+  console.log("🚀 ~ CampusGroupManagement ~ token:", token)
   const { modals } = useSelector((state) => state.modal);
 
   // Modal states
@@ -113,7 +115,7 @@ const CampusGroupManagement = () => {
       };
 
       try {
-        dispatch(getCampusGroupRequest({ data: params }));
+        dispatch(getCampusGroupRequest({ data: params, token }));
       } catch (error) {
         console.error("Error fetching campus group data:", error);
         toast.error("Failed to load campus group data");

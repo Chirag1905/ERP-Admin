@@ -9,6 +9,9 @@ import {
   putCampusGroupSuccess,
   putCampusGroupFailure,
   putCampusGroupRequest,
+  postRealmSuccess,
+  postRealmFailure,
+  postRealmRequest,
 } from "./campusGroupSlice";
 import {
   getCampusGroup,
@@ -85,8 +88,35 @@ function* putCampusSaga(action) {
   }
 }
 
+
+// function* postRealmSaga(action) {
+//   try {
+//     const response = yield call(postCampusGroup, action.payload);
+//     if (response.status === 200 || response.status === 201) {
+//       yield put(postRealmSuccess(response.data));
+//     } else {
+//       // Handle validation errors or other API errors
+//       yield put(
+//         postRealmFailure({
+//           message: response.data.message,
+//           error: response.data.errors,
+//         })
+//       );
+//     }
+//   } catch (error) {
+//     // Handle unexpected errors (e.g., network issues)
+//     yield put(
+//       postRealmFailure({
+//         message: error.data.message,
+//         error: error.data.errors,
+//       })
+//     );
+//   }
+// }
+
 export default function* campusSaga() {
   yield takeLatest(getCampusGroupRequest.type, getCampusSaga);
   yield takeLatest(postCampusGroupRequest.type, postCampusSaga);
   yield takeLatest(putCampusGroupRequest.type, putCampusSaga);
+  // yield takeLatest(postRealmRequest.type, postRealmSaga);
 }
