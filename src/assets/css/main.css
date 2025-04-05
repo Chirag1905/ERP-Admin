@@ -189,11 +189,13 @@ input[type=number] {
 }
 
 [data-theme="light"] .form-select {
-    background-image: url('@/assets/images/chevron_down_dark.svg');
+    /* background-image: url('@/assets/images/chevron_down_dark.svg'); */
+    background-image: url('../images/chevron_down_dark.svg');
 }
 
 [data-theme="dark"] .form-select {
-    background-image: url('@/assets/images/chevron_down_light.svg');
+    /* background-image: url('@/assets/images/chevron_down_light.svg'); */
+    background-image: url('../images/chevron_down_light.svg');
 }
 
 .dynamic-color-setting {
@@ -655,7 +657,8 @@ body .react-data-table.striped .rdt_TableCol:not(:last-of-type) {
 .form-check .form-check-input:checked {
     background-color: var(--primary);
     border-color: var(--primary);
-    background-image: url('@/assets/images/check_solid.svg');
+    /* background-image: url('@/assets/images/check_solid.svg'); */
+    background-image: url('../images/check_solid.svg');
     background-size: 12px 12px;
     background-position: center;
     background-repeat: no-repeat;
@@ -757,7 +760,8 @@ body .react-data-table.striped .rdt_TableCol:not(:last-of-type) {
 .form-radio .form-radio-input:checked {
     background-color: var(--primary);
     border-color: var(--primary);
-    background-image: url('@/assets/images/round_solid.svg');
+    /* background-image: url('@/assets/images/round_solid.svg'); */
+    background-image: url('../images/round_solid.svg');
     background-size: 12px 12px;
     background-position: center;
     background-repeat: no-repeat;
