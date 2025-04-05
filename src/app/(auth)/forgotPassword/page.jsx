@@ -23,10 +23,10 @@ export default function ForgotPassword() {
     const handleSubmit = async () => {
         const params = {
             email: email,
-            // clientId: "admin-cli",
-            // realmName: "master"
-            clientId: "test4-fe-client",
-            realmName: "test4"
+            clientId: "admin-cli",
+            realmName: "master"
+            // clientId: "test4-fe-client",
+            // realmName: "test4"
         };
         toast.loading('Logging in...', { id: 'login-toast' });
         dispatch(forgotPassRequest(params));

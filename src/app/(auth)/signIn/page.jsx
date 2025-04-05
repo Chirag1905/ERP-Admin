@@ -23,10 +23,10 @@ const Signin = () => {
         const params = {
             username: username,
             password: password,
-            // clientId: "admin-cli",
-            // realmName: "master"
-            clientId: "test4-fe-client",
-            realmName: "test4"
+            clientId: "admin-cli",
+            realmName: "master"
+            // clientId: "test4-fe-client",
+            // realmName: "test4"
         };
         toast.loading('Logging in...', { id: 'login-toast' });
         dispatch(signInRequest(params));
