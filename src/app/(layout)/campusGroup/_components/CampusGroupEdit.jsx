@@ -134,7 +134,7 @@ const CampusGroupEdit = (props) => {
 
         dispatch(putCampusGroupSuccess(null));
         closeModal();
-    }, [campusGroupPutData, dispatch, closeModal]);
+    }, [campusGroupPutData, closeModal]);
 
     // Handle API errors
     useEffect(() => {

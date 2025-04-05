@@ -126,7 +126,7 @@ const CampusEdit = (props) => {
 
         dispatch(putCampusSuccess(null));
         closeModal();
-    }, [campusPutData, dispatch, closeModal]);
+    }, [campusPutData, closeModal]);
 
     // Handle API errors
     useEffect(() => {

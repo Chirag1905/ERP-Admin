@@ -66,7 +66,7 @@ const Signin = () => {
                 </span>
             </div>
             <div className='sm:mb-6 mb-4 text-center'>
-                <Link href="#" className='btn btn-white !border-border-color'>
+                <Link href="#" prefetch={true} className='btn btn-white !border-border-color'>
                     <IconBrandGoogleFilled className='fill-font-color-100' />
                     Sign in with Google
                 </Link>

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import { clearAuthError, clearAuthState, forgotPassRequest } from '@/Redux/features/auth/authSlice';
+import { clearAuthError, clearAuthState, forgotPassRequest, forgotPassSuccess } from '@/Redux/features/auth/authSlice';
 import Image from 'next/image';
 
 export default function ForgotPassword() {
@@ -17,9 +17,8 @@ export default function ForgotPassword() {
         forgotPassData,
         isTempPass
     } = useSelector((state) => state.auth);
-    console.log("🚀 ~ ForgotPassword ~ forgotPassData:", forgotPassData)
     const router = useRouter();
-    const [email, setEmail] = useState();
+    const [email, setEmail] = useState('');
 
     const handleSubmit = async () => {
         const params = {
@@ -31,7 +30,6 @@ export default function ForgotPassword() {
         };
         toast.loading('Logging in...', { id: 'login-toast' });
         dispatch(forgotPassRequest(params));
-        { isAuthenticated === true ? router.push("/") : router.push("/signIn") }
     };
 
     // Show toast based on loading state
@@ -46,16 +44,14 @@ export default function ForgotPassword() {
 
     // Show success or error toast and redirect
     useEffect(() => {
-        if (forgotPassData) {
-            const redirectPath = isTempPass ? '/setPermanentPassword' : '/';
-            toast.success('Permanent Password Set successful!', { id: 'login-status' });
-            router.push(redirectPath);
-            dispatch(forgotPassRequest(null));
+        if (!loading && forgotPassData) {
+            toast.success('Email sent successfully! Please check your email for the temporary password.', { id: 'login-status' });
+            router.push('/signIn');
         } else if (error) {
-            toast.error('Failed to create permanent password. Please try again.', { id: 'login-status' });
-            dispatch(forgotPassRequest(null));
+            toast.error('Failed to send temporary password email. Please try again.', { id: 'login-status' });
         }
-    }, [forgotPassData, error, isTempPass, router, dispatch]);
+        dispatch(forgotPassSuccess(null));
+    }, [forgotPassData, error, router]);
 
     return (
         <>

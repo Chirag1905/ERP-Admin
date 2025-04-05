@@ -6,7 +6,7 @@ import { IconEye, IconEyeOff } from '@tabler/icons-react';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import { setPermanentPassRequest } from '@/Redux/features/auth/authSlice';
+import { setPermanentPassRequest, setPermanentPassSuccess } from '@/Redux/features/auth/authSlice';
 import Image from 'next/image';
 
 export default function SetPermanentPassword() {
@@ -14,6 +14,7 @@ export default function SetPermanentPassword() {
     const {
         loginData,
         isAuthenticated,
+        setPermPassData,
         loading,
         error,
         token,
@@ -67,7 +68,6 @@ export default function SetPermanentPassword() {
         };
         toast.loading('Logging in...', { id: 'login-toast' });
         dispatch(setPermanentPassRequest({ params, token }));
-        { isAuthenticated === true ? router.push("/") : router.push("/signIn") }
     };
 
     // Show toast based on loading state
@@ -81,13 +81,15 @@ export default function SetPermanentPassword() {
 
     // Show success or error toast and redirect
     useEffect(() => {
-        if (!loading && isAuthenticated) {
-            toast.success('Login successful!');
-            router.push(isTempPass ? '/setPermanentPassword' : '/');
-        } else if (!loading && error) {
-            toast.error('Login failed. Please check your credentials.');
+        if (!loading && setPermPassData) {
+            toast.success('Permanent Password Set successful!');
+            const redirectPath = isTempPass && '/'
+            router.push(redirectPath);
+        } else if (error) {
+            toast.error('Failed to create permanent password. Please try again.');
         }
-    }, [isAuthenticated, isTempPass, loading, error, router]);
+        dispatch(setPermanentPassSuccess(null));
+    }, [setPermPassData, error, router]);
 
     return (
         <>

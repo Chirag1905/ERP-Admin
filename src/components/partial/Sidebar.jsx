@@ -347,32 +347,32 @@ export default function Sidebar(props) {
               <div className="text-danger text-[12px]/[18px] mt-10">Last login: 1 Hours Ago</div>
             </div>
             <div className='p-1 m-1 overflow-auto max-h-[calc(80svh-279px)] cus-scrollbar'>
-              <Link href="#" className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
+              <Link href="#" prefetch={true} className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
                 <IconUser className='w-[16px] h-[16px]' />
                 My Profile
               </Link>
-              <Link href="#" className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
+              <Link href="#" prefetch={true} className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
                 <IconSettings className='w-[16px] h-[16px]' />
                 Settings
               </Link>
-              <Link href="#" className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
+              <Link href="#" prefetch={true} className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
                 <IconCreditCard className='w-[16px] h-[16px]' />
                 Billing
               </Link>
-              <Link href="#" className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
+              <Link href="#" prefetch={true} className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
                 <IconUsersGroup className='w-[16px] h-[16px]' />
                 Manage Team
               </Link>
-              <Link href="#" className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
+              <Link href="#" prefetch={true} className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
                 <IconCalendarFilled className='w-[16px] h-[16px]' />
                 My Events
               </Link>
-              <Link href="#" className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
+              <Link href="#" prefetch={true} className='py-2 px-4 flex items-center gap-3 transition-all hover:bg-primary-10'>
                 <IconTag className='w-[16px] h-[16px]' />
                 Support Ticket
               </Link>
             </div>
-            <Link href="auth-signin" className='bg-secondary uppercase text-[14px]/[20px] text-white py-5 px-10 text-center w-full inline-block'>
+            <Link href="auth-signin" prefetch={true} className='bg-secondary uppercase text-[14px]/[20px] text-white py-5 px-10 text-center w-full inline-block'>
               Sign Out
             </Link>
           </div>
@@ -401,7 +401,7 @@ export default function Sidebar(props) {
                 <IconMessage className='stroke-[1.5] w-[20px] h-[20px]' />
               </span>
             </button>
-            <Link href="#" title='Log Out'>
+            <Link href="#" prefetch={true} title='Log Out'>
               <IconPower className='stroke-[1.5] w-[20px] h-[20px]' onClick={() => handleLogout()} />
             </Link>
           </div>
@@ -420,6 +420,7 @@ export default function Sidebar(props) {
                   href={item.url}
                   onClick={() => closeModals()}
                   className='text-left'
+                  prefetch={true}
                 >
                   {item?.link}
                 </Link>
@@ -437,6 +438,7 @@ export default function Sidebar(props) {
                             href={res.url}
                             onClick={() => window.innerWidth < 1200 && setMobileNav(false)}
                             className={`py-1 text-[14px]/[20px] flex relative before:hidden before:absolute before:h-full before:w-[1px] ltr:before:left-[-20px] rtl:before:right-[-20px] before:top-0 before:bg-secondary hover:text-secondary hover:before:block transition-all ${pageUrl === res.url ? 'text-secondary before:!block' : ''}`}
+                            prefetch={true}
                           >
                             {res.link}
                             {res.children && (
@@ -466,6 +468,7 @@ export default function Sidebar(props) {
                                   <Link
                                     href={subItem.url}
                                     onClick={() => window.innerWidth < 1200 && setMobileNav(false)}
+                                    prefetch={true}
                                   >
                                     {subItem.link}
                                   </Link>
@@ -491,7 +494,7 @@ export default function Sidebar(props) {
             </li>
           ) : item.url ?
             <li key={parentIndex}>
-              <Link href={item.url} onClick={() => { window.innerWidth < 1200 && setMobileNav(false) }} className={`flex items-center gap-10 w-full py-2 transition-all hover:text-secondary ${pageUrl === item.url ? 'text-secondary' : ''}`}>
+              <Link href={item.url} prefetch={true} onClick={() => { window.innerWidth < 1200 && setMobileNav(false) }} className={`flex items-center gap-10 w-full py-2 transition-all hover:text-secondary ${pageUrl === item.url ? 'text-secondary' : ''}`}>
                 {item.icon ? <item.icon className='stroke-[1.5] w-[22px] h-[22px]' /> : <IconChevronRight />}
                 <span onClick={() => closeModals()}>{item.link}</span>
               </Link>

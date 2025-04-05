@@ -86,7 +86,7 @@ const CampusCreate = (props) => {
 
         dispatch(postCampusSuccess(null));
         closeModal();
-    }, [campusPostData, dispatch, closeModal]);
+    }, [campusPostData, closeModal]);
 
     // Handle API errors
     useEffect(() => {

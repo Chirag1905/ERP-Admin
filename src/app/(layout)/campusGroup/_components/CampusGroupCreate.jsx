@@ -84,7 +84,7 @@ const CampusGroupCreate = (props) => {
 
         dispatch(postCampusGroupSuccess(null));
         closeModal();
-    }, [campusGroupPostData, dispatch, closeModal]);
+    }, [campusGroupPostData, closeModal]);
 
     // Handle API errors
     useEffect(() => {
