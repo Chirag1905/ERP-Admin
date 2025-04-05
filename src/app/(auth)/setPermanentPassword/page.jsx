@@ -62,8 +62,8 @@ export default function SetPermanentPassword() {
     const handleSubmit = async () => {
         const params = {
             newPassword: password,
-            clientId: "test5-fe-client",
-            realmName: "test5",
+            clientId: "test4-fe-client",
+            realmName: "test4",
         };
         toast.loading('Logging in...', { id: 'login-toast' });
         dispatch(setPermanentPassRequest({ params, token }));

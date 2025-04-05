@@ -17,7 +17,7 @@ const CampusGroupCreate = (props) => {
     // Redux state
     const dispatch = useDispatch();
     const { campusGroupPostData, loading, error } = useSelector((state) => state.campusGroup);
-
+    const { token } = useSelector((state) => state.auth);
     // Component state
     const [activeTab, setActiveTab] = useState(0);
     const [formData, setFormData] = useState({
@@ -53,7 +53,7 @@ const CampusGroupCreate = (props) => {
                 zoomEnabled: formData.zoomEnabled,
                 isActive: formData.isActive,
             };
-            dispatch(postCampusGroupRequest(params));
+            dispatch(postCampusGroupRequest({ data: params, token }));
         } catch (err) {
             console.error("Error submitting data:", err);
             toast.error(err || "Failed to submit data. Please try again.", {

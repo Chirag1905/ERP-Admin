@@ -61,8 +61,7 @@ function* postCampusSaga(action) {
 // Add new saga for updating campus data
 function* putCampusSaga(action) {
   try {
-    const { id, data } = action.payload;
-    const response = yield call(putCampus, id, data);
+    const response = yield call(putCampus, action.payload);
     if (response.status === 200 || response.status === 201) {
       yield put(putCampusSuccess(response.data));
       yield put(

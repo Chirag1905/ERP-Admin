@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import { forgotPassRequest } from '@/Redux/features/auth/authSlice';
+import { clearAuthError, clearAuthState, forgotPassRequest } from '@/Redux/features/auth/authSlice';
 import Image from 'next/image';
 
 export default function ForgotPassword() {
@@ -15,6 +15,7 @@ export default function ForgotPassword() {
         loading,
         error,
         token,
+        setPermPassData,
         isTempPass
     } = useSelector((state) => state.auth);
     const router = useRouter();
@@ -23,8 +24,10 @@ export default function ForgotPassword() {
     const handleSubmit = async () => {
         const params = {
             email: email,
-            clientId: "admin-cli",
-            realmName: "master"
+            // clientId: "admin-cli",
+            // realmName: "master"
+            clientId: "test4-fe-client",
+            realmName: "test4"
         };
         toast.loading('Logging in...', { id: 'login-toast' });
         dispatch(forgotPassRequest(params));
@@ -40,15 +43,19 @@ export default function ForgotPassword() {
         }
     }, [loading]);
 
+
     // Show success or error toast and redirect
     useEffect(() => {
-        if (!loading && isAuthenticated) {
-            toast.success('Login successful!');
-            router.push(isTempPass ? '/setPermanentPassword' : '/');
-        } else if (!loading && error) {
-            toast.error('Login failed. Please check your credentials.');
+        if (setPermPassData) {
+            const redirectPath = isTempPass ? '/setPermanentPassword' : '/';
+            toast.success('Permanent Password Set successful!', { id: 'login-status' });
+            router.push(redirectPath);
+            dispatch(clearAuthError(null));
+        } else if (error) {
+            toast.error('Failed to create permanent password. Please try again.', { id: 'login-status' });
+            dispatch(clearAuthState(null));
         }
-    }, [isAuthenticated, isTempPass, loading, error, router]);
+    }, [setPermPassData, error, isTempPass, router, dispatch]);
 
     return (
         <>

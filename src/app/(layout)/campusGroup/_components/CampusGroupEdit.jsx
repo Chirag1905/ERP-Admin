@@ -19,7 +19,7 @@ const CampusGroupEdit = (props) => {
     // Redux state
     const dispatch = useDispatch();
     const { campusGroupPutData, loading, error } = useSelector((state) => state.campusGroup);
-
+    const { token } = useSelector((state) => state.auth);
     // Component state
     const [activeTab, setActiveTab] = useState(0);
     const [formData, setFormData] = useState({
@@ -49,7 +49,16 @@ const CampusGroupEdit = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            dispatch(putCampusGroupRequest({ id: selectedItem?.id, data: formData }));
+            const params = {
+                id: selectedItem?.id,
+                formData,
+                token
+            };
+            dispatch(putCampusGroupRequest({
+                data: formData,
+                token,
+                id: selectedItem?.id,
+            }));
         } catch (err) {
             console.error("Error submitting data:", err);
             toast.error(err || "An unexpected error occurred. Please try again.", {

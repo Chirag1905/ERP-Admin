@@ -419,6 +419,7 @@ export default function Sidebar(props) {
                 <Link
                   href={item.url}
                   onClick={() => closeModals()}
+                   className='text-left'
                 >
                   {item?.link}
                 </Link>

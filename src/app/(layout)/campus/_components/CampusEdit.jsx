@@ -19,6 +19,7 @@ const CampusEdit = (props) => {
     // Redux state
     const dispatch = useDispatch();
     const { campusPutData, loading, error } = useSelector((state) => state.campus);
+    const { token } = useSelector((state) => state.auth);
 
     // Component state
     const [activeTab, setActiveTab] = useState(0);
@@ -49,7 +50,11 @@ const CampusEdit = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            dispatch(putCampusRequest({ id: selectedItem?.id, data: formData }));
+            dispatch(putCampusRequest({
+                data: formData,
+                token,
+                id: selectedItem?.id,
+            }));
         } catch (err) {
             console.error("Error submitting data:", err);
             toast.error(err || "An unexpected error occurred. Please try again.", {

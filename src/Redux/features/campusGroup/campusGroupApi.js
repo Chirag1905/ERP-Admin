@@ -22,7 +22,7 @@ export const postCampusGroup = async (obj) => {
   try {
     const response = await axios.post(
       "https://api.testmazing.com/campus/api/createcampusgroup",
-      obj,
+      obj.data,
       {
         headers: {
           "Content-Type": "application/json",
@@ -37,15 +37,15 @@ export const postCampusGroup = async (obj) => {
   }
 };
 
-export const putCampusGroup = async (id, data) => {
+export const putCampusGroup = async (obj) => {
   try {
     const response = await axios.put(
-      `https://api.testmazing.com/campus/api/updatecampusgroup/${id}`,
-      data,
+      `https://api.testmazing.com/campus/api/updatecampusgroup/${obj.id}`,
+      obj.data,
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${data.token}`,
+          Authorization: `Bearer ${obj.token}`,
         },
       }
     );
@@ -55,22 +55,3 @@ export const putCampusGroup = async (id, data) => {
     return err.response;
   }
 };
-
-// export const postRealm = async (obj) => {
-//   try {
-//     const response = await axios.post(
-//       "https://api.testmazing.com/api/auth/realm",
-//       obj,
-//       {
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${obj.token}`,
-//         },
-//       }
-//     );
-//     return response;
-//   } catch (err) {
-//     console.log(err, "err");
-//     return err.response;
-//   }
-// };
