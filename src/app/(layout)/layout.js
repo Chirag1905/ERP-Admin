@@ -24,7 +24,7 @@ export default function Layout({ children }) {
                     toggleChat={toggleChat}
                 />
                 <div className='flex xl:h-[calc(100svh-72px)] md:h-[calc(100svh-68px)] h-[calc(100svh-60px)] relative'>
-                    <div className={`sm:w-[260px] w-full min-w-[260px] xl:static fixed z-[3] xl:bg-transparent bg-dark xl:rounded-none sm:rounded-tl-2xl sm:rounded-t-none rounded-t-2xl xl:shadow-none transition-all duration-300 ${mobileNav ? 'shadow-shadow-lg sm:left-2 left-0' : '-left-full'}`}>
+                    <div className={`sm:w-[260px] w-full min-w-[300px] xl:static fixed z-[3] xl:bg-transparent bg-dark xl:rounded-none sm:rounded-tl-2xl sm:rounded-t-none rounded-t-2xl xl:shadow-none transition-all duration-300 ${mobileNav ? 'shadow-shadow-lg sm:left-2 left-0' : '-left-full'}`}>
                         <Sidebar
                             setMobileNav={setMobileNav}
                             note={note}

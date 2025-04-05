@@ -184,7 +184,7 @@ const AcademicYearListPage = () => {
                   type="text"
                   id="team_board_search"
                   className="form-input !rounded-e-none !py-[6px]"
-                  placeholder="Search Schools..."
+                  placeholder="Search campus..."
                   value={searchText}
                   onChange={handleSearch}
                 />
@@ -289,7 +289,7 @@ const AcademicYearListPage = () => {
                         ))
                       ) : (
                         <tr>
-                          <td colSpan="5" className="text-center text-gray-500 py-4 px-2 md:px-4">No schools available</td>
+                          <td colSpan="5" className="text-center text-gray-500 py-4 px-2 md:px-4">No campuss available</td>
                         </tr>
                       )}
                     </tbody>

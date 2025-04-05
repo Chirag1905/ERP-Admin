@@ -1,12 +1,18 @@
 import React from 'react'
-import { auth_maintenance } from '../../assets/images'
+import { auth_maintenance } from '@/assets/images'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Maintenance() {
     return (
         <>
             <div className='flex justify-center sm:mb-6 mb-4'>
-                <img src={auth_maintenance} width="240" height="148" alt='auth maintenance' />
+                <Image
+                    src={auth_maintenance}
+                    width={240}
+                    height={148}
+                    alt='auth maintenance'
+                />
             </div>
             <p className='sm:text-[40px]/[48px] text-[30px]/[36px] font-medium mb-2 text-center'>
                 Under Construction!

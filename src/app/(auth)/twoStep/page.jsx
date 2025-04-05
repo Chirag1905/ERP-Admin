@@ -2,12 +2,18 @@
 import React from 'react'
 import { auth_two_step } from '@/assets/images'
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function TwoStep() {
   return (
     <>
       <div className='flex justify-center sm:mb-6 mb-4'>
-        <img src={auth_two_step} width="240" height="178" alt='forgot password' />
+        <Image
+          src={auth_two_step}
+          width={240}
+          height={178}
+          alt='forgot password'
+        />
       </div>
       <p className='sm:text-[40px]/[48px] text-[30px]/[36px] font-medium mb-2 text-center'>
         2-step Verification

@@ -1,15 +1,22 @@
 'use client';
 import React, { useEffect, useState } from 'react'
-import { auth_forgot_password } from '@assets/images/'
+import { auth_forgot_password } from '@/assets/images/'
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { forgotPassRequest } from '@/Redux/features/auth/authSlice';
+import Image from 'next/image';
 
 export default function ForgotPassword() {
     const dispatch = useDispatch();
-    const { isAuthenticated, loading, error, token, isTempPass } = useSelector((state) => state.auth);
+    const {
+        isAuthenticated,
+        loading,
+        error,
+        token,
+        isTempPass
+    } = useSelector((state) => state.auth);
     const router = useRouter();
     const [email, setEmail] = useState();
 
@@ -46,7 +53,12 @@ export default function ForgotPassword() {
     return (
         <>
             <div className='flex justify-center sm:mb-6 mb-4'>
-                <img src={auth_forgot_password} width="240" height="178" alt='forgot password' />
+                <Image
+                    src={auth_forgot_password}
+                    alt='forgot password'
+                    width={240}
+                    height={178}
+                />
             </div>
             <p className='sm:text-[40px]/[48px] text-[30px]/[36px] font-medium mb-2 text-center'>
                 Forgot password?
@@ -73,7 +85,7 @@ export default function ForgotPassword() {
                 {loading ? 'Submiting...' : 'Submit'}
             </button>
             <div className='text-center sm:mt-30 mt-6'>
-                <Link href="/signIn" className='text-primary'>
+                <Link href="/signIn" prefetch={false} className='text-primary'>
                     Back to Sign in
                 </Link>
             </div>

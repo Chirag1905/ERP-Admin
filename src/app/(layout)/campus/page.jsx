@@ -18,25 +18,25 @@ import {
 import toast from 'react-hot-toast';
 import Image from 'next/image';
 import { closeModal, openModal } from '@/Redux/features/utils/modalSlice';
-import { getCampusGroupRequest } from '@/Redux/features/campusGroup/campusGroupSlice';
+import { getCampusRequest } from '@/Redux/features/campus/campusSlice';
 import Breadcrumb from '@/components/common/Breadcrumb';
 import WelcomeHeader from '@/components/common/WelcomeHeader';
-import CampusGroupCreate from './_components/CampusGroupCreate';
-import CampusGroupEdit from './_components/CampusGroupEdit';
+import CampusCreate from './_components/CampusCreate';
+import CampusEdit from './_components/CampusEdit';
 import CustomPagination from '@/components/common/CustomPagination';
 
-const CampusGroup = () => {
-  const breadcrumbItem = [{ name: "Campus Group Management" }];
+const Campus = () => {
+  const breadcrumbItem = [{ name: "Campus Management" }];
 
   // Redux state
   const dispatch = useDispatch();
-  const { campusGroupData, loading, error } = useSelector((state) => state.campusGroup);
+  const { campusData, loading, error } = useSelector((state) => state.campus);
   const { token } = useSelector((state) => state.auth);
   const { modals } = useSelector((state) => state.modal);
 
   // Modal states
-  const isCreateModalOpen = modals.createCampusGroup.isOpen;
-  const isEditModalOpen = modals.editCampusGroup.isOpen;
+  const isCreateModalOpen = modals.createCampus.isOpen;
+  const isEditModalOpen = modals.editCampus.isOpen;
 
   // Component state
   const [data, setData] = useState([]);
@@ -53,19 +53,19 @@ const CampusGroup = () => {
   // Modal handlers
   const handleCreateModal = {
     open: () => {
-      dispatch(openModal({ modalType: "createCampusGroup" }));
-      dispatch(closeModal({ modalType: "editCampusGroup" }));
+      dispatch(openModal({ modalType: "createCampus" }));
+      dispatch(closeModal({ modalType: "editCampus" }));
     },
-    close: () => dispatch(closeModal({ modalType: "createCampusGroup" }))
+    close: () => dispatch(closeModal({ modalType: "createCampus" }))
   };
 
   const handleEditModal = {
     open: (item) => {
-      dispatch(openModal({ modalType: "editCampusGroup" }));
-      dispatch(closeModal({ modalType: "createCampusGroup" }));
+      dispatch(openModal({ modalType: "editCampus" }));
+      dispatch(closeModal({ modalType: "createCampus" }));
       setSelectedItem(item);
     },
-    close: () => dispatch(closeModal({ modalType: "editCampusGroup" }))
+    close: () => dispatch(closeModal({ modalType: "editCampus" }))
   };
 
   // Pagination handlers
@@ -92,15 +92,15 @@ const CampusGroup = () => {
 
   // Effect for data update
   useEffect(() => {
-    if (campusGroupData) {
-      setData(campusGroupData?.data?.content || []);
+    if (campusData) {
+      setData(campusData?.data?.content || []);
       setPagination(prev => ({
         ...prev,
-        totalPages: campusGroupData?.data?.totalPages || 0,
-        totalElements: campusGroupData?.data?.totalElements || 0
+        totalPages: campusData?.data?.totalPages || 0,
+        totalElements: campusData?.data?.totalElements || 0
       }));
     }
-  }, [campusGroupData]);
+  }, [campusData]);
 
   // Effect for data fetching
   useEffect(() => {
@@ -114,10 +114,10 @@ const CampusGroup = () => {
       };
 
       try {
-        dispatch(getCampusGroupRequest({ data: params, token }));
+        dispatch(getCampusRequest({ data: params, token }));
       } catch (error) {
-        console.error("Error fetching campus group data:", error);
-        toast.error("Failed to load campus group data");
+        console.error("Error fetching campus  data:", error);
+        toast.error("Failed to load campus  data");
       }
     };
 
@@ -165,7 +165,7 @@ const CampusGroup = () => {
             className="flex gap-1 btn btn-light-primary w-full md:w-auto"
           >
             <IconPlus />
-            <span className="block">Add Campus Group</span>
+            <span className="block">Add Campus</span>
           </button>
         </div>
         <div className="md:hidden h-4"></div>
@@ -173,14 +173,14 @@ const CampusGroup = () => {
       </div>
 
       {isCreateModalOpen && (
-        <CampusGroupCreate
+        <CampusCreate
           openModal={handleCreateModal.open}
           closeModal={handleCreateModal.close}
         />
       )}
 
       {isEditModalOpen && (
-        <CampusGroupEdit
+        <CampusEdit
           openModal={handleEditModal.open}
           closeModal={handleEditModal.close}
           selectedItem={selectedItem}
@@ -194,7 +194,7 @@ const CampusGroup = () => {
           <div className="flex flex-col md:mx-6 md:flex-row justify-between items-start md:items-center gap-4 mb-6">
             <div className="flex items-center w-full md:w-auto">
               <h5 className="text-lg sm:text-xl font-medium">
-                Campus Group Listing
+                Campus Listing
               </h5>
               {isAscending ? (
                 <IconCaretDownFilled
@@ -215,7 +215,7 @@ const CampusGroup = () => {
                 type="text"
                 id="team_board_search"
                 className="form-input !rounded-e-none !py-[6px]"
-                placeholder="Search Campus Groups..."
+                placeholder="Search Campus..."
                 value={searchText}
                 onChange={handleSearch}
               />
@@ -255,16 +255,16 @@ const CampusGroup = () => {
                   data?.map((item, index) => (
                     <li
                       className="flex items-center justify-between gap-3 p-3 bg-white/10 rounded-lg border"
-                      key={`CampusGroup-${item.id || index}`}
+                      key={`campus-${item.id || index}`}
                     >
                       <div className="flex items-center gap-3 min-w-0">
                         <Image
                           src={avatar1 || ""}
-                          alt="CampusGroup profile"
+                          alt="campus profile"
                           className="rounded-md w-9 h-9 min-w-[36px] object-cover"
                         />
                         <h6 className="font-medium truncate">
-                          {item?.campusGroupName || ""}
+                          {item?.campusName || ""}
                         </h6>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
@@ -284,7 +284,7 @@ const CampusGroup = () => {
                   ))
                 ) : (
                   <li className="flex items-center justify-center h-full text-gray-500">
-                    No Campus Groups available
+                    No campus available
                   </li>
                 )}
               </ul>
@@ -309,4 +309,4 @@ const CampusGroup = () => {
   );
 }
 
-export default CampusGroup;
+export default Campus;

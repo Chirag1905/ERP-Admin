@@ -33,7 +33,7 @@ import {
     gallery1,
     modal_joblisting,
     profile_av,
-} from '../assets/images'
+} from '@/assets/images'
 import Image from 'next/image'
 
 export default function Widget() {

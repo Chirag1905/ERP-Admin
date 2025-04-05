@@ -23,7 +23,6 @@ const campusGroupSlice = createSlice({
     campusGroupData: null,
     campusGroupPostData: null,
     campusGroupPutData: null,
-    // realmData: null,
     loading: false,
     error: null,
   },
@@ -31,7 +30,6 @@ const campusGroupSlice = createSlice({
     ...createAsyncReducers("getCampusGroup", "campusGroupData"),
     ...createAsyncReducers("postCampusGroup", "campusGroupPostData"),
     ...createAsyncReducers("putCampusGroup", "campusGroupPutData"),
-    // ...createAsyncReducers("postRealm", "realmData"),
   },
 });
 
@@ -46,9 +44,6 @@ export const {
   putCampusGroupRequest,
   putCampusGroupSuccess,
   putCampusGroupFailure,
-  // postRealmRequest,
-  // postRealmSuccess,
-  // postRealmFailure,
 } = campusGroupSlice.actions;
 
 export default campusGroupSlice.reducer;

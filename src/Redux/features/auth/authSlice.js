@@ -30,8 +30,8 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.loginData = action.payload;
       state.token = action.payload.token;
-      // state.isTempPass = action.payload.requiresPasswordUpdate;
-      state.isTempPass = true;
+      state.isTempPass = action.payload.requiresPasswordUpdate;
+      // state.isTempPass = true;
       state.loading = false;
     },
     signInFailure(state, action) {

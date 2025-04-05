@@ -1,8 +1,9 @@
 'use client';
 import React, { useState } from 'react'
 import { IconEye, IconEyeOff } from '@tabler/icons-react';
-import { profile_av } from '../../assets/images'
+import { profile_av } from '@/assets/images'
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Lockscreen() {
 
@@ -14,7 +15,13 @@ export default function Lockscreen() {
     return (
         <>
             <div className='sm:mb-12 mb-6 text-center flex flex-col items-center'>
-                <img src={profile_av} alt='user profile' width="160" height="160" className='mb-4 sm:w-[160px] sm:h-[160px] sm:min-w-[160px] w-[100px] h-[100px] min-w-[100px] object-cover rounded-full p-1 bg-body-color border border-border-color shadow-shadow-sm saturate-50 transition-all hover:saturate-100' />
+                <Image
+                    src={profile_av}
+                    alt='user profile'
+                    width={160}
+                    height={160}
+                    className='mb-4 sm:w-[160px] sm:h-[160px] sm:min-w-[160px] w-[100px] h-[100px] min-w-[100px] object-cover rounded-full p-1 bg-body-color border border-border-color shadow-shadow-sm saturate-50 transition-all hover:saturate-100'
+                />
                 <p className='sm:text-[20px]/[26px] font-medium'>
                     Manuella Nevoresky
                 </p>

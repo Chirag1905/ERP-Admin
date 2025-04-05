@@ -7,12 +7,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { setPermanentPassRequest } from '@/Redux/features/auth/authSlice';
+import Image from 'next/image';
 
 export default function SetPermanentPassword() {
     const dispatch = useDispatch();
-    const { isAuthenticated, loading, error, loginData, token, isTempPass } = useSelector((state) => state.auth);
-    // console.log("🚀 ~ SetPermanentPassword ~ token:", token)
-    // console.log("🚀 ~ SetPermanentPassword ~ loginData:", loginData)
+    const {
+        loginData,
+        isAuthenticated,
+        loading,
+        error,
+        token,
+        isTempPass
+    } = useSelector((state) => state.auth);
     const router = useRouter();
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -86,7 +92,12 @@ export default function SetPermanentPassword() {
     return (
         <>
             <div className='flex justify-center sm:mb-6 mb-4'>
-                <img src={auth_forgot_password} width="240" height="178" alt='forgot password' />
+                <Image
+                    src={auth_forgot_password}
+                    alt='forgot password'
+                    width={240}
+                    height={178}
+                />
             </div>
             <p className='sm:text-[40px]/[48px] text-[30px]/[36px] font-medium mb-2 text-center'>
                 Permanent Password?

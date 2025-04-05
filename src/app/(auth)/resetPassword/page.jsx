@@ -1,13 +1,19 @@
 'use client';
 import React from 'react'
-import { auth_forgot_password } from '../../../assets/images'
+import { auth_forgot_password } from '@/assets/images/'
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function ResetPassword() {
     return (
         <>
             <div className='flex justify-center sm:mb-6 mb-4'>
-                <img src={auth_forgot_password} width="240" height="178" alt='forgot password' />
+                <Image
+                    src={auth_forgot_password}
+                    alt='forgot password'
+                    width={240}
+                    height={178}
+                />
             </div>
             <p className='sm:text-[40px]/[48px] text-[30px]/[36px] font-medium mb-2 text-center'>
                 Reset password?

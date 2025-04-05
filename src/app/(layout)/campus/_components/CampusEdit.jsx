@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
 import {
-    getCampusGroupRequest,
-    putCampusGroupRequest,
-    putCampusGroupSuccess
-} from '@/Redux/features/campusGroup/campusGroupSlice';
+    getCampusRequest,
+    putCampusRequest,
+    putCampusSuccess
+} from '@/Redux/features/campus/campusSlice';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { IconBooksOff } from '@tabler/icons-react';
 
-const CampusGroupEdit = (props) => {
+const CampusEdit = (props) => {
     const {
         openModal,
         closeModal,
@@ -18,12 +18,12 @@ const CampusGroupEdit = (props) => {
 
     // Redux state
     const dispatch = useDispatch();
-    const { campusGroupPutData, loading, error } = useSelector((state) => state.campusGroup);
+    const { campusPutData, loading, error } = useSelector((state) => state.campus);
 
     // Component state
     const [activeTab, setActiveTab] = useState(0);
     const [formData, setFormData] = useState({
-        campusGroupName: "",
+        campusName: "",
         licenseCount: "",
         gpsEnabled: false,
         zoomEnabled: false,
@@ -49,7 +49,7 @@ const CampusGroupEdit = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            dispatch(putCampusGroupRequest({ id: selectedItem?.id, data: formData }));
+            dispatch(putCampusRequest({ id: selectedItem?.id, data: formData }));
         } catch (err) {
             console.error("Error submitting data:", err);
             toast.error(err || "An unexpected error occurred. Please try again.", {
@@ -88,7 +88,7 @@ const CampusGroupEdit = (props) => {
     useEffect(() => {
         if (selectedItem) {
             setFormData({
-                campusGroupName: selectedItem?.campusGroupName || "",
+                campusName: selectedItem?.campusName || "",
                 licenseCount: selectedItem?.licenseCount || "",
                 gpsEnabled: selectedItem?.gpsEnabled || false,
                 zoomEnabled: selectedItem?.zoomEnabled || false,
@@ -106,15 +106,15 @@ const CampusGroupEdit = (props) => {
 
     // Handle successful API response
     useEffect(() => {
-        if (!campusGroupPutData?.message) return;
+        if (!campusPutData?.message) return;
 
-        toast.success(campusGroupPutData.message, {
+        toast.success(campusPutData.message, {
             position: "top-right",
             duration: 5000,
         });
 
         // Refresh campus data
-        dispatch(getCampusGroupRequest({
+        dispatch(getCampusRequest({
             data: {
                 page: 0,
                 size: 10,
@@ -123,9 +123,9 @@ const CampusGroupEdit = (props) => {
             },
         }));
 
-        dispatch(putCampusGroupSuccess(null));
+        dispatch(putCampusSuccess(null));
         closeModal();
-    }, [campusGroupPutData, dispatch, closeModal]);
+    }, [campusPutData, dispatch, closeModal]);
 
     // Handle API errors
     useEffect(() => {
@@ -151,14 +151,14 @@ const CampusGroupEdit = (props) => {
                 <div className='my-10 lg:px-20 md:px-10 px-[7px] md:max-h-[80svh] max-h-[60svh] overflow-auto cus-scrollbar'>
                     <div className="flex justify-between items-center">
                         <div className='text-[24px]/[30px] font-medium mb-2'>
-                            Edit Campus Group
+                            Edit Campus
                         </div>
                         <button
                             onClick={openModal}
                             className="flex gap-1 btn btn-light-primary mt-2"
                         >
                             <IconBooksOff />
-                            <span className="md:block hidden">Deactivate Campus Group</span>
+                            <span className="md:block hidden">Deactivate Campus</span>
                         </button>
                     </div>
 
@@ -191,10 +191,10 @@ const CampusGroupEdit = (props) => {
                                             <div className='form-control h-full w-3/5 mb-15'>
                                                 <input
                                                     type='text'
-                                                    placeholder='Campus Group Name'
+                                                    placeholder='Campus Name'
                                                     className='form-input'
-                                                    value={formData.campusGroupName || ""}
-                                                    onChange={(e) => updateFormData("campusGroupName", e.target.value)}
+                                                    value={formData.campusName || ""}
+                                                    onChange={(e) => updateFormData("campusName", e.target.value)}
                                                 />
                                             </div>
                                         </div>
@@ -265,7 +265,7 @@ const CampusGroupEdit = (props) => {
                                                 placeholder='Inherit Email Settings'
                                                 className='form-input'
                                                 // value={formData.inheritEmailSettings || ""}
-                                                // onChange={(e) => updateFormData("campusGroupName", e.target.value)}
+                                                // onChange={(e) => updateFormData("campusName", e.target.value)}
                                             />
                                         </div>
                                     </div> */}
@@ -320,8 +320,8 @@ const CampusGroupEdit = (props) => {
                                                 type='text'
                                                 placeholder='Owned by'
                                                 className='form-input'
-                                            // value={formData.campusGroupName || ""}
-                                            // onChange={(e) => updateFormData("campusGroupName", e.target.value)}
+                                            // value={formData.campusName || ""}
+                                            // onChange={(e) => updateFormData("campusName", e.target.value)}
                                             />
                                         </div>
                                     </div> */}
@@ -338,8 +338,8 @@ const CampusGroupEdit = (props) => {
                                             <input
                                                 type='text'
                                                 className='form-input'
-                                            // value={formData.campusGroupName || ""}
-                                            // onChange={(e) => updateFormData("campusGroupName", e.target.value)}
+                                            // value={formData.campusName || ""}
+                                            // onChange={(e) => updateFormData("campusName", e.target.value)}
                                             />
                                         </div>
                                     </div>
@@ -421,8 +421,8 @@ const CampusGroupEdit = (props) => {
                                                         type="checkbox"
                                                         name="campaignsEmail"
                                                         className="form-check-input"
-                                                    // value={formData.campusGroupName || ""}
-                                                    // onChange={(e) => updateFormData("campusGroupName", e.target.value)}
+                                                    // value={formData.campusName || ""}
+                                                    // onChange={(e) => updateFormData("campusName", e.target.value)}
                                                     />
                                                     <label className="form-check-label !text-[16px]/[24px] ml-2" htmlFor="campaignsEmail">Inherit Email Settings</label>
                                                 </div>
@@ -432,8 +432,8 @@ const CampusGroupEdit = (props) => {
                                                         type="checkbox"
                                                         name="campaignsGoogle"
                                                         className="form-check-input"
-                                                    // value={formData.campusGroupName || ""}
-                                                    // onChange={(e) => updateFormData("campusGroupName", e.target.value)}
+                                                    // value={formData.campusName || ""}
+                                                    // onChange={(e) => updateFormData("campusName", e.target.value)}
                                                     />
                                                     <label className="form-check-label !text-[16px]/[24px] ml-2" htmlFor="campaignsGoogle">Inherit Google OAuth</label>
                                                 </div>
@@ -456,8 +456,8 @@ const CampusGroupEdit = (props) => {
                                                         type="checkbox"
                                                         name="campaignsSMS"
                                                         className="form-check-input"
-                                                    // value={formData.campusGroupName || ""}
-                                                    // onChange={(e) => updateFormData("campusGroupName", e.target.value)}
+                                                    // value={formData.campusName || ""}
+                                                    // onChange={(e) => updateFormData("campusName", e.target.value)}
                                                     />
                                                     <label className="form-check-label !text-[16px]/[24px] ml-2" htmlFor="campaignsSMS">Enable SMS Template Edit</label>
                                                 </div>
@@ -466,8 +466,8 @@ const CampusGroupEdit = (props) => {
                                                         type="radio"
                                                         name="campaignsSMSID"
                                                         className="form-check-input"
-                                                    // value={formData.campusGroupName || ""}
-                                                    // onChange={(e) => updateFormData("campusGroupName", e.target.value)}
+                                                    // value={formData.campusName || ""}
+                                                    // onChange={(e) => updateFormData("campusName", e.target.value)}
                                                     />
                                                     <label className="form-check-label !text-[16px]/[24px] ml-2" htmlFor="campaignsSMSID">Enable SMS Template ID</label>
                                                 </div>
@@ -487,8 +487,8 @@ const CampusGroupEdit = (props) => {
                                                         type="checkbox"
                                                         name="campaignsGps"
                                                         className="form-check-input"
-                                                    // value={formData.campusGroupName || ""}
-                                                    // onChange={(e) => updateFormData("campusGroupName", e.target.value)}
+                                                    // value={formData.campusName || ""}
+                                                    // onChange={(e) => updateFormData("campusName", e.target.value)}
                                                     />
                                                     <label className="form-check-label !text-[16px]/[24px] ml-2" htmlFor="campaignsGps">Enable GPS</label>
                                                 </div>
@@ -497,8 +497,8 @@ const CampusGroupEdit = (props) => {
                                                         type="checkbox"
                                                         name="campaignsMeet"
                                                         className="form-check-input"
-                                                    // value={formData.campusGroupName || ""}
-                                                    // onChange={(e) => updateFormData("campusGroupName", e.target.value)}
+                                                    // value={formData.campusName || ""}
+                                                    // onChange={(e) => updateFormData("campusName", e.target.value)}
                                                     />
                                                     <label className="form-check-label !text-[16px]/[24px] ml-2" htmlFor="campaignsMeet">Enable Google Meet</label>
                                                 </div>
@@ -521,8 +521,8 @@ const CampusGroupEdit = (props) => {
                                                         type="checkbox"
                                                         name="campaignsZoom"
                                                         className="form-check-input"
-                                                    // value={formData.campusGroupName || ""}
-                                                    // onChange={(e) => updateFormData("campusGroupName", e.target.value)}
+                                                    // value={formData.campusName || ""}
+                                                    // onChange={(e) => updateFormData("campusName", e.target.value)}
                                                     />
                                                     <label className="form-check-label !text-[16px]/[24px] ml-2" htmlFor="campaignsZoom">Enable Zoom Meeting</label>
                                                 </div>
@@ -531,8 +531,8 @@ const CampusGroupEdit = (props) => {
                                                         type="checkbox"
                                                         name="campaignsGoogleMeet"
                                                         className="form-check-input"
-                                                    // value={formData.campusGroupName || ""}
-                                                    // onChange={(e) => updateFormData("campusGroupName", e.target.value)}
+                                                    // value={formData.campusName || ""}
+                                                    // onChange={(e) => updateFormData("campusName", e.target.value)}
                                                     />
                                                     <label className="form-check-label !text-[16px]/[24px] ml-2" htmlFor="campaignsGoogleMeet">Enable Google Meet</label>
                                                 </div>
@@ -558,4 +558,4 @@ const CampusGroupEdit = (props) => {
         </>
     )
 }
-export default CampusGroupEdit;
+export default CampusEdit;

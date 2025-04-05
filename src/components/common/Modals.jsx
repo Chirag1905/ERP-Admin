@@ -11,7 +11,7 @@ import {
     modal_event,
     modal_joblisting,
     modal_ordertracking,
-} from '../assets/images'
+} from '@/assets/images'
 import {
     IconCheck,
     IconCircleCheckFilled,
@@ -272,16 +272,16 @@ export default function Modals() {
                                         Participate :
                                     </label>
                                     <Link to="#">
-                                        <Image src={avatar1} width="26" height="26" alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
+                                        <Image src={avatar1} width={26} height={26} alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
                                     </Link>
                                     <Link to="#">
-                                        <Image src={avatar2} width="26" height="26" alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
+                                        <Image src={avatar2} width={26} height={26} alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
                                     </Link>
                                     <Link to="#">
-                                        <Image src={avatar3} width="26" height="26" alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
+                                        <Image src={avatar3} width={26} height={26} alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
                                     </Link>
                                     <Link to="#">
-                                        <Image src={avatar4} width="26" height="26" alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
+                                        <Image src={avatar4} width={26} height={26} alt='chat profile' className='w-[26px] h-[26px] min-w-[26px] border border-body-color rounded-md saturate-50 hover:saturate-100' />
                                     </Link>
                                 </div>
                                 <div className='form-control mb-15'>
@@ -433,10 +433,10 @@ export default function Modals() {
                                             <label className='me-1'>
                                                 Team :
                                             </label>
-                                            <Image src={avatar1} alt='user' width="16" height="16" className='w-[16px] h-[16px] min-w-[16px] rounded-md' />
-                                            <Image src={avatar2} alt='user' width="16" height="16" className='w-[16px] h-[16px] min-w-[16px] rounded-md' />
-                                            <Image src={avatar3} alt='user' width="16" height="16" className='w-[16px] h-[16px] min-w-[16px] rounded-md' />
-                                            <Image src={avatar4} alt='user' width="16" height="16" className='w-[16px] h-[16px] min-w-[16px] rounded-md' />
+                                            <Image src={avatar1} alt='user' width={16} height={16} className='w-[16px] h-[16px] min-w-[16px] rounded-md' />
+                                            <Image src={avatar2} alt='user' width={16} height={16} className='w-[16px] h-[16px] min-w-[16px] rounded-md' />
+                                            <Image src={avatar3} alt='user' width={16} height={16} className='w-[16px] h-[16px] min-w-[16px] rounded-md' />
+                                            <Image src={avatar4} alt='user' width={16} height={16} className='w-[16px] h-[16px] min-w-[16px] rounded-md' />
                                         </div>
                                     </li>
                                     <li data-date="12:55 - Sun" className='relative mb-1 last:mb-0 py-2 px-4 before:content-[attr(data-date)] before:min-w-[100px] before:text-[12px]/[18px] before:text-start before:absolute before:end-[calc(100%+20px)] after:absolute after:w-15 after:h-15 after:bg-card-color after:top-10 after:rounded-full after:end-[calc(100%-6px)] after:border-[3px] after:border-primary'>
@@ -446,7 +446,7 @@ export default function Modals() {
                                         <div>
                                             <p className="text-font-color-100 small flex gap-1 items-center mb-1"><IconMapPin className='w-[16px] h-[16px] min-w-[16px]' /> 123 6th St. Melbourne, FL 32904</p>
                                             <Link to="#" className='flex items-center gap-1'>
-                                                <Image src={avatar6} alt='user' width="16" height="16" className='w-[16px] h-[16px] min-w-[16px] rounded-md' />
+                                                <Image src={avatar6} alt='user' width={16} height={16} className='w-[16px] h-[16px] min-w-[16px] rounded-md' />
                                                 Robert Hammer
                                             </Link>
                                         </div>

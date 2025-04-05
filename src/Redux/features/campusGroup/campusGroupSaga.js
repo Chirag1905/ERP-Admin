@@ -19,7 +19,7 @@ import {
   putCampusGroup,
 } from "./campusGroupApi";
 
-function* getCampusSaga(action) {
+function* getCampusGroupSaga(action) {
   try {
     const response = yield call(getCampusGroup, action.payload);
     yield put(getCampusGroupSuccess(response.data));
@@ -28,7 +28,7 @@ function* getCampusSaga(action) {
   }
 }
 
-function* postCampusSaga(action) {
+function* postCampusGroupSaga(action) {
   try {
     const response = yield call(postCampusGroup, action.payload);
     if (response.status === 200 || response.status === 201) {
@@ -59,7 +59,7 @@ function* postCampusSaga(action) {
 }
 
 // Add new saga for updating campus data
-function* putCampusSaga(action) {
+function* putCampusGroupSaga(action) {
   try {
     const { id, data } = action.payload;
     const response = yield call(putCampusGroup, id, data);
@@ -88,35 +88,8 @@ function* putCampusSaga(action) {
   }
 }
 
-
-// function* postRealmSaga(action) {
-//   try {
-//     const response = yield call(postCampusGroup, action.payload);
-//     if (response.status === 200 || response.status === 201) {
-//       yield put(postRealmSuccess(response.data));
-//     } else {
-//       // Handle validation errors or other API errors
-//       yield put(
-//         postRealmFailure({
-//           message: response.data.message,
-//           error: response.data.errors,
-//         })
-//       );
-//     }
-//   } catch (error) {
-//     // Handle unexpected errors (e.g., network issues)
-//     yield put(
-//       postRealmFailure({
-//         message: error.data.message,
-//         error: error.data.errors,
-//       })
-//     );
-//   }
-// }
-
-export default function* campusSaga() {
-  yield takeLatest(getCampusGroupRequest.type, getCampusSaga);
-  yield takeLatest(postCampusGroupRequest.type, postCampusSaga);
-  yield takeLatest(putCampusGroupRequest.type, putCampusSaga);
-  // yield takeLatest(postRealmRequest.type, postRealmSaga);
+export default function* campusGroupSaga() {
+  yield takeLatest(getCampusGroupRequest.type, getCampusGroupSaga);
+  yield takeLatest(postCampusGroupRequest.type, postCampusGroupSaga);
+  yield takeLatest(putCampusGroupRequest.type, putCampusGroupSaga);
 }

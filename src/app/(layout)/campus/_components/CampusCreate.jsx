@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import {
-    getCampusGroupRequest,
-    postCampusGroupRequest,
-    postCampusGroupSuccess,
+    getCampusRequest,
+    postCampusRequest,
+    postCampusSuccess,
     postRealmRequest
-} from '@/Redux/features/campusGroup/campusGroupSlice';
+} from '@/Redux/features/campus/campusSlice';
 
-const CampusGroupCreate = (props) => {
+const CampusCreate = (props) => {
     const {
         openModal,
         closeModal,
@@ -16,12 +16,12 @@ const CampusGroupCreate = (props) => {
 
     // Redux state
     const dispatch = useDispatch();
-    const { campusGroupPostData, loading, error } = useSelector((state) => state.campusGroup);
+    const { campusPostData, loading, error } = useSelector((state) => state.campus);
 
     // Component state
     const [activeTab, setActiveTab] = useState(0);
     const [formData, setFormData] = useState({
-        campusGroupName: "",
+        campusName: "",
         licenseCount: "",
         gpsEnabled: false,
         zoomEnabled: false,
@@ -47,13 +47,13 @@ const CampusGroupCreate = (props) => {
         e.preventDefault();
         try {
             const params = {
-                campusGroupName: formData.campusGroupName,
+                campusName: formData.campusName,
                 licenseCount: formData.licenseCount,
                 gpsEnabled: formData.gpsEnabled,
                 zoomEnabled: formData.zoomEnabled,
                 isActive: formData.isActive,
             };
-            dispatch(postCampusGroupRequest(params));
+            dispatch(postCampusRequest(params));
         } catch (err) {
             console.error("Error submitting data:", err);
             toast.error(err || "Failed to submit data. Please try again.", {
@@ -65,15 +65,15 @@ const CampusGroupCreate = (props) => {
 
     // Handle API responses
     useEffect(() => {
-        if (!campusGroupPostData?.message) return;
+        if (!campusPostData?.message) return;
 
-        toast.success(campusGroupPostData.message, {
+        toast.success(campusPostData.message, {
             position: "top-right",
             duration: 5000,
         });
 
         // Refresh campus data
-        dispatch(getCampusGroupRequest({
+        dispatch(getCampusRequest({
             data: {
                 page: 0,
                 size: 10,
@@ -82,9 +82,9 @@ const CampusGroupCreate = (props) => {
             },
         }));
 
-        dispatch(postCampusGroupSuccess(null));
+        dispatch(postCampusSuccess(null));
         closeModal();
-    }, [campusGroupPostData, dispatch, closeModal]);
+    }, [campusPostData, dispatch, closeModal]);
 
     // Handle API errors
     useEffect(() => {
@@ -110,7 +110,7 @@ const CampusGroupCreate = (props) => {
                 <div className='my-6 md:my-10 px-2 md:px-4 lg:px-20 max-h-[60svh] md:max-h-[80svh] overflow-auto cus-scrollbar'>
                     <div className="flex justify-between items-center mb-4 md:mb-6">
                         <div className='text-lg md:text-2xl font-medium'>
-                            New Campus
+                            New campus
                         </div>
                     </div>
 
@@ -147,8 +147,8 @@ const CampusGroupCreate = (props) => {
                                                 type='text'
                                                 placeholder='Campus Name'
                                                 className='form-input'
-                                                value={formData?.campusGroupName || ""}
-                                                onChange={(e) => updateFormData("campusGroupName", e.target.value)}
+                                                value={formData?.campusName || ""}
+                                                onChange={(e) => updateFormData("campusName", e.target.value)}
                                             />
                                         </div>
                                     </div>
@@ -401,4 +401,4 @@ const CampusGroupCreate = (props) => {
     )
 }
 
-export default CampusGroupCreate;
+export default CampusCreate;

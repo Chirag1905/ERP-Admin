@@ -2,8 +2,8 @@
 import React from 'react'
 import Link from 'next/link'
 import CompanyLogo from '../common/CompanyLogo'
-// import TechveinLogo from '@/assets/images';
 import { Techvein_logo } from '@/assets/images'
+import Image from 'next/image';
 export default function Footer({ className }) {
 
   const CurrentYear = new Date().getFullYear()
@@ -14,15 +14,15 @@ export default function Footer({ className }) {
         © {CurrentYear} <Link href="/" className='text-primary'>Techvein</Link>, All Rights Reserved.
       </p>
       <Link href="/">
-        <CompanyLogo className="w-[53px] h-[18px] text-primary transition-all hover:text-secondary" />
-        {/* <Image
+        {/* <CompanyLogo className="w-[53px] h-[18px] text-primary transition-all hover:text-secondary" /> */}
+        <Image
           src={Techvein_logo}
           alt="Techvein IT Solutions Logo"
-          className="text-primary ml-4"
-          width={116}
-          height={90}
+          className="text-primary transition-all hover:text-secondary"
+          width={53}
+          height={18}
           priority
-        /> */}
+        />
       </Link>
       <ul className='flex items-center gap-x-20 gap-y-5 flex-wrap justify-center'>
         <li>

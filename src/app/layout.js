@@ -1,8 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 import "./globals.css";
-import "../assets/css/main.css"
-import "../assets/css/font.css"
+import "@/assets/css/main.css"
+import "@/assets/css/font.css"
 // import 'react-quill/dist/quill.snow.css';
 import { Toaster } from 'react-hot-toast';
 import { Provider } from 'react-redux';

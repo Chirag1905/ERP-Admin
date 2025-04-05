@@ -45,7 +45,7 @@ import {
     flag_in,
     flag_sa,
     profile_av
-} from '@assets/images';
+} from '@/assets/images';
 import Image from 'next/image';
 
 export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleChat }) {
@@ -317,7 +317,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                             <span
                                 className="p-1 font-semibold text-xl text-white text-center w-full bg-transparent border-b border-transparent hover:border-gray-400 focus:outline-none focus:border-white transition-colors placeholder-gray-400"
                             >
-                                 Admin
+                                Admin
                             </span>
                             {/* <input
                                 type="text"

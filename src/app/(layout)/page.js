@@ -20,19 +20,19 @@ export default function Analysis() {
   const dashboardCards = [
     {
       id: 1,
-      title: "Total Multischool Groups",
+      title: "Total Multi Campus Groups",
       image: "avatar1",
       description: "21 mutual connections Sr. ReatJs Developer at Facebook",
     },
     {
       id: 2,
-      title: "My Schools",
+      title: "My Campus",
       image: "avatar2",
       description: "5 mutual connections Web Designer at Google",
     },
     {
       id: 3,
-      title: "All Schoolss",
+      title: "All Campus",
       image: "avatar3",
       description: "9 mutual connections Laravel Developer at Linkedin",
     }
@@ -47,27 +47,27 @@ export default function Analysis() {
           <div key={card?.id} className="card bg-card-color rounded-xl p-4 relative">
             <div className='flex items-center justify-between gap-5 mb-2'>
               <p>{card?.title}</p>
-              {card?.title === "Total Multischool Groups" && <IconUserScan className='stroke-primary stroke-[1.5] w-[32px] h-[32px]' />}
-              {card?.title === "My Schools" && <IconCreditCard className='stroke-primary stroke-[1.5] w-[32px] h-[32px]' />}
-              {card?.title === "All Schools" && <IconCash className='stroke-primary stroke-[1.5] w-[32px] h-[32px]' />}
+              {card?.title === "Total Multi Campus Groups" && <IconUserScan className='stroke-primary stroke-[1.5] w-[32px] h-[32px]' />}
+              {card?.title === "My Campus" && <IconCreditCard className='stroke-primary stroke-[1.5] w-[32px] h-[32px]' />}
+              {card?.title === "All Campus" && <IconCash className='stroke-primary stroke-[1.5] w-[32px] h-[32px]' />}
             </div>
             <div className='flex items-end gap-1 mb-4'>
               <span className='inline-block text-[24px]/[30px] font-medium'>
-                {card?.title === "Total Multischool Groups" && "4"}
-                {card?.title === "My Schools" && "100"}
-                {card?.title === "All Schools" && "110"}
+                {card?.title === "Total Multi Campus Groups" && "4"}
+                {card?.title === "My Campus" && "100"}
+                {card?.title === "All Campus" && "110"}
               </span>
               <IconCornerRightUp className='stroke-font-color-100 w-[18px] h-[18px]' />
               <span className='text-primary text-[14px]/[20px]'>
-                {card?.title === "Total Multischool Groups" && "13%"}
-                {card?.title === "My Schools" && "13%"}
-                {card?.title === "All Schools" && "78%"}
+                {card?.title === "Total Multi Campus Groups" && "13%"}
+                {card?.title === "My Campus" && "13%"}
+                {card?.title === "All Campus" && "78%"}
               </span>
             </div>
             <div className='progress overflow-hidden h-[2px] bg-border-color rounded-full'>
-              <div className={`progress-bar ${card?.title === "Total Multischool Groups" ? "w-[85%] bg-secondary" :
-                card?.title === "My Schools" ? "w-[13%] bg-primary" :
-                  card?.title === "All Schools" ? "w-[70%] bg-success" : ""
+              <div className={`progress-bar ${card?.title === "Total Multi Campus Groups" ? "w-[85%] bg-secondary" :
+                card?.title === "My Campus" ? "w-[13%] bg-primary" :
+                  card?.title === "All Campus" ? "w-[70%] bg-success" : ""
                 } h-full`}></div>
             </div>
             <div className='py-3 text-primary hover:text-secondary text-[14px]/[20px]'>
@@ -82,19 +82,19 @@ export default function Analysis() {
           <p className="text-lg font-semibold mb-4">Daily Stats</p>
           <div className="flex flex-wrap justify-between gap-y-4 w-full">
             <div className="flex flex-col">
-              <span className="text-font-color-100 text-[16px]/[20px]">New Multischool Groups</span>
+              <span className="text-font-color-100 text-[16px]/[20px]">New Multi Campus Groups</span>
               <span className="text-[24px]/[30px] font-medium">0</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-font-color-100 text-[16px]/[20px]">New Multischool Schools</span>
+              <span className="text-font-color-100 text-[16px]/[20px]">New Multi Campus</span>
               <span className="text-[24px]/[30px] font-medium">0</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-font-color-100 text-[16px]/[20px]">New Schools</span>
+              <span className="text-font-color-100 text-[16px]/[20px]">New Campus</span>
               <span className="text-[24px]/[30px] font-medium">0</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-font-color-100 text-[16px]/[20px]">Expiring Schools</span>
+              <span className="text-font-color-100 text-[16px]/[20px]">Expiring Campus</span>
               <span className="text-[24px]/[30px] font-medium">0</span>
             </div>
           </div>

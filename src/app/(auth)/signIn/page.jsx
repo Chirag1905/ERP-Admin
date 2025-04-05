@@ -9,12 +9,12 @@ import toast from 'react-hot-toast';
 
 const Signin = () => {
     const dispatch = useDispatch();
-    // const navigate = useNavigate();
-    const { loginData, isAuthenticated, loading, error, isTempPass } = useSelector((state) => state.auth);
-    console.log("🚀 ~ Signin ~ isAuthenticated:", isAuthenticated)
+    const { loginData, isAuthenticated, loading, error, token, isTempPass } = useSelector((state) => state.auth);
+    // console.log("🚀 ~ Signin ~ isAuthenticated:", isAuthenticated)
+    console.log("🚀 ~ Signin ~ token:", token)
     console.log("🚀 ~ Signin ~ error:", error)
-    console.log("🚀 ~ Signin ~ loading:", loading)
-    console.log("🚀 ~ Signin ~ isTempPass:", isTempPass)
+    // console.log("🚀 ~ Signin ~ loading:", loading)
+    // console.log("🚀 ~ Signin ~ isTempPass:", isTempPass)
     const router = useRouter();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -28,8 +28,10 @@ const Signin = () => {
         const params = {
             username: username,
             password: password,
-            clientId: "test5-fe-client",
-            realmName: "test5"
+            clientId: "admin-cli",
+            realmName: "master"
+            // clientId: "test5-fe-client",
+            // realmName: "test5"
         };
         toast.loading('Logging in...', { id: 'login-toast' });
         dispatch(signInRequest(params));
@@ -51,10 +53,10 @@ const Signin = () => {
             const redirectPath = isTempPass ? '/setPermanentPassword' : '/';
             toast.success('Login successful!', { id: 'login-status' });
             router.push(redirectPath);
-            dispatch(clearAuthState());
+            dispatch(clearAuthError(null));
         } else if (error) {
             toast.error('Login failed. Please check your credentials.', { id: 'login-status' });
-            dispatch(clearAuthError());
+            dispatch(clearAuthState(null));
         }
     }, [loginData, error, isTempPass, router, dispatch]);
 
@@ -127,7 +129,7 @@ const Signin = () => {
                             Remember me
                         </label>
                     </div>
-                    <Link href="/forgotPassword" className='text-primary sm:text-[16px]/[24px] text-[14px]/[20px]'>
+                    <Link href="/forgotPassword" prefetch={false} className='text-primary sm:text-[16px]/[24px] text-[14px]/[20px]'>
                         Forgot Password?
                     </Link>
                 </div>
@@ -141,7 +143,7 @@ const Signin = () => {
                 </button>
                 <div className='text-center sm:mt-30 mt-6 text-font-color-100'>
                     <p>Don&apos;t have an account yet?</p>
-                    <Link href="/signUp" className='text-primary'>
+                    <Link href="/signUp" prefetch={false} className='text-primary'>
                         Sign up here
                     </Link>
                 </div>

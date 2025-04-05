@@ -5,34 +5,25 @@ import storage from "redux-persist/lib/storage";
 import rootReducer from "./rootReducer";
 import rootSaga from "./rootSaga";
 
-const persistConfig = {
-  key: "root",
-  storage,
-  whitelist: ["auth"],
-};
-
-// const persistedReducer = persistReducer(persistConfig, rootReducer);
-const persistedReducer = persistReducer(persistConfig, (state, action) => {
-  // console.log('Redux Persist State:', state); // Debugging line
-  return rootReducer(state, action);
-});
-
 const sagaMiddleware = createSagaMiddleware();
 
-const store = configureStore({
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['auth'],
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false,
+      thunk: false, // disable thunk because we use saga
+      serializableCheck: false, // avoid issues with redux-persist
     }).concat(sagaMiddleware),
 });
 
-// Debugging: Log the store state after rehydration
-persistStore(store, null, () => {
-  // console.log('Rehydrated State:', store.getState());
-});
-
 sagaMiddleware.run(rootSaga);
-const persistor = persistStore(store);
 
-export { store, persistor, sagaMiddleware };
+export const persistor = persistStore(store);
