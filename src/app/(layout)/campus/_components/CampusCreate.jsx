@@ -23,17 +23,14 @@ const CampusCreate = (props) => {
     const [activeTab, setActiveTab] = useState(0);
     const [formData, setFormData] = useState({
         campusName: "",
-        licenseCount: "",
+        campusCode: "",
+        primaryDomainName: "",
+        smsEnabled: false,
+        emailEnabled: false,
         gpsEnabled: false,
-        zoomEnabled: false,
-        isActive: false,
-        inheritEmailSettings: false,
-        inheritGoogleOAuth: false,
-        enableGPS: false,
-        enableGoogleMeet: false,
-        enableSMSTemplateEdit: false,
-        enableSMSTemplateID: false,
-        assignedDomains: "",
+        onlineMeetingEnabled: false,
+        paymentGatewayEnabled: false,
+        isActive: false
     });
 
     // Function to update form data
@@ -49,10 +46,14 @@ const CampusCreate = (props) => {
         try {
             const params = {
                 campusName: formData.campusName,
-                licenseCount: formData.licenseCount,
+                campusCode: formData.campusCode,
+                primaryDomainName: formData.primaryDomainName,
+                smsEnabled: formData.smsEnabled,
+                emailEnabled: formData.emailEnabled,
                 gpsEnabled: formData.gpsEnabled,
-                zoomEnabled: formData.zoomEnabled,
-                isActive: formData.isActive,
+                onlineMeetingEnabled: formData.onlineMeetingEnabled,
+                paymentGatewayEnabled: formData.paymentGatewayEnabled,
+                isActive: formData.isActive
             };
             dispatch(postCampusRequest({ data: params, token }));
         } catch (err) {
@@ -138,52 +139,57 @@ const CampusCreate = (props) => {
                         {/* Right Side Content - full width on mobile, 3/4 on desktop */}
                         <div className="w-full md:w-3/4 p-2 md:p-4">
                             {activeTab === 0 && (
-                                <div className="flex flex-col space-y-4">
-                                    <div className='flex flex-col md:flex-row justify-between gap-2 md:gap-0 md:px-4'>
-                                        <label htmlFor='campaignsTitle' className='form-label md:w-1/3'>
-                                            Name <span className="text-red-500">*</span>
+                                <>
+                                    <div className="flex flex-col space-y-4">
+                                        <label className='form-label mb-4'>
+                                            Profile Settings
                                         </label>
-                                        <div className='form-control w-full md:w-2/3'>
-                                            <input
-                                                type='text'
-                                                placeholder='Campus Name'
-                                                className='form-input'
-                                                value={formData?.campusName || ""}
-                                                onChange={(e) => updateFormData("campusName", e.target.value)}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className='flex flex-col md:flex-row justify-between gap-2 md:gap-0 md:px-4'>
-                                        <label htmlFor='campaignsTitle' className='form-label md:w-1/3'>
-                                            License Count <span className="text-red-500">*</span>
-                                        </label>
-                                        <div className='form-control w-full md:w-2/3'>
-                                            <input
-                                                type='number'
-                                                placeholder='license count'
-                                                className='form-input'
-                                                value={formData?.licenseCount || ""}
-                                                onChange={(e) => updateFormData("licenseCount", e.target.value)}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className='flex flex-col md:flex-row justify-between gap-2 md:gap-0 md:px-4'>
-                                        <label htmlFor='campaignsTitle' className='form-label md:w-1/3'>
-                                            GPS Enabled <span className="text-red-500">*</span>
-                                        </label>
-                                        <div className='form-check form-switch w-full md:w-2/3 flex items-center'>
-                                            <input
-                                                type="checkbox"
-                                                className="form-check-input"
-                                                checked={formData?.gpsEnabled || false}
-                                                onChange={(e) => updateFormData("gpsEnabled", e.target.checked)}
-                                            />
-                                            <label className="form-check-label ml-2" htmlFor="lightIndoor1">
-                                                {formData?.gpsEnabled ? "Enabled" : "Disabled"}
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div className='flex flex-col md:flex-row justify-between gap-2 md:gap-0 md:px-4'>
+                                        <div className='flex-col space-y-9'>
+                                            <div className='flex flex-col md:flex-row justify-between gap-2 md:gap-0 md:px-4'>
+                                                <label htmlFor='campaignsTitle' className='form-label md:w-1/3'>
+                                                    Campus Name <span className="text-red-500">*</span>
+                                                </label>
+                                                <div className='form-control w-full md:w-2/3'>
+                                                    <input
+                                                        type='text'
+                                                        placeholder='Campus Name'
+                                                        className='form-input'
+                                                        value={formData?.campusName || ""}
+                                                        onChange={(e) => updateFormData("campusName", e.target.value)}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className='flex flex-col md:flex-row justify-between gap-2 md:gap-0 md:px-4'>
+                                                <label htmlFor='campaignsTitle' className='form-label md:w-1/3'>
+                                                    Campus Code <span className="text-red-500">*</span>
+                                                </label>
+                                                <div className='form-control w-full md:w-2/3'>
+                                                    <input
+                                                        type='number'
+                                                        placeholder='license count'
+                                                        className='form-input'
+                                                        value={formData?.campusCode || ""}
+                                                        onChange={(e) => updateFormData("campusCode", e.target.value)}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className='flex flex-col md:flex-row justify-between gap-2 md:gap-0 md:px-4'>
+                                                <label htmlFor='campaignsTitle' className='form-label md:w-1/3'>
+                                                    GPS Enabled <span className="text-red-500">*</span>
+                                                </label>
+                                                <div className='form-check form-switch w-full md:w-2/3 flex items-center'>
+                                                    <input
+                                                        type="checkbox"
+                                                        className="form-check-input"
+                                                        checked={formData?.gpsEnabled || false}
+                                                        onChange={(e) => updateFormData("gpsEnabled", e.target.checked)}
+                                                    />
+                                                    <label className="form-check-label ml-2" htmlFor="lightIndoor1">
+                                                        {formData?.gpsEnabled ? "Enabled" : "Disabled"}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            {/* <div className='flex flex-col md:flex-row justify-between gap-2 md:gap-0 md:px-4'>
                                         <label htmlFor='campaignsTitle' className='form-label md:w-1/3'>
                                             Zoom Meeting Enabled <span className="text-red-500">*</span>
                                         </label>
@@ -198,44 +204,49 @@ const CampusCreate = (props) => {
                                                 {formData?.zoomEnabled ? "Enabled" : "Disabled"}
                                             </label>
                                         </div>
-                                    </div>
-                                    <div className='flex flex-col md:flex-row justify-between gap-2 md:gap-0 md:px-4'>
-                                        <label htmlFor='campaignsTitle' className='form-label md:w-1/3'>
-                                            IsActive <span className="text-red-500">*</span>
-                                        </label>
-                                        <div className='form-check form-switch w-full md:w-2/3 flex items-center'>
-                                            <input
-                                                type='checkbox'
-                                                className='form-check-input'
-                                                checked={formData?.isActive || false}
-                                                onChange={(e) => updateFormData("isActive", e.target.checked)}
-                                            />
-                                            <label className="form-check-label ml-2" htmlFor="lightIndoor1">
-                                                {formData?.isActive ? "Enabled" : "Disabled"}
-                                            </label>
+                                    </div> */}
+                                            <div className='flex flex-col md:flex-row justify-between gap-2 md:gap-0 md:px-4'>
+                                                <label htmlFor='campaignsTitle' className='form-label md:w-1/3'>
+                                                    IsActive <span className="text-red-500">*</span>
+                                                </label>
+                                                <div className='form-check form-switch w-full md:w-2/3 flex items-center'>
+                                                    <input
+                                                        type='checkbox'
+                                                        className='form-check-input'
+                                                        checked={formData?.isActive || false}
+                                                        onChange={(e) => updateFormData("isActive", e.target.checked)}
+                                                    />
+                                                    <label className="form-check-label ml-2" htmlFor="lightIndoor1">
+                                                        {formData?.isActive ? "Enabled" : "Disabled"}
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </>
                             )}
                             {activeTab === 1 && (
-                                <div>
+                                <>
                                     <div className='form-control'>
                                         <label className='form-label'>
                                             Assigned Domains
                                         </label>
-                                        <div className='relative w-full'>
-                                            <input
-                                                type='text'
-                                                className='form-input'
-                                                checked={formData?.domain || ""}
-                                                onChange={(e) => updateFormData("domain", e.target.value)}
-                                            />
+                                        <div className='flex flex-col md:flex-row justify-between mt-4 gap-2 md:gap-0 md:px-4'>
+                                            <div className='relative w-full'>
+                                                <input
+                                                    type='text'
+                                                    className='form-input'
+                                                    checked={formData?.primaryDomainName || ""}
+                                                    placeholder='dev.testmazing.com'
+                                                    onChange={(e) => updateFormData("primaryDomainName", e.target.value)}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </>
                             )}
                             {activeTab === 2 && (
-                                <div>
+                                <>
                                     <div className='form-control'>
                                         <div className='flex flex-col md:flex-row justify-between mb-4 gap-2 md:gap-0'>
                                             <label className='form-label'>
@@ -249,125 +260,107 @@ const CampusCreate = (props) => {
                                             {/* Plugins would go here */}
                                         </div>
                                     </div>
-                                </div>
+                                </>
                             )}
                             {activeTab === 3 && (
-                                <div>
+                                <>
                                     <div className='form-control'>
-                                        <div className="flex flex-col sm:flex-row gap-4 border border-border-color rounded-md p-4 bg-body-color">
-                                            <div className="form-check flex items-center">
+                                        <label className='form-label'>
+                                            Email Settings
+                                        </label>
+                                        <div className='flex flex-col md:flex-row justify-between mt-4 gap-2 md:gap-0 md:px-4'>
+                                            <label htmlFor='campaignsTitle' className='form-label md:w-1/3'>
+                                                Email Enabled <span className="text-red-500">*</span>
+                                            </label>
+                                            <div className='form-check form-switch w-full md:w-2/3 flex items-center'>
                                                 <input
                                                     type="checkbox"
-                                                    name="campaignsEmail"
                                                     className="form-check-input"
+                                                    checked={formData?.emailEnabled || false}
+                                                    onChange={(e) => updateFormData("emailEnabled", e.target.checked)}
                                                 />
-                                                <label className="form-check-label ml-2" htmlFor="campaignsEmail">
-                                                    Inherit Email Settings
-                                                </label>
-                                            </div>
-                                            <div className="form-check flex items-center">
-                                                <input
-                                                    type="checkbox"
-                                                    name="campaignsGoogle"
-                                                    className="form-check-input"
-                                                />
-                                                <label className="form-check-label ml-2" htmlFor="campaignsGoogle">
-                                                    Inherit Google OAuth
+                                                <label className="form-check-label ml-2" htmlFor="lightIndoor1">
+                                                    {formData?.emailEnabled ? "Enabled" : "Disabled"}
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </>
                             )}
                             {activeTab === 4 && (
-                                <div>
+                                <>
                                     <div className='form-control'>
                                         <label className='form-label'>
                                             SMS Settings
                                         </label>
-                                        <div className="flex flex-col sm:flex-row gap-4 border border-border-color rounded-md p-4 bg-body-color">
-                                            <div className="form-check flex items-center">
+                                        <div className='flex flex-col md:flex-row justify-between mt-4 gap-2 md:gap-0 md:px-4'>
+                                            <label htmlFor='campaignsTitle' className='form-label md:w-1/3'>
+                                                SMS Enabled <span className="text-red-500">*</span>
+                                            </label>
+                                            <div className='form-check form-switch w-full md:w-2/3 flex items-center'>
                                                 <input
                                                     type="checkbox"
-                                                    name="campaignsSMS"
                                                     className="form-check-input"
+                                                    checked={formData?.smsEnabled || false}
+                                                    onChange={(e) => updateFormData("smsEnabled", e.target.checked)}
                                                 />
-                                                <label className="form-check-label ml-2" htmlFor="campaignsSMS">
-                                                    Enable SMS Template Edit
-                                                </label>
-                                            </div>
-                                            <div className="form-check flex items-center">
-                                                <input
-                                                    type="radio"
-                                                    name="campaignsSMSID"
-                                                    className="form-check-input"
-                                                />
-                                                <label className="form-check-label ml-2" htmlFor="campaignsSMSID">
-                                                    Enable SMS Template ID
+                                                <label className="form-check-label ml-2" htmlFor="lightIndoor1">
+                                                    {formData?.smsEnabled ? "Enabled" : "Disabled"}
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </>
                             )}
                             {activeTab === 5 && (
-                                <div>
+                                <>
                                     <div className='form-control'>
-                                        <div className="flex flex-col sm:flex-row gap-4 border border-border-color rounded-md p-4 bg-body-color">
-                                            <div className="form-check flex items-center">
+                                        <label className='form-label'>
+                                            Plugin Settings
+                                        </label>
+                                        <div className='flex flex-col md:flex-row justify-between mt-4 gap-2 md:gap-0 md:px-4'>
+                                            <label htmlFor='campaignsTitle' className='form-label md:w-1/3'>
+                                                Online Meeting Enabled <span className="text-red-500">*</span>
+                                            </label>
+                                            <div className='form-check form-switch w-full md:w-2/3 flex items-center'>
                                                 <input
                                                     type="checkbox"
-                                                    name="campaignsGps"
                                                     className="form-check-input"
+                                                    checked={formData?.onlineMeetingEnabled || false}
+                                                    onChange={(e) => updateFormData("onlineMeetingEnabled", e.target.checked)}
                                                 />
-                                                <label className="form-check-label ml-2" htmlFor="campaignsGps">
-                                                    Enable GPS
-                                                </label>
-                                            </div>
-                                            <div className="form-check flex items-center">
-                                                <input
-                                                    type="checkbox"
-                                                    name="campaignsMeet"
-                                                    className="form-check-input"
-                                                />
-                                                <label className="form-check-label ml-2" htmlFor="campaignsMeet">
-                                                    Enable Google Meet
+                                                <label className="form-check-label ml-2" htmlFor="lightIndoor1">
+                                                    {formData?.onlineMeetingEnabled ? "Enabled" : "Disabled"}
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </>
                             )}
                             {activeTab === 6 && (
-                                <div>
+                                <>
                                     <div className='form-control'>
                                         <label className='form-label'>
                                             Gateways
                                         </label>
-                                        <div className="flex flex-col sm:flex-row gap-4 border border-border-color rounded-md p-4 bg-body-color">
-                                            <div className="form-check flex items-center">
+                                        <div className='flex flex-col md:flex-row justify-between mt-4 gap-2 md:gap-0 md:px-4'>
+                                            <label htmlFor='campaignsTitle' className='form-label md:w-1/3'>
+                                                Payment Gateway Enabled <span className="text-red-500">*</span>
+                                            </label>
+                                            <div className='form-check form-switch w-full md:w-2/3 flex items-center'>
                                                 <input
                                                     type="checkbox"
-                                                    name="campaignsZoom"
                                                     className="form-check-input"
+                                                    checked={formData?.paymentGatewayEnabled || false}
+                                                    onChange={(e) => updateFormData("paymentGatewayEnabled", e.target.checked)}
                                                 />
-                                                <label className="form-check-label ml-2" htmlFor="campaignsZoom">
-                                                    Enable Zoom Meeting
-                                                </label>
-                                            </div>
-                                            <div className="form-check flex items-center">
-                                                <input
-                                                    type="checkbox"
-                                                    name="campaignsGoogleMeet"
-                                                    className="form-check-input"
-                                                />
-                                                <label className="form-check-label ml-2" htmlFor="campaignsGoogleMeet">
-                                                    Enable Google Meet
+                                                <label className="form-check-label ml-2" htmlFor="lightIndoor1">
+                                                    {formData?.paymentGatewayEnabled ? "Enabled" : "Disabled"}
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </>
                             )}
                         </div>
                     </div>

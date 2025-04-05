@@ -14,10 +14,10 @@ export default function ForgotPassword() {
         isAuthenticated,
         loading,
         error,
-        token,
-        setPermPassData,
+        forgotPassData,
         isTempPass
     } = useSelector((state) => state.auth);
+    console.log("🚀 ~ ForgotPassword ~ forgotPassData:", forgotPassData)
     const router = useRouter();
     const [email, setEmail] = useState();
 
@@ -46,16 +46,16 @@ export default function ForgotPassword() {
 
     // Show success or error toast and redirect
     useEffect(() => {
-        if (setPermPassData) {
+        if (forgotPassData) {
             const redirectPath = isTempPass ? '/setPermanentPassword' : '/';
             toast.success('Permanent Password Set successful!', { id: 'login-status' });
             router.push(redirectPath);
-            dispatch(clearAuthError(null));
+            dispatch(forgotPassRequest(null));
         } else if (error) {
             toast.error('Failed to create permanent password. Please try again.', { id: 'login-status' });
-            dispatch(clearAuthState(null));
+            dispatch(forgotPassRequest(null));
         }
-    }, [setPermPassData, error, isTempPass, router, dispatch]);
+    }, [forgotPassData, error, isTempPass, router, dispatch]);
 
     return (
         <>

@@ -6,9 +6,9 @@ export const getCampus = async (obj) => {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${obj.token}`,
+          Authorization: `Bearer ${obj?.token}`,
         },
-        params: obj.data,
+        params: obj?.data,
       }
     );
     return response;
@@ -22,11 +22,11 @@ export const postCampus = async (obj) => {
   try {
     const response = await axios.post(
       "https://api.testmazing.com/campus/api/createcampus",
-      obj.data,
+      obj?.data,
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${obj.token}`,
+          Authorization: `Bearer ${obj?.token}`,
         },
       }
     );
@@ -40,12 +40,12 @@ export const postCampus = async (obj) => {
 export const putCampus = async (obj) => {
   try {
     const response = await axios.put(
-      `https://api.testmazing.com/campus/api/updatecampus/${obj.id}`,
-      obj.data,
+      `https://api.testmazing.com/campus/api/updatecampus/${obj?.id}`,
+      obj?.data,
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${obj.token}`,
+          Authorization: `Bearer ${obj?.token}`,
         },
       }
     );

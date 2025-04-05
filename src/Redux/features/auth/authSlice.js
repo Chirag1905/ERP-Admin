@@ -57,6 +57,7 @@ const authSlice = createSlice({
     signOutSuccess(state, action) {
       state.isAuthenticated = false;
       state.loginData = null;
+      state.token = null;
       state.error = null;
       state.loading = false;
     },

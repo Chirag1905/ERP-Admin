@@ -9,12 +9,7 @@ import toast from 'react-hot-toast';
 
 const Signin = () => {
     const dispatch = useDispatch();
-    const { loginData, isAuthenticated, loading, error, token, isTempPass } = useSelector((state) => state.auth);
-    // console.log("🚀 ~ Signin ~ isAuthenticated:", isAuthenticated)
-    console.log("🚀 ~ Signin ~ token:", token)
-    console.log("🚀 ~ Signin ~ error:", error)
-    // console.log("🚀 ~ Signin ~ loading:", loading)
-    // console.log("🚀 ~ Signin ~ isTempPass:", isTempPass)
+    const { loginData, isAuthenticated, loading, error, isTempPass } = useSelector((state) => state.auth);
     const router = useRouter();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');

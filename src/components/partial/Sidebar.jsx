@@ -89,9 +89,9 @@ export default function Sidebar(props) {
   const handleLogout = () => {
     if (isAuthenticated) {
       dispatch(signOutSuccess());
-      console.log("called");
+      console.log("LogOut called");
       toast.success("You've been successfully logged out. See you soon!")
-      router.push('/signIn');
+      // router.push('/signIn');
     }
   };
 
@@ -419,7 +419,7 @@ export default function Sidebar(props) {
                 <Link
                   href={item.url}
                   onClick={() => closeModals()}
-                   className='text-left'
+                  className='text-left'
                 >
                   {item?.link}
                 </Link>

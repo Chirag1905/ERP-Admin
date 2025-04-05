@@ -44,12 +44,12 @@ function* setPermanentPassSaga(action) {
   try {
     const response = yield call(setPermanentPass, action.payload);
     if (response.status === 200 || response.status === 201) {
-      yield put(setPermanentPassSuccess(response.data));
+      yield put(setPermanentPassSuccess(response.status));
     } else {
-      yield put(setPermanentPassFailure(response.message))
+      yield put(setPermanentPassFailure(response.status))
     }
   } catch (error) {
-    yield put(setPermanentPassFailure(error.message));
+    yield put(setPermanentPassFailure(error.status));
   }
 }
 
@@ -57,12 +57,12 @@ function* forgotPassSaga(action) {
   try {
     const response = yield call(forgotPass, action.payload);
     if (response.status === 200 || response.status === 201) {
-      yield put(forgotPassSuccess(response.data));
+      yield put(forgotPassSuccess(response.status));
     } else {
-      yield put(forgotPassFailure(response.message))
+      yield put(forgotPassFailure(response.status))
     }
   } catch (error) {
-    yield put(forgotPassFailure(error.message));
+    yield put(forgotPassFailure(error.status));
   }
 }
 

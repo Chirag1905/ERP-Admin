@@ -22,11 +22,11 @@ export const postCampusGroup = async (obj) => {
   try {
     const response = await axios.post(
       "https://api.testmazing.com/campus/api/createcampusgroup",
-      obj.data,
+      obj?.data,
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${obj.token}`,
+          Authorization: `Bearer ${obj?.token}`,
         },
       }
     );
@@ -40,12 +40,12 @@ export const postCampusGroup = async (obj) => {
 export const putCampusGroup = async (obj) => {
   try {
     const response = await axios.put(
-      `https://api.testmazing.com/campus/api/updatecampusgroup/${obj.id}`,
-      obj.data,
+      `https://api.testmazing.com/campus/api/updatecampusgroup/${obj?.id}`,
+      obj?.data,
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${obj.token}`,
+          Authorization: `Bearer ${obj?.token}`,
         },
       }
     );

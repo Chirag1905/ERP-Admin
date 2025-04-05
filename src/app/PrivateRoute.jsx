@@ -6,11 +6,16 @@ import { useSelector } from 'react-redux';
 
 const PrivateRoute = ({ children }) => {
   const router = useRouter();
-  const { isAuthenticated, loading } = useSelector(state => state.auth);
+  const { loginData, isAuthenticated, loading, error, token, isTempPass } = useSelector(state => state.auth);
   console.log("🚀 ~ PrivateRoute ~ isAuthenticated:", isAuthenticated)
+  console.log("🚀 ~ PrivateRoute ~ token:", token)
+  console.log("🚀 ~ PrivateRoute ~ isTempPass:", isTempPass)
+  console.log("🚀 ~ PrivateRoute ~ error:", error)
+  console.log("🚀 ~ PrivateRoute ~ loginData:", loginData)
+  console.log("🚀 ~ PrivateRoute ~ loading:", loading)
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (isAuthenticated === false) {
       router.replace('/signIn');
     }
   }, [isAuthenticated, router]);
@@ -36,10 +41,6 @@ const PrivateRoute = ({ children }) => {
         </svg>
       </div>
     )
-  }
-
-  if (!isAuthenticated) {
-    return null;
   }
 
   return children;
