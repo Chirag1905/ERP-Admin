@@ -7,6 +7,7 @@ import {
     postCampusSuccess,
     postRealmRequest
 } from '@/Redux/features/campus/campusSlice';
+import { IconCopy, IconKeyFilled } from '@tabler/icons-react';
 
 const CampusCreate = (props) => {
     const {
@@ -73,6 +74,75 @@ const CampusCreate = (props) => {
             position: "top-right",
             duration: 5000,
         });
+
+        // Show credentials in a separate toast
+        if (campusPostData?.data?.campusKeyCloakRealm) {
+            const credentials = campusPostData?.data?.campusKeyCloakRealm;
+            toast(
+                (t) => (
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '8px',
+                        fontSize: '14px'
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigator.clipboard.writeText(credentials.username);
+                                    toast.success('Username copied!', { position: 'top-right' });
+                                }}
+                                style={{
+                                    background: 'none',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center'
+                                }}
+                                title="Copy username"
+                            >
+                                <IconCopy size={16} color="#4b5563" />
+                            </button>
+                            <span>Username: {credentials.temporaryPassword}</span>
+                        </div>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigator.clipboard.writeText(credentials.temporaryPassword);
+                                    toast.success('Password copied!', { position: 'top-right' });
+                                }}
+                                style={{
+                                    background: 'none',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center'
+                                }}
+                                title="Copy password"
+                            >
+                                <IconCopy size={16} color="#4b5563" />
+                            </button>
+                            <span>Password: {credentials.temporaryPassword}</span>
+                        </div>
+                    </div>
+                ),
+                {
+                    position: 'top-right',
+                    duration: 30000,
+                    style: {
+                        backgroundColor: '#f8fafc',
+                        border: '1px solid #e2e8f0',
+                        color: '#334155',
+                        padding: '16px',
+                        borderRadius: '8px'
+                    },
+                    icon: <span><IconKeyFilled fill="#f59e0b" color="#f59e0b" /></span>,
+                }
+            );
+        }
 
         // Refresh campus data
         dispatch(getCampusRequest({
