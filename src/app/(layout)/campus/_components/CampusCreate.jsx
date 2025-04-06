@@ -70,11 +70,6 @@ const CampusCreate = (props) => {
     useEffect(() => {
         if (!campusPostData?.message) return;
 
-        toast.success(campusPostData.message, {
-            position: "top-right",
-            duration: 5000,
-        });
-
         // Show credentials in a separate toast
         if (campusPostData?.data?.campusKeyCloakRealm) {
             const credentials = campusPostData?.data?.campusKeyCloakRealm;
@@ -104,7 +99,7 @@ const CampusCreate = (props) => {
                             >
                                 <IconCopy size={16} color="#4b5563" />
                             </button>
-                            <span>Username: {credentials.temporaryPassword}</span>
+                            <span>Username: {credentials.username}</span>
                         </div>
 
                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -144,6 +139,10 @@ const CampusCreate = (props) => {
             );
         }
 
+        toast.success(campusPostData.message, {
+            position: "top-right",
+            duration: 5000,
+        });
         // Refresh campus data
         dispatch(getCampusRequest({
             data: {
