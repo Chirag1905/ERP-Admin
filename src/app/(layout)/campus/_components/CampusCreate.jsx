@@ -66,6 +66,7 @@ const CampusCreate = (props) => {
         }
     };
 
+    //Added
     // Handle API responses
     useEffect(() => {
         if (!campusPostData?.message) return;
