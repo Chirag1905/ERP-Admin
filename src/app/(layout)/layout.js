@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Header from '@/components/partial/Header';
 import Sidebar from '@/components/partial/Sidebar';
 import Footer from '@/components/partial/Footer';
-import PrivateRoute from '../PrivateRoute';
+import PrivateRoute from './PrivateRoute';
 
 export default function Layout({ children }) {
     // toggles
