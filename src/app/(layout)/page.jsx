@@ -42,6 +42,7 @@ export default function Analysis() {
     <div>
       <Breadcrumb breadcrumbItem={breadcrumbItem} />
       <WelcomeHeader report />
+      {console.log("Testing Purpose")}
       <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
         {dashboardCards?.map((card) => (
           <div key={card?.id} className="card bg-card-color rounded-xl p-4 relative">

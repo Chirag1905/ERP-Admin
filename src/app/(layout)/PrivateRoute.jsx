@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 const PrivateRouteAuth = ({ children }) => {
   const router = useRouter();
   const { loginData, isAuthenticated, loading: authLoading, error, token, isTempPass } = useSelector(state => state.auth);
+  // const authLoading = false;
   const [routeChanging, setRouteChanging] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('Loading your content...');
   const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
@@ -21,8 +22,8 @@ const PrivateRouteAuth = ({ children }) => {
       router.replace('/signIn');
     }
     // If user is authenticated but trying to access password reset pages, redirect to home
-    else if (isAuthenticated === true && 
-            (currentPath.includes('resetPassword') || currentPath.includes('setPermanentPassword'))) {
+    else if (isAuthenticated === true &&
+      (currentPath.includes('resetPassword') || currentPath.includes('setPermanentPassword'))) {
       setLoadingMessage('Redirecting to home...');
       router.replace('/');
     }
@@ -59,7 +60,7 @@ const PrivateRouteAuth = ({ children }) => {
   }, []);
 
   // Show loading spinner for either auth check or route change
-  if (authLoading || routeChanging) {
+  if ( routeChanging) {
     return (
       <div className="fixed inset-0 flex flex-col items-center justify-center bg-white z-50 space-y-6">
         <div className="relative w-24 h-24">
