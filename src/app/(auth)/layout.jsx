@@ -120,88 +120,88 @@ import Link from 'next/link';
 import { IconBrandFacebookFilled, IconBrandGithubFilled, IconBrandTwitterFilled, IconBrandYoutubeFilled } from '@tabler/icons-react';
 import { Techvein_logo } from '@/assets/images/';
 import Image from 'next/image';
-import PrivateRouteAuth from '../(layout)/PrivateRoute';
+import PrivateRoute from '../PrivateRoute';
 
 export default function AuthLayout({ children }) {
     return (
-        <PrivateRouteAuth>
-        <div className="min-h-screen flex items-center justify-center bg-body-color p-4">
-            <div className="container mx-auto flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16 max-w-7xl">
-                {/* Left Content */}
-                <div className="w-full lg:w-1/2 max-w-2xl text-center lg:text-left">
-                    <div className="mb-8 lg:mb-12">
-                        <div className="flex items-center justify-center lg:justify-start gap-4 mb-6">
-                            <Image
-                                src={Techvein_logo}
-                                alt="Techvein IT Solutions Logo"
-                                className="text-primary"
-                                width={116}
-                                height={90}
-                                priority
-                            />
-                            <span className="text-primary font-bold text-3xl lg:text-4xl">
-                                Techvein Admin Portal
-                            </span>
-                        </div>
-                        
-                        <h2 className="mb-6 text-2xl lg:text-3xl font-medium">
-                            Effortless Control, Powerful Management.
-                        </h2>
+        <PrivateRoute>
+            <div className="min-h-screen flex items-center justify-center bg-body-color p-4">
+                <div className="container mx-auto flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16 max-w-7xl">
+                    {/* Left Content */}
+                    <div className="w-full lg:w-1/2 max-w-2xl text-center lg:text-left">
+                        <div className="mb-8 lg:mb-12">
+                            <div className="flex items-center justify-center lg:justify-start gap-4 mb-6">
+                                <Image
+                                    src={Techvein_logo}
+                                    alt="Techvein IT Solutions Logo"
+                                    className="text-primary"
+                                    width={116}
+                                    height={90}
+                                    priority
+                                />
+                                <span className="text-primary font-bold text-3xl lg:text-4xl">
+                                    Techvein Admin Portal
+                                </span>
+                            </div>
 
-                        <div className="mb-8">
-                            <p className="text-xl lg:text-2xl mb-2 font-medium">
-                                All-in-One Tool
-                            </p>
-                            <p className="text-base lg:text-lg text-gray-600">
-                                Welcome to the central hub for managing your Campus & School Management ERP solution. Streamline administration, improve efficiency, and stay organized — all from one place.
-                            </p>
-                        </div>
+                            <h2 className="mb-6 text-2xl lg:text-3xl font-medium">
+                                Effortless Control, Powerful Management.
+                            </h2>
 
-                    <div className="mb-8">
-                            <p className="text-xl lg:text-2xl mb-2 font-medium">
-                                Log in to take full control of your ERP ecosystem.
-                            </p>
-                            <p className="text-base lg:text-lg text-gray-600">
-                                Built on a robust AWS microservices architecture, this portal empowers SSAS administrators with seamless access to configure, monitor, and support tenant environments in real time.
-                            </p>
-                        </div>
+                            <div className="mb-8">
+                                <p className="text-xl lg:text-2xl mb-2 font-medium">
+                                    All-in-One Tool
+                                </p>
+                                <p className="text-base lg:text-lg text-gray-600">
+                                    Welcome to the central hub for managing your Campus & School Management ERP solution. Streamline administration, improve efficiency, and stay organized — all from one place.
+                                </p>
+                            </div>
 
-                        <div className="flex flex-wrap justify-center lg:justify-start gap-4 mb-6">
-                            <Link href="#" className="transition-all hover:text-primary">
-                                Home
-                            </Link>
-                            <Link href="#" className="transition-all hover:text-primary">
-                                About Us
-                            </Link>
-                            <Link href="#" className="transition-all hover:text-primary">
-                                FAQs
-                            </Link>
-                        </div>
-                        <div className="flex flex-wrap justify-center lg:justify-start gap-4">
-                            <Link href="#" className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white transition-all hover:bg-secondary">
-                                <IconBrandFacebookFilled width="18" height="18" />
-                            </Link>
-                            <Link href="#" className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white transition-all hover:bg-secondary">
-                                <IconBrandTwitterFilled width="18" height="18" />
-                            </Link>
-                            <Link href="#" className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white transition-all hover:bg-secondary">
-                                <IconBrandGithubFilled width="18" height="18" />
-                            </Link>
-                            <Link href="#" className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white transition-all hover:bg-secondary">
-                                <IconBrandYoutubeFilled width="18" height="18" />
-                            </Link>
+                            <div className="mb-8">
+                                <p className="text-xl lg:text-2xl mb-2 font-medium">
+                                    Log in to take full control of your ERP ecosystem.
+                                </p>
+                                <p className="text-base lg:text-lg text-gray-600">
+                                    Built on a robust AWS microservices architecture, this portal empowers SSAS administrators with seamless access to configure, monitor, and support tenant environments in real time.
+                                </p>
+                            </div>
+
+                            <div className="flex flex-wrap justify-center lg:justify-start gap-4 mb-6">
+                                <Link href="#" className="transition-all hover:text-primary">
+                                    Home
+                                </Link>
+                                <Link href="#" className="transition-all hover:text-primary">
+                                    About Us
+                                </Link>
+                                <Link href="#" className="transition-all hover:text-primary">
+                                    FAQs
+                                </Link>
+                            </div>
+                            <div className="flex flex-wrap justify-center lg:justify-start gap-4">
+                                <Link href="#" className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white transition-all hover:bg-secondary">
+                                    <IconBrandFacebookFilled width="18" height="18" />
+                                </Link>
+                                <Link href="#" className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white transition-all hover:bg-secondary">
+                                    <IconBrandTwitterFilled width="18" height="18" />
+                                </Link>
+                                <Link href="#" className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white transition-all hover:bg-secondary">
+                                    <IconBrandGithubFilled width="18" height="18" />
+                                </Link>
+                                <Link href="#" className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white transition-all hover:bg-secondary">
+                                    <IconBrandYoutubeFilled width="18" height="18" />
+                                </Link>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {/* Right Content (Sign In Box) */}
-                <div className="w-full max-w-md">
-                    <div className="bg-white rounded-xl p-6 shadow-lg w-full">
-                        {children}
+                    {/* Right Content (Sign In Box) */}
+                    <div className="w-full max-w-md">
+                        <div className="bg-white rounded-xl p-6 shadow-lg w-full">
+                            {children}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        </PrivateRouteAuth>
+        </PrivateRoute>
     );
 }
