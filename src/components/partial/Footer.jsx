@@ -24,7 +24,7 @@ export default function Footer({ className }) {
           priority
         />
       </Link>
-      <ul className='flex items-center gap-x-20 gap-y-5 flex-wrap justify-center'>
+      <ul className='flex items-center gap-x-8 gap-y-5 flex-wrap justify-center'>
         <li>
           <Link href="#" className='text-font-color-100 transition-all hover:text-blue'>
             Portfolio

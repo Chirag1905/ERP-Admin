@@ -24,6 +24,7 @@ import {
     IconCalendarFilled,
     IconTag,
     IconEdit,
+    IconArrowBigLeftFilled,
 } from '@tabler/icons-react';
 import {
     dark_version,
@@ -63,6 +64,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
 
     // theme setting sidebar
     const [themeSetting, setThemeSetting] = useState(false)
+    console.log("🚀 ~ Header ~ themeSetting:", themeSetting)
     const toggleThemeSetting = () => {
         setThemeSetting(!themeSetting)
         document.body.classList.toggle("overflow-hidden", !themeSetting)
@@ -303,33 +305,25 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
 
     return (
         <>
-            <div className='md:py-4 py-3 md:px-6 px-4 flex items-center relative'>
-                <div className='text-white flex items-center justify-center rounded-lg shadow-md xl:w-[260px]'>
-                    {/* <button
-                        onClick={handleSave}
-                        className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
-                    >
-                        <IconEdit className="w-4 h-4" />
-                    </button> */}
-                    <div className="flex items-center gap-3">
+            <div className='md:py-4 py-3 md:px-6 px-4 flex-1 flex items-center relative'>
+                <div className="text-white flex items-center justify-center rounded-lg xl:w-[300px]">
+                    <div className="flex items-center">
                         <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
                             {/* <CompanyLogo /> */}
                             <span
-                                className="p-1 font-semibold text-xl text-white text-center w-full bg-transparent border-b border-transparent hover:border-gray-400 focus:outline-none focus:border-white transition-colors placeholder-gray-400"
+                                className="p-1 font-semibold text-xl text-white text-left w-full bg-transparent"
                             >
                                 Admin
                             </span>
-                            {/* <input
-                                type="text"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                                placeholder="Enter title"
-                            /> */}
                         </Link>
-                        {/* <span className="text-white w-full bg-transparent hover:border-gray-400 transition-colors placeholder-gray-400 hidden sm:block">- Admin</span> */}
+                        <span className="text-white w-full bg-transparent hover:border-gray-400 transition-colors placeholder-gray-400 hidden sm:block">- Admin</span>
                     </div>
                 </div>
                 <div className='flex-1 flex items-center justify-end text-font-color-200'>
+                    {/* <button
+                        className="xl:flex hidden items-center justify-center w-[40px] h-[40px] min-w-[40px] bg-white-10 rounded-full">
+                        <IconArrowBigLeftFilled />
+                    </button> */}
                     <div className='relative px-4 flex-1 md:block hidden'>
                         <input type="text" placeholder="Enter your search key word" onClick={openSearchBar} className={`w-full py-[6px] px-[12px] bg-transparent focus:outline-0 placeholder:text-white placeholder:opacity-50 ${searchBar ? 'z-[5] relative' : ''}`} />
                         <div className={`bg-card-color text-font-color xl:absolute fixed xl:left-0 left-30 xl:top-[40px] top-[68px] z-[5] xl:w-full w-[calc(100%-60px)] rounded-xl p-6 transition-all duration-300 origin-top ${searchBar ? 'opacity-1 visible scale-y-100' : 'opacity-0 invisible scale-y-0'}`}>
@@ -357,7 +351,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                 SUGGESTIONS
                             </p>
                             <div className='flex flex-col border border-border-color rounded-xl overflow-hidden'>
-                                <Link href="#" className='py-10 px-15 border-b border-dashed border-border-color transition hover:bg-primary-10'>
+                                <Link href="#" className='py-[10px] px-[15px] border-b border-dashed border-border-color transition hover:bg-primary-10'>
                                     <div className='font-bold mb-5'>
                                         Cras justo odio
                                     </div>
@@ -365,7 +359,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                         Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                                     </p>
                                 </Link>
-                                <Link href="#" className='py-10 px-15 border-b border-dashed border-border-color transition hover:bg-primary-10'>
+                                <Link href="#" className='py-[10px] px-[15px] border-b border-dashed border-border-color transition hover:bg-primary-10'>
                                     <div className='font-bold mb-5'>
                                         Date Range Picker
                                     </div>
@@ -373,7 +367,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                         There are many variations of passages of Lorem Ipsum available
                                     </p>
                                 </Link>
-                                <Link href="#" className='py-10 px-15 border-b border-dashed border-border-color transition hover:bg-primary-10'>
+                                <Link href="#" className='py-[10px] px-[15px] border-b border-dashed border-border-color transition hover:bg-primary-10'>
                                     <div className='font-bold mb-5'>
                                         Image Input
                                     </div>
@@ -381,7 +375,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                         It is a long established fact that a reader will be distracted
                                     </p>
                                 </Link>
-                                <Link href="#" className='py-10 px-15 border-b border-dashed border-border-color transition hover:bg-primary-10'>
+                                <Link href="#" className='py-[10px] px-[15px] border-b border-dashed border-border-color transition hover:bg-primary-10'>
                                     <div className='font-bold mb-5'>
                                         DataTables for jQuery
                                     </div>
@@ -389,7 +383,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                         Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                                     </p>
                                 </Link>
-                                <Link href="#" className='py-10 px-15 transition hover:bg-primary-10'>
+                                <Link href="#" className='py-[10px] px-[15px] transition hover:bg-primary-10'>
                                     <div className='font-bold mb-5'>
                                         Development Setup
                                     </div>

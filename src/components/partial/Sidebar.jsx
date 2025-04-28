@@ -372,7 +372,7 @@ export default function Sidebar(props) {
                 Support Ticket
               </Link>
             </div>
-            <Link href="auth-signin" prefetch={true} className='bg-secondary uppercase text-[14px]/[20px] text-white py-5 px-10 text-center w-full inline-block'>
+            <Link href="auth-signin" prefetch={true} className='bg-secondary uppercase text-[14px]/[20px] text-white py-[5px] px-10 text-center w-full inline-block'>
               Sign Out
             </Link>
           </div>
@@ -385,7 +385,7 @@ export default function Sidebar(props) {
             Prashant Gourav
             {/* Tester */}
           </div>
-          <div className='flex gap-4 mt-10'>
+          <div className='flex gap-4 mt-[10px]'>
             <button onClick={toggleSchedule} className={`transition-all duration-300 after:fixed after:z-[4] after:w-full after:h-full after:left-0 after:top-0 after:bg-black-50 after:backdrop-blur-[2px] after:transition-all after:duration-500 after:ease-in-out ${schedule ? 'after:opacity-1 after:visible after:overflow-auto' : 'after:opacity-0 after:invisible after:overflow-hidden'}`}>
               <span title='My Schedule'>
                 <IconCalendar className='stroke-[1.5] w-[20px] h-[20px]' />
@@ -413,7 +413,7 @@ export default function Sidebar(props) {
             <li key={parentIndex}>
               <button
                 onClick={() => setMenuActive(menuActive === parentIndex ? null : parentIndex)}
-                className={`flex items-center gap-10 w-full py-10 transition-all hover:text-secondary ${menuActive === parentIndex ? 'text-secondary' : ''}`}
+                className={`flex items-center gap-2.5 w-full py-2.5 transition-all hover:text-secondary ${menuActive === parentIndex ? 'text-secondary' : ''}`}
               >
                 <item.icon className="stroke-[1.5] w-[22px] h-[22px]" />
                 <Link
@@ -427,7 +427,9 @@ export default function Sidebar(props) {
                 <IconChevronRight className={`stroke-[1.5] w-[18px] h-[18px] ms-auto rtl:rotate-180 transition-all ${menuActive === parentIndex ? 'rotate-90 rtl:rotate-90' : ''}`} />
               </button>
               {menuActive === parentIndex && (
-                <ul className="ps-30 relative before:absolute before:h-full before:w-[1px] ltr:before:left-10 rtl:before:right-10 before:top-0 before:bg-white-10">
+                <ul
+                  className="ps-[52px] relative before:absolute before:h-full before:w-[1px] ltr:before:left-8 rtl:before:right-10 before:top-0 before:bg-white-10"
+                >
                   {item.children.map((res, key) => (
                     <li key={key}>
                       <div>
@@ -494,7 +496,7 @@ export default function Sidebar(props) {
             </li>
           ) : item.url ?
             <li key={parentIndex}>
-              <Link href={item.url} prefetch={true} onClick={() => { window.innerWidth < 1200 && setMobileNav(false) }} className={`flex items-center gap-10 w-full py-2 transition-all hover:text-secondary ${pageUrl === item.url ? 'text-secondary' : ''}`}>
+              <Link href={item.url} prefetch={true} onClick={() => { window.innerWidth < 1200 && setMobileNav(false) }} className={`flex items-center gap-2.5 w-full py-2 transition-all hover:text-secondary ${pageUrl === item.url ? 'text-secondary' : ''}`}>
                 {item.icon ? <item.icon className='stroke-[1.5] w-[22px] h-[22px]' /> : <IconChevronRight />}
                 <span onClick={() => closeModals()}>{item.link}</span>
               </Link>
@@ -506,7 +508,7 @@ export default function Sidebar(props) {
         ))}
       </ul>
       <div className={`fixed top-0 bg-card-color z-[5] h-svh w-full max-w-[300px] transition-all duration-200 ${schedule ? 'ltr:left-0 rtl:right-0' : 'ltr:-left-full rtl:-right-full'}`}>
-        <div className='p-4 flex items-center justify-between gap-15 bg-secondary'>
+        <div className='p-4 flex items-center justify-between gap-[15px] bg-secondary'>
           <div className='text-[20px]/[30px] font-medium text-white'>
             Schedule
           </div>
@@ -609,8 +611,8 @@ export default function Sidebar(props) {
         </div>
       </div>
       <div className={`fixed top-0 bg-card-color z-[5] h-svh w-full max-w-[500px] transition-all duration-200 ${note ? 'ltr:left-0 rtl:right-0' : 'ltr:-left-full rtl:-right-full'}`}>
-        <div className='p-4 flex items-center justify-between gap-15 border-b border-border-color'>
-          <div className='text-[20px]/[30px] font-medium flex items-center gap-10'>
+        <div className='p-4 flex items-center justify-between gap-[15px] border-b border-border-color'>
+          <div className='text-[20px]/[30px] font-medium flex items-center gap-2.5'>
             My Notes
             <span className='inline-block bg-danger rounded-md text-white py-1 px-2 text-[14px]/[1]'>
               14
@@ -627,7 +629,7 @@ export default function Sidebar(props) {
               <Tab className="flex-1 py-2 px-4 text-center cursor-pointer text-primary rounded-md focus:outline-0" selectedClassName="bg-primary text-white">Business</Tab>
               <Tab className="flex-1 py-2 px-4 text-center cursor-pointer text-primary rounded-md focus:outline-0" selectedClassName="bg-primary text-white">Social</Tab>
               <Tab className="flex-1 py-2 px-4 text-center cursor-pointer text-primary rounded-md focus:outline-0" selectedClassName="bg-primary text-white">
-                <div className="flex items-center justify-center gap-5"><IconPlus className='stroke-[5] w-[16px] h-[16px]' />
+                <div className="flex items-center justify-center gap-4"><IconPlus className='stroke-[5] w-[16px] h-[16px]' />
                   New
                 </div>
               </Tab>
@@ -635,7 +637,7 @@ export default function Sidebar(props) {
             <div className='py-4 px-6'>
               <TabPanel>
                 <div className='border border-border-color rounded-xl p-6 relative mb-10'>
-                  <div className='w-8 h-5 start-6 top-0 bg-primary absolute'></div>
+                  <div className='w-8 h-1 start-6 top-0 bg-primary absolute'></div>
                   <div className='mb-6'>
                     <span className='inline-block text-[14px]/[20px] text-font-color-100'>
                       02 January 2021
@@ -858,7 +860,7 @@ export default function Sidebar(props) {
                   <textarea className="form-textarea" placeholder="Leave a comment here" rows="3"></textarea>
                   <label className='form-label'>Leave a comment here</label>
                 </div>
-                <div className="flex items-center gap-10 mt-6">
+                <div className="flex items-center gap-2.5 mt-6">
                   <button className="btn btn-primary">
                     Save Note
                   </button>
@@ -875,7 +877,7 @@ export default function Sidebar(props) {
         <Tabs className="flex h-full">
           <div className='sm:w-[calc(100%-66px)] w-[calc(100%-50px)] shadow-shadow-sm'>
             <TabPanel>
-              <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-10 border-b border-border-color'>
+              <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-2.5 border-b border-border-color'>
                 <div className='flex gap-4'>
                   <Image src={avatar1} width={36} height={36} alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                   <div>
@@ -1013,7 +1015,7 @@ export default function Sidebar(props) {
               </div>
             </TabPanel>
             <TabPanel>
-              <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-10 border-b border-border-color'>
+              <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-2.5 border-b border-border-color'>
                 <div className='flex gap-4'>
                   <Image src={avatar2} width={36} height={36} alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                   <div>
@@ -1151,7 +1153,7 @@ export default function Sidebar(props) {
               </div>
             </TabPanel>
             <TabPanel>
-              <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-10 border-b border-border-color'>
+              <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-2.5 border-b border-border-color'>
                 <div className='flex gap-4'>
                   <Image src={avatar3} width={36} height={36} alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                   <div>
@@ -1289,7 +1291,7 @@ export default function Sidebar(props) {
               </div>
             </TabPanel>
             <TabPanel>
-              <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-10 border-b border-border-color'>
+              <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-2.5 border-b border-border-color'>
                 <div className='flex gap-4'>
                   <Image src={avatar4} width={36} height={36} alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                   <div>
@@ -1427,7 +1429,7 @@ export default function Sidebar(props) {
               </div>
             </TabPanel>
             <TabPanel>
-              <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-10 border-b border-border-color'>
+              <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-2.5 border-b border-border-color'>
                 <div className='flex gap-4'>
                   <Image src={avatar5} width={36} height={36} alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                   <div>
@@ -1565,7 +1567,7 @@ export default function Sidebar(props) {
               </div>
             </TabPanel>
             <TabPanel>
-              <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-10 border-b border-border-color'>
+              <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-2.5 border-b border-border-color'>
                 <div className='flex gap-4'>
                   <Image src={avatar6} width={36} height={36} alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                   <div>
@@ -1703,7 +1705,7 @@ export default function Sidebar(props) {
               </div>
             </TabPanel>
             <TabPanel>
-              <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-10 border-b border-border-color'>
+              <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-2.5 border-b border-border-color'>
                 <div className='flex gap-4'>
                   <Image src={avatar7} width={36} height={36} alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                   <div>
@@ -1841,7 +1843,7 @@ export default function Sidebar(props) {
               </div>
             </TabPanel>
             <TabPanel>
-              <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-10 border-b border-border-color'>
+              <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-2.5 border-b border-border-color'>
                 <div className='flex gap-4'>
                   <Image src={avatar8} width={36} height={36} alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                   <div>
@@ -1979,7 +1981,7 @@ export default function Sidebar(props) {
               </div>
             </TabPanel>
             <TabPanel>
-              <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-10 border-b border-border-color'>
+              <div className='flex flex-wrap py-4 px-2 items-center justify-between gap-2.5 border-b border-border-color'>
                 <div className='flex gap-4'>
                   <Image src={avatar9} width={36} height={36} alt='chat profile' className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                   <div>

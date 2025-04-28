@@ -189,7 +189,7 @@ const CampusGroup = () => {
       )}
 
       {!isCreateModalOpen && !isEditModalOpen && (
-        <div className="pt-6 md:pt-9 px-4 sm:px-6 md:px-10 bg-card-color rounded-lg">
+        <div className="pt-6 md:pt-9 px-4 sm:px-6 md:px-0 bg-card-color rounded-lg">
           {/* Header Section */}
           <div className="flex flex-col md:mx-6 md:flex-row justify-between items-start md:items-center gap-4 mb-6">
             <div className="flex items-center w-full md:w-auto">
