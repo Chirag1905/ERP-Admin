@@ -131,16 +131,16 @@ export default function AuthLayout({ children }) {
                     <div className="w-full lg:w-1/2 max-w-2xl text-center lg:text-left">
                         <div className="mb-8 lg:mb-12">
                             <div className="flex items-center justify-center lg:justify-start gap-4 mb-6">
-                                <Image
+                                {/* <Image
                                     src={Techvein_logo}
                                     alt="Techvein IT Solutions Logo"
                                     className="text-primary"
                                     width={116}
                                     height={90}
                                     priority
-                                />
+                                /> */}
                                 <span className="text-primary font-bold text-3xl lg:text-4xl">
-                                    Techvein Admin Portal
+                                    Admin Portal
                                 </span>
                             </div>
 

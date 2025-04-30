@@ -25,6 +25,8 @@ import {
     IconTag,
     IconEdit,
     IconArrowBigLeftFilled,
+    IconPencil,
+    IconRestore,
 } from '@tabler/icons-react';
 import {
     dark_version,
@@ -301,6 +303,18 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
     const handleSave = () => {
         localStorage.setItem("title", title);
         alert("Title saved!");
+    };
+
+    const [editUser, setEditUser] = useState(profile_av);
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setEditUser(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
     return (
@@ -712,13 +726,60 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                 <div className={`fixed top-0 bg-card-color z-[5] h-svh w-full max-w-[500px] transition-all duration-200 ${themeSetting ? 'ltr:right-0 rtl:left-0' : 'ltr:-right-full rtl:-left-full'}`}>
                     <div className='md:px-6 px-4 md:py-4 py-3 flex items-center justify-between gap-15 border-b border-border-color'>
                         <div className='text-[20px]/[30px] font-medium'>
-                            Theme Setting
+                            Customizations Setting
                         </div>
                         <button onClick={toggleThemeSetting}>
                             <IconX />
                         </button>
                     </div>
                     <div className='md:p-6 p-4 md:h-[calc(100svh-63px-75px)] h-[calc(100svh-55px-67px)] overflow-auto no-scrollbar'>
+                        <div className='relative mb-6 md:p-4 py-4 px-3 bg-body-color rounded-xl'>
+                            <div className='grid sm:grid-cols-[1fr_3fr] grid-cols-1 gap-2'>
+                                <label>
+                                    School Image:
+                                </label>
+                                <div className='sm:w-[120px] sm:h-[120px] sm:min-w-[120px] w-[100px] h-[100px] min-w-[100px] relative'>
+                                    <Image src={editUser} alt='avatar' width={"120"} height={"120"} className='w-full h-full object-cover rounded-xl' />
+                                    <button className='absolute sm:right-10 sm:bottom-10 right-5 bottom-5 p-5 shadow-lg bg-white rounded-full'>
+                                        <input
+                                            type='file'
+                                            id='editProfile'
+                                            onChange={handleFileChange}
+                                            className='opacity-0 absolute left-0 top-0 w-full h-full cursor-pointer'
+                                        />
+                                        <label htmlFor='editProfile' className='opacity-0 absolute left-0 top-0 w-full h-full cursor-pointer' />
+                                        <IconPencil className='w-[16px] h-[16px]' />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='relative mb-6 md:p-4 py-4 px-3 bg-body-color rounded-xl'>
+                            <span className='inline-block font-semibold mb-4'>
+                                School Motto/Quote Display
+                            </span>
+                            <div className='mb-2 form-control'>
+                                <label className="form-label">Quote 1</label>
+                                <input
+                                    type="text"
+                                    id="font_url"
+                                    value={fontUrl}
+                                    className="form-input"
+                                    onChange={(e) => setFontUrl(e.target.value)}
+                                    placeholder="Welcome to the central hub for managing your Campus & School Management ERP solution."
+                                />
+                            </div>
+                            <div className='mb-4 form-control'>
+                                <label className="form-label">Quote 2</label>
+                                <input
+                                    type="text"
+                                    id="font_family"
+                                    value={fontLink}
+                                    onChange={(e) => setFontLink(e.target.value)}
+                                    placeholder="Built on a robust AWS microservices architecture, this portal empowers SSAS"
+                                    className="form-input"
+                                />
+                            </div>
+                        </div>
                         <div className='relative mb-6 md:p-4 py-4 px-3 border border-dashed border-primary rounded-xl'>
                             <span className='inline-block bg-card-color px-5 font-semibold text-primary absolute -top-3'>
                                 Color Setting
@@ -878,6 +939,9 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                     <div className='md:px-6 px-4 md:py-4 py-3 flex items-center gap-10 border-t border-border-color'>
                         <button className='btn btn-primary w-full'>
                             Save Changes
+                        </button>
+                        <button className='btn btn-primary'>
+                            <IconRestore />
                         </button>
                         <button className='btn btn-white !border-border-color w-full' onClick={toggleThemeSetting}>
                             Close
