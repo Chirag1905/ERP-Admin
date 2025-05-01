@@ -8,7 +8,6 @@ const PrivateRoute = ({ children }) => {
   const router = useRouter();
   const { isAuthenticated, loading: authLoading, isTempPass } = useSelector(state => state.auth);
   const [loadingMessage, setLoadingMessage] = useState('Loading your content...');
-  console.log("🚀 ~ PrivateRoute ~ loadingMessage:", loadingMessage)
   const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
 
   // Public routes that don't require authentication

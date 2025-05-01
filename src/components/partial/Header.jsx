@@ -50,10 +50,22 @@ import {
     profile_av
 } from '@/assets/images';
 import Image from 'next/image';
+import toast from 'react-hot-toast';
 
 export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleChat }) {
 
-    // full screen
+    // Search bar open
+    const [searchBar, setSearchBar] = useState(false);
+    const openSearchBar = () => {
+        setSearchBar(true)
+        document.body.classList.add("overflow-hidden")
+    }
+    const closeSearchBar = () => {
+        setSearchBar(false)
+        document.body.classList.remove("overflow-hidden")
+    }
+
+    // Full screen
     const toggleFullScreen = () => {
         if (!document.fullscreenElement) {
             document.documentElement.requestFullscreen();
@@ -64,27 +76,24 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
         }
     };
 
-    // theme setting sidebar
+    // Settings sidebar
     const [settingToggle, setSettingToggle] = useState(false)
     const toggleThemeSetting = () => {
         setSettingToggle(!settingToggle)
         document.body.classList.toggle("overflow-hidden", !settingToggle)
     }
 
-    const [logo, setLogo] = useState(profile_av);
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setLogo(reader.result);
-            };
-            reader.readAsDataURL(file);
+    useEffect(() => {
+        const savedCustomizations = localStorage.getItem('customizations');
+        if (savedCustomizations) {
+            setCustomizations(JSON.parse(savedCustomizations));
+        } else {
+            setCustomizations(defaultSettings); // load default if nothing saved
         }
-    };
+    }, []);
 
     const defaultSettings = {
-        schoolImage: profile_av,
+        schoolLogo: profile_av,
         quote1: "Welcome to the central hub for managing your Campus & School Management ERP solution. Streamline administration, improve efficiency, and stay organized — all from one place.",
         quote2: "Built on a robust AWS microservices architecture, this portal empowers SSAS administrators with seamless access to configure, monitor, and support tenant environments in real time.",
         theme: "blush",
@@ -92,8 +101,8 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
         rtlMode: false,
         fontFamily: "Mulish, sans-serif",
         dynamicFont: {
-            url: "",
-            family: ""
+            fontLink: "",
+            fontUrl: ""
         },
         showRadius: true,
         showShadow: false,
@@ -110,118 +119,6 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
             chartColor5: { r: 244, g: 63, b: 94, a: 1 }
         }
     };
-
-    const [customizations, setCustomizations] = useState(defaultSettings);
-
-    // color setting
-    const handleThemeChange = (name) => {
-        setCustomizations((prev) => ({
-            ...prev,
-            theme: name,
-        }));
-        document.body.setAttribute("data-swift-theme", name);
-    };
-    useEffect(() => {
-        document.body.setAttribute("data-swift-theme", selectedTheme);
-    }, [selectedTheme]);
-
-    // dynamic color setting
-    const handleChangeDynamicColor = (newColor, index) => {
-        const updatedDynamicColorItem = [...dynamicColorItem];
-        updatedDynamicColorItem[index].colorValue = newColor.rgb;
-        setDynamicColorItem(updatedDynamicColorItem);
-        updateCssVariable(updatedDynamicColorItem[index].variable, newColor.rgb);
-    };
-    const handleClickDynamicColor = (index) => {
-        const updatedDynamicColorItem = [...dynamicColorItem];
-        updatedDynamicColorItem[index].displayColorPicker = !updatedDynamicColorItem[index].displayColorPicker;
-        setDynamicColorItem(updatedDynamicColorItem);
-    };
-    const handleCloseDynamicColor = (index) => {
-        const updatedDynamicColorItem = [...dynamicColorItem];
-        updatedDynamicColorItem[index].displayColorPicker = false;
-        setDynamicColorItem(updatedDynamicColorItem);
-    };
-    const updateCssVariable = (variable, color) => {
-        document.documentElement.style.setProperty(variable, `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`);
-    };
-
-    // light dark mode
-    const [darkMode, setDarkMode] = useState(false)
-    const toggleDarkMode = () => {
-        const newDarkMode = !darkMode;
-        setDarkMode(newDarkMode);
-        document.documentElement.setAttribute("data-theme", newDarkMode ? "dark" : "light");
-    };
-    useEffect(() => {
-        document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
-    }, [darkMode]);
-
-    // rtl mode
-    const [rtlMode, setRtlMode] = useState(false)
-    const toggleRtlMode = () => {
-        const newRtlMode = !rtlMode;
-        setRtlMode(newRtlMode);
-        document.documentElement.setAttribute("dir", newRtlMode ? "rtl" : "ltr");
-    };
-    useEffect(() => {
-        document.documentElement.setAttribute('dir', rtlMode ? 'rtl' : 'ltr');
-    }, [rtlMode]);
-
-    // font family setting
-    const [selectedFontFamily, setSelectedFontFamily] = useState("Mulish, sans-serif");
-    const toggleFontFamily = (fontFamily) => {
-        setSelectedFontFamily(fontFamily);
-        document.body.style.setProperty("--font-family", fontFamily);
-    };
-
-    // dynamic font setting
-    const [fontLink, setFontLink] = useState('');
-    const [fontUrl, setFontUrl] = useState('');
-    const handleApply = () => {
-        const link = document.createElement('link');
-        link.href = fontUrl;
-        link.rel = 'stylesheet';
-        document.head.appendChild(link);
-        document.body.style.fontFamily = fontLink;
-    };
-    const handleClear = () => {
-        const link = document.querySelector(`link[href="${fontUrl}"]`);
-        if (link) {
-            link.remove();
-        }
-        document.body.style.fontFamily = '';
-        setFontLink('');
-        setFontUrl('');
-    };
-
-    // border radius setting
-    const [showRadius, setShowRadius] = useState(true);
-    const radiusToggle = () => {
-        setShowRadius(!showRadius);
-        document.body.classList.toggle("radius-0")
-    }
-
-    // box shadow setting
-    const [showShadow, setShowShadow] = useState(false);
-    const cardShadow = document.querySelectorAll(".card")
-    const shadowToggle = () => {
-        setShowShadow(!showShadow);
-        cardShadow.forEach(card => {
-            card.classList.toggle("shadow-shadow-sm");
-        });
-    }
-
-    // search bar open
-    const [searchBar, setSearchBar] = useState(false);
-    const openSearchBar = () => {
-        setSearchBar(true)
-        document.body.classList.add("overflow-hidden")
-    }
-    const closeSearchBar = () => {
-        setSearchBar(false)
-        document.body.classList.remove("overflow-hidden")
-    }
 
     const colorItem = [
         {
@@ -331,9 +228,187 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
         },
     ]
 
+    const [customizations, setCustomizations] = useState(defaultSettings);
+    console.log("🚀 ~ Header ~ customizations:", customizations)
+
+    // School Logo OnChange
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setCustomizations(prev => ({
+                    ...prev,
+                    schoolLogo: reader.result
+                }));
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    // Theme Setting
+    const handleThemeChange = (name) => {
+        setCustomizations((prev) => ({
+            ...prev,
+            theme: name,
+        }));
+        document.body.setAttribute("data-swift-theme", name);
+    };
+
+    useEffect(() => {
+        document.body.setAttribute("data-swift-theme", customizations.theme);
+    }, [customizations.theme]);
+
+    // dynamic color setting
+    const handleChangeDynamicColor = (newColor, index) => {
+        const updatedDynamicColorItem = [...dynamicColorItem];
+        updatedDynamicColorItem[index].colorValue = newColor.rgb;
+        setDynamicColorItem(updatedDynamicColorItem);
+        updateCssVariable(updatedDynamicColorItem[index].variable, newColor.rgb);
+    };
+    const handleClickDynamicColor = (index) => {
+        const updatedDynamicColorItem = [...dynamicColorItem];
+        updatedDynamicColorItem[index].displayColorPicker = !updatedDynamicColorItem[index].displayColorPicker;
+        setDynamicColorItem(updatedDynamicColorItem);
+    };
+    const handleCloseDynamicColor = (index) => {
+        const updatedDynamicColorItem = [...dynamicColorItem];
+        updatedDynamicColorItem[index].displayColorPicker = false;
+        setDynamicColorItem(updatedDynamicColorItem);
+    };
+    const updateCssVariable = (variable, color) => {
+        document.documentElement.style.setProperty(variable, `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`);
+    };
+
+    // light dark mode
+    const toggleDarkMode = () => {
+        const newDarkMode = !customizations.darkMode;
+        setCustomizations((prev) => ({
+            ...prev,
+            darkMode: newDarkMode,
+        }));
+        document.documentElement.setAttribute("data-theme", newDarkMode ? "dark" : "light");
+    };
+    useEffect(() => {
+        document.documentElement.setAttribute('data-theme', customizations.darkMode ? 'dark' : 'light');
+    }, [customizations.darkMode]);
+
+    // rtl mode
+    const toggleRtlMode = () => {
+        const newRtlMode = !customizations.rtlMode;
+        setCustomizations((prev) => ({
+            ...prev,
+            rtlMode: newRtlMode,
+        }));
+        document.documentElement.setAttribute("dir", newRtlMode ? "rtl" : "ltr");
+    };
+    useEffect(() => {
+        document.documentElement.setAttribute('dir', customizations.rtlMode ? 'rtl' : 'ltr');
+    }, [customizations.rtlMode]);
+
+    // font family setting
+    const toggleFontFamily = (fontFamily) => {
+        setCustomizations((prev) => ({
+            ...prev,
+            fontFamily: fontFamily,
+        }));
+        document.body.style.setProperty("--font-family", fontFamily);
+    };
+
+    // dynamic font setting
+    const handleApply = () => {
+        const link = document.createElement('link');
+        link.href = customizations.dynamicFont.fontUrl;
+        link.rel = 'stylesheet';
+        document.head.appendChild(link);
+
+        document.body.style.setProperty("--font-family", customizations.dynamicFont.fontLink);
+
+        setCustomizations(prev => ({
+            ...prev,
+            fontFamily: customizations.dynamicFont.fontLink
+        }));
+
+    };
+
+    // Clear Font 
+    const handleClear = () => {
+        const link = document.querySelector(`link[href="${customizations.dynamicFont.fontUrl}"]`);
+        if (link) {
+            link.remove();
+        }
+
+        // Reset font-family CSS variable
+        document.body.style.setProperty("--font-family", "");
+
+        // Clear dynamicFont properly (not as a string!)
+        setCustomizations(prev => ({
+            ...prev,
+            dynamicFont: {
+                fontUrl: "",
+                fontLink: ""
+            }
+        }));
+    };
+
+    useEffect(() => {
+        document.body.style.setProperty("--font-family", customizations.fontFamily);
+    }, [customizations.fontFamily]);
+
+    // border radius setting
+    const radiusToggle = () => {
+        setCustomizations((prev) => ({
+            ...prev,
+            showRadius: !prev.showRadius
+        }));
+        document.body.classList.toggle("radius-0");
+    };
+
+    // box shadow setting
+    const cardShadow = document.querySelectorAll(".card")
+    const shadowToggle = () => {
+        setCustomizations((prev) => ({
+            ...prev,
+            showShadow: !prev.showShadow
+        }));
+        cardShadow.forEach(card => {
+            card.classList.toggle("shadow-shadow-sm");
+        });
+    }
+
     // Save the title to localStorage when the "Save" button is clicked
     const handleSave = () => {
-        alert("Title saved!");
+        localStorage.setItem('customizations', JSON.stringify(customizations));
+        toast.success('Customizations saved!', { position: 'top-right' });
+    };
+
+    const handleReset = () => {
+        setCustomizations(defaultSettings);
+        localStorage.removeItem('customizations');
+        toast.success('Customizations reset to default', { position: 'top-right' });
+
+        // Apply default theme, mode, dir, font etc. immediately:
+        document.body.setAttribute("data-swift-theme", defaultSettings.theme);
+        document.documentElement.setAttribute('data-theme', defaultSettings.darkMode ? 'dark' : 'light');
+        document.documentElement.setAttribute('dir', defaultSettings.rtlMode ? 'rtl' : 'ltr');
+        document.body.style.setProperty("--font-family", defaultSettings.fontFamily);
+
+        // Also reset radius and shadow visually
+        if (defaultSettings.showRadius) {
+            document.body.classList.remove("radius-0");
+        } else {
+            document.body.classList.add("radius-0");
+        }
+
+        // Reset shadows
+        const cardShadow = document.querySelectorAll(".card");
+        cardShadow.forEach(card => {
+            if (defaultSettings.showShadow) {
+                card.classList.add("shadow-shadow-sm");
+            } else {
+                card.classList.remove("shadow-shadow-sm");
+            }
+        });
     };
 
     return (
@@ -750,7 +825,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                         <div className='flex items-center gap-2'>
                             {/* Reset Button */}
                             <div className="relative group">
-                                <button className='btn'>
+                                <button className='btn' onClick={handleReset}>
                                     <IconRestore />
                                 </button>
                                 <span className="absolute top-full mb-2 left-1/2 -translate-x-1/2 bg-black text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition">
@@ -772,38 +847,36 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
 
                     <div className='md:p-6 p-4 md:h-[calc(100svh-63px-75px)] h-[calc(100svh-55px-67px)] overflow-auto no-scrollbar'>
                         <div className='relative mb-6 md:p-4 py-4 px-3 bg-body-color rounded-xl'>
-                            <div className='grid sm:grid-cols-[1fr_3fr] grid-cols-1 gap-2'>
-                                <label>
-                                    School Image:
-                                </label>
-                                <div className='sm:w-[120px] sm:h-[120px] sm:min-w-[120px] w-[100px] h-[100px] min-w-[100px] relative'>
-                                    <Image src={logo} alt='avatar' width={"120"} height={"120"} className='w-full h-full object-cover rounded-xl' />
-                                    <button className='absolute sm:right-10 sm:bottom-10 right-5 bottom-5 p-5 shadow-lg bg-white rounded-full'>
-                                        <input
-                                            type='file'
-                                            id='editProfile'
-                                            onChange={handleFileChange}
-                                            className='opacity-0 absolute left-0 top-0 w-full h-full cursor-pointer'
-                                        />
-                                        <label htmlFor='editProfile' className='opacity-0 absolute left-0 top-0 w-full h-full cursor-pointer' />
-                                        <IconPencil className='w-[16px] h-[16px]' />
-                                    </button>
-                                </div>
+                            <label className='inline-block font-semibold mb-2'>
+                                School Image:
+                            </label>
+                            <div className='sm:w-[120px] sm:h-[120px] sm:min-w-[120px] w-[100px] h-[100px] min-w-[100px] relative'>
+                                <Image src={customizations.schoolLogo} alt='avatar' width={"120"} height={"120"} className='w-full h-full object-cover rounded-xl' />
+                                <button className='absolute sm:right-10 sm:bottom-10 right-5 bottom-5 p-5 shadow-lg bg-white rounded-full'>
+                                    <input
+                                        type='file'
+                                        id='editProfile'
+                                        onChange={handleFileChange}
+                                        className='opacity-0 absolute left-0 top-0 w-full h-full cursor-pointer'
+                                    />
+                                    <label htmlFor='editProfile' className='opacity-0 absolute left-0 top-0 w-full h-full cursor-pointer' />
+                                    <IconPencil className='w-[16px] h-[16px]' />
+                                </button>
                             </div>
                         </div>
                         <div className='relative mb-6 md:p-4 py-4 px-3 bg-body-color rounded-xl'>
                             <span className='inline-block font-semibold mb-4'>
-                                School Motto/Quote Display
+                                School Motto/Quote Display:
                             </span>
                             <div className='mb-2 form-control'>
                                 <label className="form-label">Quote 1</label>
                                 <input
                                     type="text"
                                     id="font_url"
-                                    value={fontUrl}
+                                    value={customizations.quote1}
+                                    onChange={(e) => setCustomizations({ ...customizations, quote1: e.target.value })}
+                                    // placeholder="Welcome to the central hub for managing your Campus & School Management ERP solution."
                                     className="form-input"
-                                    onChange={(e) => setFontUrl(e.target.value)}
-                                    placeholder="Welcome to the central hub for managing your Campus & School Management ERP solution."
                                 />
                             </div>
                             <div className='mb-4 form-control'>
@@ -811,9 +884,9 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                 <input
                                     type="text"
                                     id="font_family"
-                                    value={fontLink}
-                                    onChange={(e) => setFontLink(e.target.value)}
-                                    placeholder="Built on a robust AWS microservices architecture, this portal empowers SSAS"
+                                    value={customizations.quote2}
+                                    onChange={(e) => setCustomizations({ ...customizations, quote2: e.target.value })}
+                                    // placeholder="Built on a robust AWS microservices architecture, this portal empowers SSAS"
                                     className="form-input"
                                 />
                             </div>
@@ -827,7 +900,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                     <li
                                         key={key}
                                         onClick={() => handleThemeChange(item.name)}
-                                        className={`sm:w-[30px] w-[24px] sm:h-[26px] h-[20px] rounded-md flex items-center justify-center relative cursor-pointer ${item.color} ${selectedTheme === item.name ? 'after:absolute after:-left-1 after:-top-1 sm:after:w-[38px] after:w-[32px] sm:after:h-[34px] after:h-[28px] after:rounded-md after:border after:border-primary' : ''}`}
+                                        className={`sm:w-[30px] w-[24px] sm:h-[26px] h-[20px] rounded-md flex items-center justify-center relative cursor-pointer ${item.color} ${customizations.theme === item.name ? 'after:absolute after:-left-1 after:-top-1 sm:after:w-[38px] after:w-[32px] sm:after:h-[34px] after:h-[28px] after:rounded-md after:border after:border-primary' : ''}`}
                                     >
                                         {item.icon && <item.icon className='stroke-[1.5] w-[20px] h-[20px] cursor-pointer' />}
                                     </li>
@@ -867,19 +940,19 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                             <div className='flex'>
                                 <div
                                     onClick={toggleDarkMode}
-                                    className={`p-2 m-1 rounded-xl border cursor-pointer hover:bg-primary-10 ${!darkMode ? 'bg-primary-10 border-dashed border-primary' : 'bg-card-color border-transparent'}`}
+                                    className={`p-2 m-1 rounded-xl border cursor-pointer hover:bg-primary-10 ${!customizations.darkMode ? 'bg-primary-10 border-dashed border-primary' : 'bg-card-color border-transparent'}`}
                                 >
                                     <Image src={light_version} alt='light version' width={300} height={168} />
                                 </div>
                                 <div
                                     onClick={toggleDarkMode}
-                                    className={`p-2 m-1 rounded-xl border cursor-pointer hover:bg-primary-10 ${darkMode ? 'bg-primary-10 border-dashed border-primary' : 'bg-card-color border-transparent'}`}
+                                    className={`p-2 m-1 rounded-xl border cursor-pointer hover:bg-primary-10 ${customizations.darkMode ? 'bg-primary-10 border-dashed border-primary' : 'bg-card-color border-transparent'}`}
                                 >
                                     <Image src={dark_version} alt='dark version' width={300} height={168} />
                                 </div>
                                 <div
                                     onClick={toggleRtlMode}
-                                    className={`p-2 m-1 rounded-xl border cursor-pointer hover:bg-primary-10 ${rtlMode ? 'bg-primary-10 border-dashed border-primary' : 'bg-card-color border-transparent'}`}
+                                    className={`p-2 m-1 rounded-xl border cursor-pointer hover:bg-primary-10 ${customizations.rtlMode ? 'bg-primary-10 border-dashed border-primary' : 'bg-card-color border-transparent'}`}
                                 >
                                     <Image src={rtl_version} alt='rtl version' width={300} height={168} />
                                 </div>
@@ -894,7 +967,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                     <div
                                         key={key}
                                         onClick={() => toggleFontFamily(item.font)}
-                                        className={`p-2 m-1 rounded-xl border cursor-pointer hover:bg-primary-10 ${selectedFontFamily === item.font ? 'bg-primary-10 border-dashed border-primary' : 'bg-card-color border-transparent'}`}
+                                        className={`p-2 m-1 rounded-xl border cursor-pointer hover:bg-primary-10 ${customizations.fontFamily === item.font ? 'bg-primary-10 border-dashed border-primary' : 'bg-card-color border-transparent'}`}
                                     >
                                         <Image src={item.image} alt='font mali' width={79} height={44} />
                                     </div>
@@ -910,9 +983,17 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                 <input
                                     type="text"
                                     id="font_url"
-                                    value={fontUrl}
+                                    value={customizations.dynamicFont.fontUrl}
                                     className="form-input"
-                                    onChange={(e) => setFontUrl(e.target.value)}
+                                    onChange={(e) =>
+                                        setCustomizations({
+                                            ...customizations,
+                                            dynamicFont: {
+                                                ...customizations.dynamicFont,
+                                                fontUrl: e.target.value
+                                            }
+                                        })
+                                    }
                                     placeholder="http://fonts.cdnfonts.com/css/vonfont"
                                 />
                             </div>
@@ -921,8 +1002,16 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                 <input
                                     type="text"
                                     id="font_family"
-                                    value={fontLink}
-                                    onChange={(e) => setFontLink(e.target.value)}
+                                    value={customizations.dynamicFont.fontLink}
+                                    onChange={(e) =>
+                                        setCustomizations({
+                                            ...customizations,
+                                            dynamicFont: {
+                                                ...customizations.dynamicFont,
+                                                fontLink: e.target.value
+                                            }
+                                        })
+                                    }
                                     placeholder="vonfont"
                                     className="form-input"
                                 />
@@ -953,7 +1042,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                             type="checkbox"
                                             id="radius_checkbox"
                                             onChange={radiusToggle}
-                                            checked={showRadius}
+                                            checked={customizations.showRadius}
                                             className="form-check-input"
                                         />
                                         <label className="form-check-label" htmlFor="radius_checkbox">Border Radius</label>
@@ -965,7 +1054,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                             type="checkbox"
                                             id="shadow_checkbox"
                                             onChange={shadowToggle}
-                                            checked={showShadow}
+                                            checked={customizations.showShadow}
                                             className="form-check-input"
                                         />
                                         <label className="form-check-label" htmlFor="shadow_checkbox">Card Box-Shadow</label>

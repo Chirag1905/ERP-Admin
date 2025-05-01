@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from '@/Redux/store';
 import Loader from "@/components/utils/Loader";
-import NextTopLoader from "nextjs-toploader";
+// import NextTopLoader from "nextjs-toploader";
 
 // Suppress hydration warnings caused by browser extensions
 if (typeof window !== 'undefined') {
