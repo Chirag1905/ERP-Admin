@@ -65,17 +65,60 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
     };
 
     // theme setting sidebar
-    const [themeSetting, setThemeSetting] = useState(false)
-    console.log("🚀 ~ Header ~ themeSetting:", themeSetting)
+    const [settingToggle, setSettingToggle] = useState(false)
     const toggleThemeSetting = () => {
-        setThemeSetting(!themeSetting)
-        document.body.classList.toggle("overflow-hidden", !themeSetting)
+        setSettingToggle(!settingToggle)
+        document.body.classList.toggle("overflow-hidden", !settingToggle)
     }
 
+    const [logo, setLogo] = useState(profile_av);
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setLogo(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const defaultSettings = {
+        schoolImage: profile_av,
+        quote1: "Welcome to the central hub for managing your Campus & School Management ERP solution. Streamline administration, improve efficiency, and stay organized — all from one place.",
+        quote2: "Built on a robust AWS microservices architecture, this portal empowers SSAS administrators with seamless access to configure, monitor, and support tenant environments in real time.",
+        theme: "blush",
+        darkMode: false,
+        rtlMode: false,
+        fontFamily: "Mulish, sans-serif",
+        dynamicFont: {
+            url: "",
+            family: ""
+        },
+        showRadius: true,
+        showShadow: false,
+        dynamicColors: {
+            primary: { r: 99, g: 102, b: 241, a: 1 },
+            secondary: { r: 128, g: 129, b: 145, a: 1 },
+            bodyColor: { r: 22, g: 22, b: 30, a: 1 },
+            cardColor: { r: 28, g: 28, b: 39, a: 1 },
+            borderColor: { r: 45, g: 45, b: 60, a: 1 },
+            chartColor1: { r: 99, g: 102, b: 241, a: 1 },
+            chartColor2: { r: 14, g: 165, b: 233, a: 1 },
+            chartColor3: { r: 22, g: 163, b: 74, a: 1 },
+            chartColor4: { r: 234, g: 88, b: 12, a: 1 },
+            chartColor5: { r: 244, g: 63, b: 94, a: 1 }
+        }
+    };
+
+    const [customizations, setCustomizations] = useState(defaultSettings);
+
     // color setting
-    const [selectedTheme, setSelectedTheme] = useState("blush");
     const handleThemeChange = (name) => {
-        setSelectedTheme(name);
+        setCustomizations((prev) => ({
+            ...prev,
+            theme: name,
+        }));
         document.body.setAttribute("data-swift-theme", name);
     };
     useEffect(() => {
@@ -288,33 +331,9 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
         },
     ]
 
-
-    const [title, setTitle] = useState("Tech");
-
-    // Load title from localStorage on initial render
-    useEffect(() => {
-        const storedTitle = localStorage.getItem("title");
-        if (storedTitle) {
-            setTitle(storedTitle);
-        }
-    }, []);
-
     // Save the title to localStorage when the "Save" button is clicked
     const handleSave = () => {
-        localStorage.setItem("title", title);
         alert("Title saved!");
-    };
-
-    const [editUser, setEditUser] = useState(profile_av);
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setEditUser(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
     };
 
     return (
@@ -712,7 +731,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                             </Link>
                         </div>
                     </div>
-                    <button onClick={toggleThemeSetting} className={`md:py-2 md:px-3 p-2 hover:bg-primary-10 transition-all duration-300 after:fixed after:z-[4] after:w-full after:h-full after:left-0 after:top-0 after:bg-black-50 after:backdrop-blur-[2px] after:transition-all after:duration-500 after:ease-in-out ${themeSetting ? 'after:opacity-1 after:visible after:overflow-auto' : 'after:opacity-0 after:invisible after:overflow-hidden'}`}>
+                    <button onClick={toggleThemeSetting} className={`md:py-2 md:px-3 p-2 hover:bg-primary-10 transition-all duration-300 after:fixed after:z-[4] after:w-full after:h-full after:left-0 after:top-0 after:bg-black-50 after:backdrop-blur-[2px] after:transition-all after:duration-500 after:ease-in-out ${settingToggle ? 'after:opacity-1 after:visible after:overflow-auto' : 'after:opacity-0 after:invisible after:overflow-hidden'}`}>
                         <IconSettings className='stroke-[1.5] xl:w-[24px] xl:h-[24px] w-[20px] h-[20px]' />
                     </button>
                     <button className={`md:py-2 md:px-3 p-2 hover:bg-primary-10 transition-all duration-300 xl:hidden hamburger-menu ${mobileNav ? 'opened' : ''}`} onClick={toggleMobileNav}>
@@ -723,15 +742,34 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                         </svg>
                     </button>
                 </div>
-                <div className={`fixed top-0 bg-card-color z-[5] h-svh w-full max-w-[500px] transition-all duration-200 ${themeSetting ? 'ltr:right-0 rtl:left-0' : 'ltr:-right-full rtl:-left-full'}`}>
+                <div className={`fixed top-0 bg-card-color z-[5] h-svh w-full max-w-[500px] transition-all duration-200 ${settingToggle ? 'ltr:right-0 rtl:left-0' : 'ltr:-right-full rtl:-left-full'}`}>
                     <div className='md:px-6 px-4 md:py-4 py-3 flex items-center justify-between gap-15 border-b border-border-color'>
                         <div className='text-[20px]/[30px] font-medium'>
                             Customizations Setting
                         </div>
-                        <button onClick={toggleThemeSetting}>
-                            <IconX />
-                        </button>
+                        <div className='flex items-center gap-2'>
+                            {/* Reset Button */}
+                            <div className="relative group">
+                                <button className='btn'>
+                                    <IconRestore />
+                                </button>
+                                <span className="absolute top-full mb-2 left-1/2 -translate-x-1/2 bg-black text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition">
+                                    Reset Settings
+                                </span>
+                            </div>
+
+                            {/* Close Button */}
+                            <div className="relative group">
+                                <button onClick={toggleThemeSetting}>
+                                    <IconX />
+                                </button>
+                                <span className="absolute top-full mb-2 left-1/2 -translate-x-1/2 bg-black text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition">
+                                    Close
+                                </span>
+                            </div>
+                        </div>
                     </div>
+
                     <div className='md:p-6 p-4 md:h-[calc(100svh-63px-75px)] h-[calc(100svh-55px-67px)] overflow-auto no-scrollbar'>
                         <div className='relative mb-6 md:p-4 py-4 px-3 bg-body-color rounded-xl'>
                             <div className='grid sm:grid-cols-[1fr_3fr] grid-cols-1 gap-2'>
@@ -739,7 +777,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                     School Image:
                                 </label>
                                 <div className='sm:w-[120px] sm:h-[120px] sm:min-w-[120px] w-[100px] h-[100px] min-w-[100px] relative'>
-                                    <Image src={editUser} alt='avatar' width={"120"} height={"120"} className='w-full h-full object-cover rounded-xl' />
+                                    <Image src={logo} alt='avatar' width={"120"} height={"120"} className='w-full h-full object-cover rounded-xl' />
                                     <button className='absolute sm:right-10 sm:bottom-10 right-5 bottom-5 p-5 shadow-lg bg-white rounded-full'>
                                         <input
                                             type='file'
@@ -937,11 +975,8 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                         </div>
                     </div>
                     <div className='md:px-6 px-4 md:py-4 py-3 flex items-center gap-10 border-t border-border-color'>
-                        <button className='btn btn-primary w-full'>
+                        <button className='btn btn-primary w-full' onClick={handleSave}>
                             Save Changes
-                        </button>
-                        <button className='btn btn-primary'>
-                            <IconRestore />
                         </button>
                         <button className='btn btn-white !border-border-color w-full' onClick={toggleThemeSetting}>
                             Close
