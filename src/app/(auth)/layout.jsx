@@ -118,85 +118,88 @@
 
 import Link from 'next/link';
 import { IconBrandFacebookFilled, IconBrandGithubFilled, IconBrandTwitterFilled, IconBrandYoutubeFilled } from '@tabler/icons-react';
-import { Techvein_logo } from '@/assets/images/';
+import { Techvein_logo, profile_av } from '@/assets/images/';
 import Image from 'next/image';
 import PrivateRoute from '../PrivateRoute';
 
 export default function AuthLayout({ children }) {
     return (
         <PrivateRoute>
-            <div className="min-h-screen flex items-center justify-center bg-body-color p-4">
-                <div className="container mx-auto flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16 max-w-7xl">
+            <div className="min-h-screen flex items-center justify-center bg-body-color py-4 px-4 sm:px-6">
+                <div className="container mx-auto flex flex-col lg:flex-row items-center justify-center gap-4 md:gap-6 lg:gap-8 xl:gap-12 max-w-7xl">
                     {/* Left Content */}
-                    <div className="w-full lg:w-1/2 max-w-2xl text-center lg:text-left">
-                        <div className="mb-8 lg:mb-12">
-                            <div className="flex items-center justify-center lg:justify-start gap-4 mb-6">
-                                {/* <Image
-                                    src={Techvein_logo}
+                    <div className="w-full lg:w-1/2 max-w-2xl text-center lg:text-left px-2 sm:px-0">
+                        <div className="mb-4 sm:mb-6 lg:mb-8">
+                            <div className="flex items-center justify-center lg:justify-start gap-3 mb-3 sm:mb-4">
+                                <Image
+                                    src={profile_av}
                                     alt="Techvein IT Solutions Logo"
-                                    className="text-primary"
-                                    width={116}
-                                    height={90}
+                                    className="text-primary rounded-full"
+                                    width={64}
+                                    height={64}
+                                    sizes="(max-width: 640px) 64px, (max-width: 1024px) 80px, 116px"
                                     priority
-                                /> */}
-                                <span className="text-primary font-bold text-3xl lg:text-4xl">
+                                />
+                                <span className="text-primary font-bold text-xl sm:text-2xl lg:text-3xl">
                                     Admin Portal
                                 </span>
                             </div>
 
-                            <h2 className="mb-6 text-2xl lg:text-3xl font-medium">
+                            <h2 className="mb-3 sm:mb-4 text-lg sm:text-xl lg:text-2xl font-medium">
                                 Effortless Control, Powerful Management.
                             </h2>
 
-                            <div className="mb-8">
-                                <p className="text-xl lg:text-2xl mb-2 font-medium">
+                            <div className="mb-4 sm:mb-6">
+                                <p className="text-base sm:text-lg lg:text-xl mb-1 sm:mb-2 font-medium">
                                     All-in-One Tool
                                 </p>
-                                <p className="text-base lg:text-lg text-gray-600">
+                                <p className="text-xs text-justify sm:text-sm lg:text-base text-gray-600">
+                                    Welcome to the central hub for managing your Campus & School Management ERP solution. Streamline administration, improve efficiency, and stay organized — all from one place.
                                     Welcome to the central hub for managing your Campus & School Management ERP solution. Streamline administration, improve efficiency, and stay organized — all from one place.
                                 </p>
                             </div>
 
-                            <div className="mb-8">
-                                <p className="text-xl lg:text-2xl mb-2 font-medium">
+                            <div className="mb-4 sm:mb-6">
+                                <p className="text-base sm:text-lg lg:text-xl mb-1 sm:mb-2 font-medium">
                                     Log in to take full control of your ERP ecosystem.
                                 </p>
-                                <p className="text-base lg:text-lg text-gray-600">
+                                <p className="text-xs text-justify sm:text-sm lg:text-base text-gray-600">
+                                    Built on a robust AWS microservices architecture, this portal empowers SSAS administrators with seamless access to configure, monitor, and support tenant environments in real time.
                                     Built on a robust AWS microservices architecture, this portal empowers SSAS administrators with seamless access to configure, monitor, and support tenant environments in real time.
                                 </p>
                             </div>
 
-                            <div className="flex flex-wrap justify-center lg:justify-start gap-4 mb-6">
-                                <Link href="#" className="transition-all hover:text-primary">
+                            <div className="flex flex-wrap justify-center lg:justify-start gap-2 sm:gap-3 mb-3 sm:mb-4">
+                                <Link href="#" className="text-xs sm:text-sm transition-all hover:text-primary">
                                     Home
                                 </Link>
-                                <Link href="#" className="transition-all hover:text-primary">
+                                <Link href="#" className="text-xs sm:text-sm transition-all hover:text-primary">
                                     About Us
                                 </Link>
-                                <Link href="#" className="transition-all hover:text-primary">
+                                <Link href="#" className="text-xs sm:text-sm transition-all hover:text-primary">
                                     FAQs
                                 </Link>
                             </div>
-                            <div className="flex flex-wrap justify-center lg:justify-start gap-4">
-                                <Link href="#" className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white transition-all hover:bg-secondary">
-                                    <IconBrandFacebookFilled width="18" height="18" />
+                            <div className="flex flex-wrap justify-center lg:justify-start gap-2">
+                                <Link href="#" className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-primary flex items-center justify-center text-white transition-all hover:bg-secondary">
+                                    <IconBrandFacebookFilled className="w-3 h-3 sm:w-4 sm:h-4" />
                                 </Link>
-                                <Link href="#" className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white transition-all hover:bg-secondary">
-                                    <IconBrandTwitterFilled width="18" height="18" />
+                                <Link href="#" className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-primary flex items-center justify-center text-white transition-all hover:bg-secondary">
+                                    <IconBrandTwitterFilled className="w-3 h-3 sm:w-4 sm:h-4" />
                                 </Link>
-                                <Link href="#" className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white transition-all hover:bg-secondary">
-                                    <IconBrandGithubFilled width="18" height="18" />
+                                <Link href="#" className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-primary flex items-center justify-center text-white transition-all hover:bg-secondary">
+                                    <IconBrandGithubFilled className="w-3 h-3 sm:w-4 sm:h-4" />
                                 </Link>
-                                <Link href="#" className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white transition-all hover:bg-secondary">
-                                    <IconBrandYoutubeFilled width="18" height="18" />
+                                <Link href="#" className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-primary flex items-center justify-center text-white transition-all hover:bg-secondary">
+                                    <IconBrandYoutubeFilled className="w-3 h-3 sm:w-4 sm:h-4" />
                                 </Link>
                             </div>
                         </div>
                     </div>
 
                     {/* Right Content (Sign In Box) */}
-                    <div className="w-full max-w-md">
-                        <div className="bg-white rounded-xl p-6 shadow-lg w-full">
+                    <div className="w-full max-w-xs sm:max-w-sm md:max-w-md px-2 sm:px-0">
+                        <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-md w-full">
                             {children}
                         </div>
                     </div>

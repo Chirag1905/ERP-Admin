@@ -51,6 +51,7 @@ import {
 } from '@/assets/images';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
+import { updateFavicon } from '../utils/Favicon';
 
 export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleChat }) {
 
@@ -94,7 +95,10 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
 
     const defaultSettings = {
         schoolLogo: profile_av,
-        quote1: "Welcome to the central hub for managing your Campus & School Management ERP solution. Streamline administration, improve efficiency, and stay organized — all from one place.",
+        heading: "Effortless Control, Powerful Management.",
+        motto: "All-in-One Tool",
+        quote: "Welcome to the central hub for managing your Campus & School Management ERP solution. Streamline administration, improve efficiency, and stay organized — all from one place.",
+        motto2: "Log in to take full control of your ERP ecosystem.",
         quote2: "Built on a robust AWS microservices architecture, this portal empowers SSAS administrators with seamless access to configure, monitor, and support tenant environments in real time.",
         theme: "blush",
         darkMode: false,
@@ -232,20 +236,49 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
     console.log("🚀 ~ Header ~ customizations:", customizations)
 
     // School Logo OnChange
+    // const handleFileChange = (event) => {
+    //     const file = event.target.files[0];
+    //     if (file) {
+    //         const reader = new FileReader();
+    //         reader.onloadend = () => {
+    //             setCustomizations(prev => ({
+    //                 ...prev,
+    //                 schoolLogo: reader.result
+    //             }));
+    //         };
+    //         reader.readAsDataURL(file);
+    //     }
+    // };
+    // Add this useEffect hook to your component
+    useEffect(() => {
+        // Update favicon when schoolLogo changes
+        if (customizations.schoolLogo) {
+            updateFavicon(customizations.schoolLogo);
+        }
+    }, [customizations.schoolLogo]);
+
+    // Also update the handleFileChange function to save to localStorage:
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
+                const newLogo = reader.result;
                 setCustomizations(prev => ({
                     ...prev,
-                    schoolLogo: reader.result
+                    schoolLogo: newLogo
+                }));
+
+                // Save to localStorage immediately
+                const savedCustomizations = JSON.parse(localStorage.getItem('customizations') || '{}');
+                localStorage.setItem('customizations', JSON.stringify({
+                    ...savedCustomizations,
+                    schoolLogo: newLogo
                 }));
             };
             reader.readAsDataURL(file);
         }
     };
-
     // Theme Setting
     const handleThemeChange = (name) => {
         setCustomizations((prev) => ({
@@ -386,7 +419,8 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
         setCustomizations(defaultSettings);
         localStorage.removeItem('customizations');
         toast.success('Customizations reset to default', { position: 'top-right' });
-
+        // Reset favicon to default
+        updateFavicon('/default-favicon.ico');
         // Apply default theme, mode, dir, font etc. immediately:
         document.body.setAttribute("data-swift-theme", defaultSettings.theme);
         document.documentElement.setAttribute('data-theme', defaultSettings.darkMode ? 'dark' : 'light');
@@ -847,47 +881,118 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
 
                     <div className='md:p-6 p-4 md:h-[calc(100svh-63px-75px)] h-[calc(100svh-55px-67px)] overflow-auto no-scrollbar'>
                         <div className='relative mb-6 md:p-4 py-4 px-3 bg-body-color rounded-xl'>
-                            <label className='inline-block font-semibold mb-2'>
-                                School Image:
-                            </label>
-                            <div className='sm:w-[120px] sm:h-[120px] sm:min-w-[120px] w-[100px] h-[100px] min-w-[100px] relative'>
-                                <Image src={customizations.schoolLogo} alt='avatar' width={"120"} height={"120"} className='w-full h-full object-cover rounded-xl' />
-                                <button className='absolute sm:right-10 sm:bottom-10 right-5 bottom-5 p-5 shadow-lg bg-white rounded-full'>
-                                    <input
-                                        type='file'
-                                        id='editProfile'
-                                        onChange={handleFileChange}
-                                        className='opacity-0 absolute left-0 top-0 w-full h-full cursor-pointer'
+                            <div className='flex justify-between'>
+                                <label className='inline-block font-semibold mb-2'>
+                                    School Image:
+                                </label>
+                                <div className='sm:w-[120px] sm:h-[120px] sm:min-w-[120px] w-[100px] h-[100px] min-w-[100px] relative'>
+                                    <Image
+                                        src={customizations.schoolLogo}
+                                        alt='avatar'
+                                        width={"120"}
+                                        height={"120"}
+                                        className='w-full h-full object-cover rounded-xl'
                                     />
-                                    <label htmlFor='editProfile' className='opacity-0 absolute left-0 top-0 w-full h-full cursor-pointer' />
-                                    <IconPencil className='w-[16px] h-[16px]' />
-                                </button>
+                                    <button className='absolute right-2 top-2 p-2 shadow-lg bg-white rounded-full transform translate-x-1/2 -translate-y-1/2'>
+                                        <input
+                                            type='file'
+                                            id='editProfile'
+                                            onChange={handleFileChange}
+                                            className='opacity-0 absolute left-0 top-0 w-full h-full cursor-pointer'
+                                        />
+                                        <label htmlFor='editProfile' className='opacity-0 absolute left-0 top-0 w-full h-full cursor-pointer' />
+                                        <IconPencil className='w-[16px] h-[16px]' />
+                                    </button>
+                                </div>
                             </div>
+                        </div>
+                        <div className='relative mb-6 md:p-4 py-4 px-3 bg-body-color rounded-xl'>
+                            <span className='inline-block font-semibold mb-4'>
+                                School Title Display:
+                            </span>
+                            <div className='mb-2 form-control'>
+                                <label className="form-label">Heading</label>
+                                <input
+                                    type="text"
+                                    id="font_url"
+                                    value={customizations.heading}
+                                    onChange={(e) => {
+                                        const words = e.target.value.trim().split(/\s+/);
+                                        // Limit to 20 words (adjust the number as needed)
+                                        if (words.length <= 20) {
+                                            setCustomizations({ ...customizations, heading: e.target.value });
+                                        }
+                                    }}
+                                    // placeholder="Welcome to the central hub for managing your Campus & School Management ERP solution."
+                                    className="form-input"
+                                />
+                            </div>
+
                         </div>
                         <div className='relative mb-6 md:p-4 py-4 px-3 bg-body-color rounded-xl'>
                             <span className='inline-block font-semibold mb-4'>
                                 School Motto/Quote Display:
                             </span>
                             <div className='mb-2 form-control'>
-                                <label className="form-label">Quote 1</label>
+                                <label className="form-label">Motto</label>
                                 <input
                                     type="text"
                                     id="font_url"
-                                    value={customizations.quote1}
-                                    onChange={(e) => setCustomizations({ ...customizations, quote1: e.target.value })}
+                                    value={customizations.motto}
+                                    onChange={(e) => {
+                                        const words = e.target.value.trim().split(/\s+/);
+                                        // Limit to 20 words (adjust the number as needed)
+                                        if (words.length <= 20) {
+                                            setCustomizations({ ...customizations, motto: e.target.value });
+                                        }
+                                    }}
                                     // placeholder="Welcome to the central hub for managing your Campus & School Management ERP solution."
                                     className="form-input"
                                 />
+                                <label className="form-label">Quote</label>
+                                <textarea
+                                    className="form-textarea"
+                                    placeholder="Leave a Quote here"
+                                    rows="4"
+                                    value={customizations.quote}
+                                    onChange={(e) => {
+                                        const words = e.target.value.trim().split(/\s+/);
+                                        // Limit to 20 words (adjust the number as needed)
+                                        if (words.length <= 20) {
+                                            setCustomizations({ ...customizations, quote: e.target.value });
+                                        }
+                                    }}
+                                />
                             </div>
                             <div className='mb-4 form-control'>
-                                <label className="form-label">Quote 2</label>
+                                <label className="form-label">Motto 2</label>
                                 <input
                                     type="text"
-                                    id="font_family"
-                                    value={customizations.quote2}
-                                    onChange={(e) => setCustomizations({ ...customizations, quote2: e.target.value })}
-                                    // placeholder="Built on a robust AWS microservices architecture, this portal empowers SSAS"
+                                    id="font_url"
+                                    value={customizations.motto2}
+                                    onChange={(e) => {
+                                        const words = e.target.value.trim().split(/\s+/);
+                                        // Limit to 20 words (adjust the number as needed)
+                                        if (words.length <= 20) {
+                                            setCustomizations({ ...customizations, motto2: e.target.value });
+                                        }
+                                    }}
+                                    // placeholder="Welcome to the central hub for managing your Campus & School Management ERP solution."
                                     className="form-input"
+                                />
+                                <label className="form-label">Quote 2</label>
+                                <textarea
+                                    className="form-textarea"
+                                    placeholder="Leave a Quote here"
+                                    rows="4"
+                                    value={customizations.quote2}
+                                    onChange={(e) => {
+                                        const words = e.target.value.trim().split(/\s+/);
+                                        // Limit to 20 words (adjust the number as needed)
+                                        if (words.length <= 20) {
+                                            setCustomizations({ ...customizations, quote2: e.target.value });
+                                        }
+                                    }}
                                 />
                             </div>
                         </div>

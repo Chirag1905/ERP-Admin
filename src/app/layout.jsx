@@ -7,6 +7,8 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from '@/Redux/store';
 import Loader from "@/components/utils/Loader";
+import { useEffect } from "react";
+import { updateFavicon } from "@/components/utils/Favicon";
 // import NextTopLoader from "nextjs-toploader";
 
 // Suppress hydration warnings caused by browser extensions
@@ -19,8 +21,23 @@ if (typeof window !== 'undefined') {
 }
 
 export default function RootLayout({ children }) {
+  useEffect(() => {
+    // Check for school logo in localStorage
+    const schoolLogo = localStorage.getItem('schoolLogo');
+
+    if (schoolLogo) {
+      updateFavicon(schoolLogo);
+    } else {
+      // Set default favicon if no logo exists
+      updateFavicon('/default-favicon.ico');
+    }
+  }, []);
   return (
     <html lang="en" data-theme="light" suppressHydrationWarning>
+      <head>
+        {/* Default favicon that will be replaced */}
+        <link rel="icon" href="/default-favicon.ico" />
+      </head>
       <body data-swift-theme="blush">
         <Provider store={store}>
           {/* <NextTopLoader
