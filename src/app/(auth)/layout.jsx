@@ -121,8 +121,39 @@ import { IconBrandFacebookFilled, IconBrandGithubFilled, IconBrandTwitterFilled,
 import { Techvein_logo, profile_av } from '@/assets/images/';
 import Image from 'next/image';
 import PrivateRoute from '../PrivateRoute';
+import { useEffect, useState } from 'react';
 
 export default function AuthLayout({ children }) {
+    const [customizations, setCustomizations] = useState();
+    console.log("🚀 ~ AuthLayout ~ customizations:", customizations)
+
+    // Load customizations from localStorage on mount
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const savedCustomizations = localStorage.getItem('customizations');
+            if (savedCustomizations) {
+                try {
+                    const parsedCustomizations = JSON.parse(savedCustomizations);
+                    if (typeof parsedCustomizations === 'object' && parsedCustomizations !== null) {
+                        setCustomizations({
+                            ...parsedCustomizations,
+                            dynamicFont: {
+                                fontUrl: parsedCustomizations.dynamicFont?.fontUrl || "",
+                                fontLink: parsedCustomizations.dynamicFont?.fontLink || ""
+                            }
+                        });
+                    } else {
+                        throw new Error("Parsed customizations is not a valid object");
+                    }
+                } catch (error) {
+                    console.error("Failed to parse customizations from localStorage:", error);
+                    localStorage.removeItem('customizations');
+                    setCustomizations();
+                }
+            }
+        }
+    }, []);
+
     return (
         <PrivateRoute>
             <div className="min-h-screen flex items-center justify-center bg-body-color py-4 px-4 sm:px-6">
@@ -132,7 +163,7 @@ export default function AuthLayout({ children }) {
                         <div className="mb-4 sm:mb-6 lg:mb-8">
                             <div className="flex items-center justify-center lg:justify-start gap-3 mb-3 sm:mb-4">
                                 <Image
-                                    src={profile_av}
+                                    src={customizations?.schoolLogo || profile_av}
                                     alt="Techvein IT Solutions Logo"
                                     className="text-primary rounded-full"
                                     width={64}
@@ -141,31 +172,29 @@ export default function AuthLayout({ children }) {
                                     priority
                                 />
                                 <span className="text-primary font-bold text-xl sm:text-2xl lg:text-3xl">
-                                    Admin Portal
+                                    ERP School Portal
                                 </span>
                             </div>
 
                             <h2 className="mb-3 sm:mb-4 text-lg sm:text-xl lg:text-2xl font-medium">
-                                Effortless Control, Powerful Management.
+                                {customizations?.heading || "Effortless Control, Powerful Management."}
                             </h2>
 
                             <div className="mb-4 sm:mb-6">
                                 <p className="text-base sm:text-lg lg:text-xl mb-1 sm:mb-2 font-medium">
-                                    All-in-One Tool
+                                    {customizations?.motto || "All-in-One Tool"}
                                 </p>
                                 <p className="text-xs text-justify sm:text-sm lg:text-base text-gray-600">
-                                    Welcome to the central hub for managing your Campus & School Management ERP solution. Streamline administration, improve efficiency, and stay organized — all from one place.
-                                    Welcome to the central hub for managing your Campus & School Management ERP solution. Streamline administration, improve efficiency, and stay organized — all from one place.
+                                    {customizations?.quote || "Welcome to the central hub for managing your Campus & School Management ERP solution. Streamline administration, improve efficiency, and stay organized — all from one place. /n Welcome to the central hub for managing your Campus & School Management ERP solution. Streamline administration, improve efficiency, and stay organized — all from one place."}
                                 </p>
                             </div>
 
                             <div className="mb-4 sm:mb-6">
                                 <p className="text-base sm:text-lg lg:text-xl mb-1 sm:mb-2 font-medium">
-                                    Log in to take full control of your ERP ecosystem.
+                                    {customizations?.motto2 || "Log in to take full control of your ERP ecosystem."}
                                 </p>
                                 <p className="text-xs text-justify sm:text-sm lg:text-base text-gray-600">
-                                    Built on a robust AWS microservices architecture, this portal empowers SSAS administrators with seamless access to configure, monitor, and support tenant environments in real time.
-                                    Built on a robust AWS microservices architecture, this portal empowers SSAS administrators with seamless access to configure, monitor, and support tenant environments in real time.
+                                    {customizations?.quote2 || "Built on a robust AWS microservices architecture, this portal empowers SSAS administrators with seamless access to configure, monitor, and support tenant environments in real time.Built on a robust AWS microservices architecture, this portal empowers SSAS administrators with seamless access to configure, monitor, and support tenant environments in real time."}
                                 </p>
                             </div>
 

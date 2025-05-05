@@ -107,11 +107,11 @@ export default function Sidebar(props) {
       link: "Overview",
       url: "/",
     },
-    // {
-    //   icon: IconSchool,
-    //   link: "Academic Years",
-    //   url: "/academicYear",
-    // },
+    {
+      icon: IconSchool,
+      link: "Academic Years",
+      url: "/academicYear",
+    },
     {
       icon: IconBooks,
       link: "Campus Manangement",

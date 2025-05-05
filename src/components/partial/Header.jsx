@@ -51,7 +51,7 @@ import {
 } from '@/assets/images';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
-import { updateFavicon } from '../utils/Favicon';
+import { useFavicon } from '../utils/useFavicon';
 
 export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleChat }) {
 
@@ -87,9 +87,21 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
     useEffect(() => {
         const savedCustomizations = localStorage.getItem('customizations');
         if (savedCustomizations) {
-            setCustomizations(JSON.parse(savedCustomizations));
-        } else {
-            setCustomizations(defaultSettings); // load default if nothing saved
+            try {
+                const parsedCustomizations = JSON.parse(savedCustomizations);
+                setCustomizations({
+                    ...defaultSettings,
+                    ...parsedCustomizations,
+                    dynamicFont: {
+                        fontUrl: parsedCustomizations.dynamicFont?.fontUrl || "",
+                        fontLink: parsedCustomizations.dynamicFont?.fontLink || ""
+                    }
+                });
+            } catch (error) {
+                console.error("Failed to parse customizations from localStorage:", error);
+                localStorage.removeItem('customizations'); // Clear invalid data
+                setCustomizations(defaultSettings);
+            }
         }
     }, []);
 
@@ -105,8 +117,8 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
         rtlMode: false,
         fontFamily: "Mulish, sans-serif",
         dynamicFont: {
-            fontLink: "",
-            fontUrl: ""
+            fontUrl: "",
+            fontLink: ""
         },
         showRadius: true,
         showShadow: false,
@@ -233,29 +245,13 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
     ]
 
     const [customizations, setCustomizations] = useState(defaultSettings);
+    // In your component, use the hook with the schoolLogo
+    const setFavicon = useFavicon();
+    useEffect(() => {
+        setFavicon(customizations.schoolLogo || '/default-favicon.ico');
+    }, [customizations.schoolLogo, setFavicon]);
     console.log("🚀 ~ Header ~ customizations:", customizations)
 
-    // School Logo OnChange
-    // const handleFileChange = (event) => {
-    //     const file = event.target.files[0];
-    //     if (file) {
-    //         const reader = new FileReader();
-    //         reader.onloadend = () => {
-    //             setCustomizations(prev => ({
-    //                 ...prev,
-    //                 schoolLogo: reader.result
-    //             }));
-    //         };
-    //         reader.readAsDataURL(file);
-    //     }
-    // };
-    // Add this useEffect hook to your component
-    useEffect(() => {
-        // Update favicon when schoolLogo changes
-        if (customizations.schoolLogo) {
-            updateFavicon(customizations.schoolLogo);
-        }
-    }, [customizations.schoolLogo]);
 
     // Also update the handleFileChange function to save to localStorage:
     const handleFileChange = (event) => {
@@ -268,17 +264,20 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                     ...prev,
                     schoolLogo: newLogo
                 }));
-
-                // Save to localStorage immediately
-                const savedCustomizations = JSON.parse(localStorage.getItem('customizations') || '{}');
+                setFavicon(newLogo);
+                // Save to localStorage
+                const savedCustomizations = JSON.parse(localStorage.getItem('customizations') || {});
                 localStorage.setItem('customizations', JSON.stringify({
                     ...savedCustomizations,
                     schoolLogo: newLogo
                 }));
+
+                // Favicon will update automatically through the hook
             };
             reader.readAsDataURL(file);
         }
     };
+
     // Theme Setting
     const handleThemeChange = (name) => {
         setCustomizations((prev) => ({
@@ -350,39 +349,48 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
 
     // dynamic font setting
     const handleApply = () => {
-        const link = document.createElement('link');
-        link.href = customizations.dynamicFont.fontUrl;
-        link.rel = 'stylesheet';
-        document.head.appendChild(link);
+        const { fontUrl, fontLink } = customizations.dynamicFont || { fontUrl: '', fontLink: '' };
 
-        document.body.style.setProperty("--font-family", customizations.dynamicFont.fontLink);
+        if (fontUrl) {
+            const link = document.createElement('link');
+            link.href = fontUrl;
+            link.rel = 'stylesheet';
+            document.head.appendChild(link);
+        }
 
-        setCustomizations(prev => ({
-            ...prev,
-            fontFamily: customizations.dynamicFont.fontLink
-        }));
-
+        if (fontLink) {
+            document.body.style.setProperty("--font-family", fontLink);
+            setCustomizations(prev => ({
+                ...prev,
+                fontFamily: fontLink
+            }));
+        }
     };
 
     // Clear Font 
     const handleClear = () => {
-        const link = document.querySelector(`link[href="${customizations.dynamicFont.fontUrl}"]`);
-        if (link) {
-            link.remove();
+        const fontUrl = customizations.dynamicFont?.fontUrl || '';
+        if (fontUrl) {
+            const link = document.querySelector(`link[href="${fontUrl}"]`);
+            if (link) {
+                link.remove();
+            }
         }
 
         // Reset font-family CSS variable
         document.body.style.setProperty("--font-family", "");
 
-        // Clear dynamicFont properly (not as a string!)
+        // Clear dynamicFont
         setCustomizations(prev => ({
             ...prev,
             dynamicFont: {
                 fontUrl: "",
                 fontLink: ""
-            }
+            },
+            fontFamily: defaultSettings.fontFamily // Reset to default font
         }));
     };
+
 
     useEffect(() => {
         document.body.style.setProperty("--font-family", customizations.fontFamily);
@@ -418,25 +426,23 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
     const handleReset = () => {
         setCustomizations(defaultSettings);
         localStorage.removeItem('customizations');
+        setDynamicColorItem(dynamicColorItem.map(item => ({
+            ...item,
+            colorValue: defaultSettings.dynamicColors[item.label.toLowerCase().replace(/\s+/g, '')],
+            displayColorPicker: false
+        })));
         toast.success('Customizations reset to default', { position: 'top-right' });
-        // Reset favicon to default
-        updateFavicon('/default-favicon.ico');
-        // Apply default theme, mode, dir, font etc. immediately:
+        setFavicon('/default-favicon.ico');
         document.body.setAttribute("data-swift-theme", defaultSettings.theme);
         document.documentElement.setAttribute('data-theme', defaultSettings.darkMode ? 'dark' : 'light');
         document.documentElement.setAttribute('dir', defaultSettings.rtlMode ? 'rtl' : 'ltr');
         document.body.style.setProperty("--font-family", defaultSettings.fontFamily);
-
-        // Also reset radius and shadow visually
         if (defaultSettings.showRadius) {
             document.body.classList.remove("radius-0");
         } else {
             document.body.classList.add("radius-0");
         }
-
-        // Reset shadows
-        const cardShadow = document.querySelectorAll(".card");
-        cardShadow.forEach(card => {
+        document.querySelectorAll(".card").forEach(card => {
             if (defaultSettings.showShadow) {
                 card.classList.add("shadow-shadow-sm");
             } else {
@@ -754,34 +760,16 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                         </button>
                         <div className='bg-card-color text-font-color rounded-xl overflow-auto max-h-[50svh] no-scrollbar w-[200px] shadow-shadow-lg absolute end-0 top-full origin-top-right rtl:origin-top-left z-[1] opacity-0 invisible scale-0 transition-all duration-300 group-hover:opacity-100 group-hover:visible group-hover:scale-100'>
                             <ul>
-                                <li className='py-10 px-15 border-b border-dashed border-border-color transition-all hover:bg-primary-10'>
+                                <li className='py-2 px-3 border-b border-dashed border-border-color transition-all hover:bg-primary-10'>
                                     <Link href="#" className='flex items-center gap-2'>
                                         <Image src={flag_uk} width="" height="" alt='language' className='w-[20px] h-[15px] min-w-[20px]' />
                                         UK English
                                     </Link>
                                 </li>
-                                <li className='py-10 px-15 border-b border-dashed border-border-color transition-all hover:bg-primary-10'>
-                                    <Link href="#" className='flex items-center gap-2'>
-                                        <Image src={flag_us} width="" height="" alt='language' className='w-[20px] h-[15px] min-w-[20px]' />
-                                        US English
-                                    </Link>
-                                </li>
-                                <li className='py-10 px-15 border-b border-dashed border-border-color transition-all hover:bg-primary-10'>
-                                    <Link href="#" className='flex items-center gap-2'>
-                                        <Image src={flag_de} width="" height="" alt='language' className='w-[20px] h-[15px] min-w-[20px]' />
-                                        Germany
-                                    </Link>
-                                </li>
-                                <li className='py-10 px-15 border-b border-dashed border-border-color transition-all hover:bg-primary-10'>
+                                <li className='py-2 px-3 border-b border-dashed border-border-color transition-all hover:bg-primary-10'>
                                     <Link href="#" className='flex items-center gap-2'>
                                         <Image src={flag_in} width="" height="" alt='language' className='w-[20px] h-[15px] min-w-[20px]' />
                                         Hindi
-                                    </Link>
-                                </li>
-                                <li className='py-10 px-15 transition-all hover:bg-primary-10'>
-                                    <Link href="#" className='flex items-center gap-2'>
-                                        <Image src={flag_sa} width="" height="" alt='language' className='w-[20px] h-[15px] min-w-[20px]' />
-                                        Saudi Arabia
                                     </Link>
                                 </li>
                             </ul>
@@ -887,7 +875,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                 </label>
                                 <div className='sm:w-[120px] sm:h-[120px] sm:min-w-[120px] w-[100px] h-[100px] min-w-[100px] relative'>
                                     <Image
-                                        src={customizations.schoolLogo}
+                                        src={customizations?.schoolLogo}
                                         alt='avatar'
                                         width={"120"}
                                         height={"120"}
@@ -915,7 +903,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                 <input
                                     type="text"
                                     id="font_url"
-                                    value={customizations.heading}
+                                    value={customizations?.heading}
                                     onChange={(e) => {
                                         const words = e.target.value.trim().split(/\s+/);
                                         // Limit to 20 words (adjust the number as needed)
@@ -938,7 +926,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                 <input
                                     type="text"
                                     id="font_url"
-                                    value={customizations.motto}
+                                    value={customizations?.motto}
                                     onChange={(e) => {
                                         const words = e.target.value.trim().split(/\s+/);
                                         // Limit to 20 words (adjust the number as needed)
@@ -954,7 +942,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                     className="form-textarea"
                                     placeholder="Leave a Quote here"
                                     rows="4"
-                                    value={customizations.quote}
+                                    value={customizations?.quote}
                                     onChange={(e) => {
                                         const words = e.target.value.trim().split(/\s+/);
                                         // Limit to 20 words (adjust the number as needed)
@@ -969,7 +957,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                 <input
                                     type="text"
                                     id="font_url"
-                                    value={customizations.motto2}
+                                    value={customizations?.motto2}
                                     onChange={(e) => {
                                         const words = e.target.value.trim().split(/\s+/);
                                         // Limit to 20 words (adjust the number as needed)
@@ -985,7 +973,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                     className="form-textarea"
                                     placeholder="Leave a Quote here"
                                     rows="4"
-                                    value={customizations.quote2}
+                                    value={customizations?.quote2}
                                     onChange={(e) => {
                                         const words = e.target.value.trim().split(/\s+/);
                                         // Limit to 20 words (adjust the number as needed)
@@ -1001,13 +989,13 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                 Color Setting
                             </span>
                             <ul className='flex gap-2'>
-                                {colorItem.map((item, key) => (
+                                {colorItem?.map((item, key) => (
                                     <li
                                         key={key}
-                                        onClick={() => handleThemeChange(item.name)}
-                                        className={`sm:w-[30px] w-[24px] sm:h-[26px] h-[20px] rounded-md flex items-center justify-center relative cursor-pointer ${item.color} ${customizations.theme === item.name ? 'after:absolute after:-left-1 after:-top-1 sm:after:w-[38px] after:w-[32px] sm:after:h-[34px] after:h-[28px] after:rounded-md after:border after:border-primary' : ''}`}
+                                        onClick={() => handleThemeChange(item?.name)}
+                                        className={`sm:w-[30px] w-[24px] sm:h-[26px] h-[20px] rounded-md flex items-center justify-center relative cursor-pointer ${item?.color} ${customizations?.theme === item?.name ? 'after:absolute after:-left-1 after:-top-1 sm:after:w-[38px] after:w-[32px] sm:after:h-[34px] after:h-[28px] after:rounded-md after:border after:border-primary' : ''}`}
                                     >
-                                        {item.icon && <item.icon className='stroke-[1.5] w-[20px] h-[20px] cursor-pointer' />}
+                                        {item?.icon && <item.icon className='stroke-[1.5] w-[20px] h-[20px] cursor-pointer' />}
                                     </li>
                                 ))}
                             </ul>
@@ -1016,21 +1004,21 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                     Dynamic Color Setting
                                 </span>
                                 <ul className='sm:columns-2 gap-2'>
-                                    {dynamicColorItem.map((item, index) => (
+                                    {dynamicColorItem?.map((item, index) => (
                                         <li key={index}>
                                             <div className='flex items-center gap-2'>
                                                 <button
-                                                    className={`w-[26px] h-[16px] rounded-md border border-border-color ${item.color}`}
+                                                    className={`w-[26px] h-[16px] rounded-md border border-border-color ${item?.color}`}
                                                     onClick={() => handleClickDynamicColor(index)}
                                                 ></button>
                                                 <label>
-                                                    {item.label}
+                                                    {item?.label}
                                                 </label>
                                             </div>
                                             {item.displayColorPicker && (
                                                 <div className='absolute z-[2]'>
                                                     <div onClick={() => handleCloseDynamicColor(index)} className='fixed top-0 right-0 bottom-0 left-0' />
-                                                    <ChromePicker color={item.colorValue} onChange={(newColor) => handleChangeDynamicColor(newColor, index)} />
+                                                    <ChromePicker color={item?.colorValue} onChange={(newColor) => handleChangeDynamicColor(newColor, index)} />
                                                 </div>
                                             )}
                                         </li>
@@ -1045,19 +1033,19 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                             <div className='flex'>
                                 <div
                                     onClick={toggleDarkMode}
-                                    className={`p-2 m-1 rounded-xl border cursor-pointer hover:bg-primary-10 ${!customizations.darkMode ? 'bg-primary-10 border-dashed border-primary' : 'bg-card-color border-transparent'}`}
+                                    className={`p-2 m-1 rounded-xl border cursor-pointer hover:bg-primary-10 ${!customizations?.darkMode ? 'bg-primary-10 border-dashed border-primary' : 'bg-card-color border-transparent'}`}
                                 >
                                     <Image src={light_version} alt='light version' width={300} height={168} />
                                 </div>
                                 <div
                                     onClick={toggleDarkMode}
-                                    className={`p-2 m-1 rounded-xl border cursor-pointer hover:bg-primary-10 ${customizations.darkMode ? 'bg-primary-10 border-dashed border-primary' : 'bg-card-color border-transparent'}`}
+                                    className={`p-2 m-1 rounded-xl border cursor-pointer hover:bg-primary-10 ${customizations?.darkMode ? 'bg-primary-10 border-dashed border-primary' : 'bg-card-color border-transparent'}`}
                                 >
                                     <Image src={dark_version} alt='dark version' width={300} height={168} />
                                 </div>
                                 <div
                                     onClick={toggleRtlMode}
-                                    className={`p-2 m-1 rounded-xl border cursor-pointer hover:bg-primary-10 ${customizations.rtlMode ? 'bg-primary-10 border-dashed border-primary' : 'bg-card-color border-transparent'}`}
+                                    className={`p-2 m-1 rounded-xl border cursor-pointer hover:bg-primary-10 ${customizations?.rtlMode ? 'bg-primary-10 border-dashed border-primary' : 'bg-card-color border-transparent'}`}
                                 >
                                     <Image src={rtl_version} alt='rtl version' width={300} height={168} />
                                 </div>
@@ -1068,13 +1056,13 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                 Google Font Setting
                             </span>
                             <div className='flex'>
-                                {fontItem.map((item, key) => (
+                                {fontItem?.map((item, key) => (
                                     <div
                                         key={key}
-                                        onClick={() => toggleFontFamily(item.font)}
-                                        className={`p-2 m-1 rounded-xl border cursor-pointer hover:bg-primary-10 ${customizations.fontFamily === item.font ? 'bg-primary-10 border-dashed border-primary' : 'bg-card-color border-transparent'}`}
+                                        onClick={() => toggleFontFamily(item?.font)}
+                                        className={`p-2 m-1 rounded-xl border cursor-pointer hover:bg-primary-10 ${customizations?.fontFamily === item?.font ? 'bg-primary-10 border-dashed border-primary' : 'bg-card-color border-transparent'}`}
                                     >
-                                        <Image src={item.image} alt='font mali' width={79} height={44} />
+                                        <Image src={item?.image} alt='font mali' width={79} height={44} />
                                     </div>
                                 ))}
                             </div>
@@ -1088,17 +1076,17 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                 <input
                                     type="text"
                                     id="font_url"
-                                    value={customizations.dynamicFont.fontUrl}
-                                    className="form-input"
+                                    value={customizations?.dynamicFont?.fontUrl || ""}
                                     onChange={(e) =>
                                         setCustomizations({
                                             ...customizations,
                                             dynamicFont: {
-                                                ...customizations.dynamicFont,
+                                                ...customizations?.dynamicFont,
                                                 fontUrl: e.target.value
                                             }
                                         })
                                     }
+                                    className="form-input"
                                     placeholder="http://fonts.cdnfonts.com/css/vonfont"
                                 />
                             </div>
@@ -1107,12 +1095,12 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                 <input
                                     type="text"
                                     id="font_family"
-                                    value={customizations.dynamicFont.fontLink}
+                                    value={customizations?.dynamicFont?.fontLink || ""}
                                     onChange={(e) =>
                                         setCustomizations({
                                             ...customizations,
                                             dynamicFont: {
-                                                ...customizations.dynamicFont,
+                                                ...customizations?.dynamicFont,
                                                 fontLink: e.target.value
                                             }
                                         })
@@ -1147,7 +1135,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                             type="checkbox"
                                             id="radius_checkbox"
                                             onChange={radiusToggle}
-                                            checked={customizations.showRadius}
+                                            checked={customizations?.showRadius}
                                             className="form-check-input"
                                         />
                                         <label className="form-check-label" htmlFor="radius_checkbox">Border Radius</label>
@@ -1159,7 +1147,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                             type="checkbox"
                                             id="shadow_checkbox"
                                             onChange={shadowToggle}
-                                            checked={customizations.showShadow}
+                                            checked={customizations?.showShadow}
                                             className="form-check-input"
                                         />
                                         <label className="form-check-label" htmlFor="shadow_checkbox">Card Box-Shadow</label>
