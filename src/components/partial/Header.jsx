@@ -839,7 +839,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                         </svg>
                     </button>
                 </div>
-                <div className={`fixed top-0 bg-card-color z-[5] h-svh w-full max-w-[500px] transition-all duration-200 ${settingToggle ? 'ltr:right-0 rtl:left-0' : 'ltr:-right-full rtl:-left-full'}`}>
+               {settingToggle && <div className={`fixed top-0 bg-card-color z-[5] h-svh w-full max-w-[500px] transition-all duration-200 ${settingToggle ? 'ltr:right-0 rtl:left-0' : 'ltr:-right-full rtl:-left-full'}`}>
                     <div className='md:px-6 px-4 md:py-4 py-3 flex items-center justify-between gap-15 border-b border-border-color'>
                         <div className='text-[20px]/[30px] font-medium'>
                             Customizations Setting
@@ -1164,7 +1164,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                             Close
                         </button>
                     </div>
-                </div>
+                </div>}
             </div>
         </>
     )

@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from '@/Redux/store';
 import Loader from "@/components/utils/Loader";
+import { useEffect, useState } from "react";
 
 if (typeof window !== 'undefined') {
   const originalError = console.error;
@@ -17,6 +18,12 @@ if (typeof window !== 'undefined') {
 }
 
 export default function RootLayout({ children }) {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <html lang="en" data-theme="light" suppressHydrationWarning>
       <head>
@@ -24,13 +31,20 @@ export default function RootLayout({ children }) {
       </head>
       <body data-swift-theme="blush">
         <Provider store={store}>
-          <PersistGate
-            persistor={persistor}
-            loading={<Loader />}
-          >
-            <Toaster />
-            {children}
-          </PersistGate>
+          {isClient ? (
+            <PersistGate
+              persistor={persistor}
+              loading={<Loader />}
+            >
+              <Toaster />
+              {children}
+            </PersistGate>
+          ) : (
+            <>
+              <Toaster />
+              {children}
+            </>
+          )}
         </Provider>
       </body>
     </html>

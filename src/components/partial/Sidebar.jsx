@@ -91,7 +91,7 @@ export default function Sidebar(props) {
       dispatch(signOutSuccess());
       console.log("LogOut called");
       toast.success("You've been successfully logged out. See you soon!")
-      // router.push('/signIn');
+      // { !isAuthenticated && router.push("/signIn") }
     }
   };
 
@@ -507,7 +507,7 @@ export default function Sidebar(props) {
             </li>
         ))}
       </ul>
-      <div className={`fixed top-0 bg-card-color z-[5] h-svh w-full max-w-[300px] transition-all duration-200 ${schedule ? 'ltr:left-0 rtl:right-0' : 'ltr:-left-full rtl:-right-full'}`}>
+      {schedule && <div className={`fixed top-0 bg-card-color z-[5] h-svh w-full max-w-[300px] transition-all duration-200 ${schedule ? 'ltr:left-0 rtl:right-0' : 'ltr:-left-full rtl:-right-full'}`}>
         <div className='p-4 flex items-center justify-between gap-[15px] bg-secondary'>
           <div className='text-[20px]/[30px] font-medium text-white'>
             Schedule
@@ -609,8 +609,8 @@ export default function Sidebar(props) {
             </div>
           </div>
         </div>
-      </div>
-      <div className={`fixed top-0 bg-card-color z-[5] h-svh w-full max-w-[500px] transition-all duration-200 ${note ? 'ltr:left-0 rtl:right-0' : 'ltr:-left-full rtl:-right-full'}`}>
+      </div>}
+      {note && <div className={`fixed top-0 bg-card-color z-[5] h-svh w-full max-w-[500px] transition-all duration-200 ${note ? 'ltr:left-0 rtl:right-0' : 'ltr:-left-full rtl:-right-full'}`}>
         <div className='p-4 flex items-center justify-between gap-[15px] border-b border-border-color'>
           <div className='text-[20px]/[30px] font-medium flex items-center gap-2.5'>
             My Notes
@@ -872,8 +872,8 @@ export default function Sidebar(props) {
             </div>
           </Tabs>
         </div>
-      </div>
-      <div className={`fixed top-0 bg-card-color z-[5] h-svh w-full max-w-[460px] transition-all duration-200 ${chat ? 'ltr:right-0 rtl:left-0' : 'ltr:-right-full rtl:-left-full'}`}>
+      </div>}
+      {chat && <div className={`fixed top-0 bg-card-color z-[5] h-svh w-full max-w-[460px] transition-all duration-200 ${chat ? 'ltr:right-0 rtl:left-0' : 'ltr:-right-full rtl:-left-full'}`}>
         <Tabs className="flex h-full">
           <div className='sm:w-[calc(100%-66px)] w-[calc(100%-50px)] shadow-shadow-sm'>
             <TabPanel>
@@ -2149,7 +2149,7 @@ export default function Sidebar(props) {
             </Tab>
           </TabList>
         </Tabs>
-      </div>
+      </div>}
     </>
   );
 }
