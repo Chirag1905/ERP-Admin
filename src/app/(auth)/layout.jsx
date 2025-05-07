@@ -120,7 +120,6 @@ import Link from 'next/link';
 import { IconBrandFacebookFilled, IconBrandGithubFilled, IconBrandTwitterFilled, IconBrandYoutubeFilled } from '@tabler/icons-react';
 import { Techvein_logo, profile_av } from '@/assets/images/';
 import Image from 'next/image';
-import PrivateRoute from '../PrivateRoute';
 import { useEffect, useState } from 'react';
 import PublicRoute from '../PublicRoute';
 
@@ -157,16 +156,12 @@ export default function AuthLayout({ children }) {
         }
     }, []);
 
-    console.log("private route")
-
-
     return (
-        // <PrivateRoute>
         <PublicRoute>
             <div className="min-h-screen flex items-center justify-center bg-body-color py-4 px-4 sm:px-6">
                 <div className="container mx-auto flex flex-col lg:flex-row items-center justify-center gap-4 md:gap-6 lg:gap-8 xl:gap-12 max-w-7xl">
                     {/* Left Content */}
-                    <div className="w-full lg:w-1/2 max-w-2xl text-center lg:text-left px-2 sm:px-0">
+                    {/* <div className="w-full lg:w-1/2 max-w-2xl text-center lg:text-left px-2 sm:px-0">
                         <div className="mb-4 sm:mb-6 lg:mb-8">
                             <div className="flex items-center justify-center lg:justify-start gap-3 mb-3 sm:mb-4">
                                 <Image
@@ -231,8 +226,7 @@ export default function AuthLayout({ children }) {
                                 </Link>
                             </div>
                         </div>
-                    </div>
-                    {console.log("fdsfsfsfsfsfsfs")}
+                    </div> */}
                 
                     {/* Right Content (Sign In Box) */}
                     <div className="w-full max-w-xs sm:max-w-sm md:max-w-md px-2 sm:px-0">
@@ -243,6 +237,5 @@ export default function AuthLayout({ children }) {
                 </div>
             </div>
              </PublicRoute>
-        // </PrivateRoute>
     );
 }

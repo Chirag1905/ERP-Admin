@@ -8,7 +8,6 @@ import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { setPermanentPassRequest, setPermanentPassSuccess } from '@/Redux/features/auth/authSlice';
 import Image from 'next/image';
-import PrivateRoute from '@/app/PrivateRoute';
 import PublicRoute from '@/app/PublicRoute';
 
 export default function SetPermanentPassword() {
@@ -84,22 +83,20 @@ export default function SetPermanentPassword() {
     }, [loading]);
 
     // Show success or error toast and redirect
-    useEffect(() => {
-        if (!loading && setPermPassData) {
-            toast.success('Permanent Password Set successful!');
-            const redirectPath = isTempPass && '/'
-            router.push(redirectPath);
-        } else if (error) {
-            toast.error('Failed to create permanent password. Please try again.');
-        }
-        dispatch(setPermanentPassSuccess(null));
-    }, [setPermPassData, error, router]);
+    // useEffect(() => {
+    //     if (!loading && setPermPassData) {
+    //         toast.success('Permanent Password Set successful!');
+    //         const redirectPath = isTempPass && '/'
+    //         router.push(redirectPath);
+    //     } else if (error) {
+    //         toast.error('Failed to create permanent password. Please try again.');
+    //     }
+    //     dispatch(setPermanentPassSuccess(null));
+    // }, [setPermPassData, error, router]);
 
-    console.log("ddddddddfsfsfdsfsffsfsf private route", )
 
     return (
         <>
-            {/* <PrivateRoute> */}
             <PublicRoute>
                 <div className='flex justify-center sm:mb-6 mb-4'>
                     <Image
@@ -160,7 +157,6 @@ export default function SetPermanentPassword() {
                 </div>
 
             </PublicRoute>
-            {/* </PrivateRoute> */}
         </>
     )
 }
