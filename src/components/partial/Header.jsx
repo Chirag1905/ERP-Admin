@@ -107,6 +107,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
 
     const defaultSettings = {
         schoolLogo: profile_av,
+        schoolName: "ERP School Portal",
         heading: "Effortless Control, Powerful Management.",
         motto: "All-in-One Tool",
         quote: "Welcome to the central hub for managing your Campus & School Management ERP solution. Streamline administration, improve efficiency, and stay organized — all from one place.",
@@ -839,7 +840,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                         </svg>
                     </button>
                 </div>
-               {settingToggle && <div className={`fixed top-0 bg-card-color z-[5] h-svh w-full max-w-[500px] transition-all duration-200 ${settingToggle ? 'ltr:right-0 rtl:left-0' : 'ltr:-right-full rtl:-left-full'}`}>
+                {settingToggle && <div className={`fixed top-0 bg-card-color z-[5] h-svh w-full max-w-[500px] transition-all duration-200 ${settingToggle ? 'ltr:right-0 rtl:left-0' : 'ltr:-right-full rtl:-left-full'}`}>
                     <div className='md:px-6 px-4 md:py-4 py-3 flex items-center justify-between gap-15 border-b border-border-color'>
                         <div className='text-[20px]/[30px] font-medium'>
                             Customizations Setting
@@ -893,6 +894,29 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                     </button>
                                 </div>
                             </div>
+                        </div>
+                        <div className='relative mb-6 md:p-4 py-4 px-3 bg-body-color rounded-xl'>
+                            <span className='inline-block font-semibold mb-4'>
+                                School Name:
+                            </span>
+                            <div className='mb-2 form-control'>
+                                <label className="form-label">Name</label>
+                                <input
+                                    type="text"
+                                    id="font_url"
+                                    value={customizations?.schoolName}
+                                    onChange={(e) => {
+                                        const words = e.target.value.trim().split(/\s+/);
+                                        // Limit to 20 words (adjust the number as needed)
+                                        if (words.length <= 20) {
+                                            setCustomizations({ ...customizations, schoolName: e.target.value });
+                                        }
+                                    }}
+                                    // placeholder="Welcome to the central hub for managing your Campus & School Management ERP solution."
+                                    className="form-input"
+                                />
+                            </div>
+
                         </div>
                         <div className='relative mb-6 md:p-4 py-4 px-3 bg-body-color rounded-xl'>
                             <span className='inline-block font-semibold mb-4'>

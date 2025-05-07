@@ -110,7 +110,7 @@ const CampusGroupCreate = (props) => {
                 <div className='my-6 md:my-10 px-2 md:px-4 lg:px-20 max-h-[60svh] md:max-h-[80svh] overflow-auto cus-scrollbar'>
                     <div className="flex justify-between items-center mb-4 md:mb-6">
                         <div className='text-lg md:text-2xl font-medium'>
-                            New Campus
+                            New Campus Group
                         </div>
                     </div>
 

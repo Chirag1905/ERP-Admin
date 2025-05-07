@@ -161,7 +161,7 @@ export default function AuthLayout({ children }) {
             <div className="min-h-screen flex items-center justify-center bg-body-color py-4 px-4 sm:px-6">
                 <div className="container mx-auto flex flex-col lg:flex-row items-center justify-center gap-4 md:gap-6 lg:gap-8 xl:gap-12 max-w-7xl">
                     {/* Left Content */}
-                    {/* <div className="w-full lg:w-1/2 max-w-2xl text-center lg:text-left px-2 sm:px-0">
+                    <div className="w-full lg:w-1/2 max-w-2xl text-center lg:text-left px-2 sm:px-0">
                         <div className="mb-4 sm:mb-6 lg:mb-8">
                             <div className="flex items-center justify-center lg:justify-start gap-3 mb-3 sm:mb-4">
                                 <Image
@@ -174,7 +174,7 @@ export default function AuthLayout({ children }) {
                                     priority
                                 />
                                 <span className="text-primary font-bold text-xl sm:text-2xl lg:text-3xl">
-                                    ERP School Portal
+                                    {customizations?.heading || " ERP School Portal"}
                                 </span>
                             </div>
 
@@ -226,16 +226,16 @@ export default function AuthLayout({ children }) {
                                 </Link>
                             </div>
                         </div>
-                    </div> */}
-                
+                    </div>
+
                     {/* Right Content (Sign In Box) */}
                     <div className="w-full max-w-xs sm:max-w-sm md:max-w-md px-2 sm:px-0">
                         <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-md w-full">
-                            {children}                                                                                                                                                                                                              
+                            {children}
                         </div>
                     </div>
                 </div>
             </div>
-             </PublicRoute>
+        </PublicRoute>
     );
 }

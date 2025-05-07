@@ -26,6 +26,7 @@ const CampusCreate = (props) => {
         campusName: "",
         campusCode: "",
         primaryDomainName: "",
+        campusEmailId: "",
         smsEnabled: false,
         emailEnabled: false,
         gpsEnabled: false,
@@ -49,6 +50,7 @@ const CampusCreate = (props) => {
                 campusName: formData.campusName,
                 campusCode: formData.campusCode,
                 primaryDomainName: formData.primaryDomainName,
+                campusEmailId: formData.campusEmailId,
                 smsEnabled: formData.smsEnabled,
                 emailEnabled: formData.emailEnabled,
                 gpsEnabled: formData.gpsEnabled,
@@ -240,6 +242,20 @@ const CampusCreate = (props) => {
                                                         className='form-input'
                                                         value={formData?.campusCode || ""}
                                                         onChange={(e) => updateFormData("campusCode", e.target.value)}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className='flex flex-col md:flex-row justify-between gap-2 md:gap-0 md:px-4'>
+                                                <label htmlFor='campaignsTitle' className='form-label md:w-1/3'>
+                                                    Admin Email <span className="text-red-500">*</span>
+                                                </label>
+                                                <div className='form-control w-full md:w-2/3'>
+                                                    <input
+                                                        type='email'
+                                                        placeholder='license count'
+                                                        className='form-input'
+                                                        value={formData?.campusEmailId || ""}
+                                                        onChange={(e) => updateFormData("campusEmailId", e.target.value)}
                                                     />
                                                 </div>
                                             </div>
