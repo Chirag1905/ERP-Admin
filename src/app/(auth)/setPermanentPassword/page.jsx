@@ -8,6 +8,8 @@ import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { setPermanentPassRequest, setPermanentPassSuccess } from '@/Redux/features/auth/authSlice';
 import Image from 'next/image';
+import PrivateRoute from '@/app/PrivateRoute';
+import PublicRoute from '@/app/PublicRoute';
 
 export default function SetPermanentPassword() {
     const dispatch = useDispatch();
@@ -93,65 +95,72 @@ export default function SetPermanentPassword() {
         dispatch(setPermanentPassSuccess(null));
     }, [setPermPassData, error, router]);
 
+    console.log("ddddddddfsfsfdsfsffsfsf private route", )
+
     return (
         <>
-            <div className='flex justify-center sm:mb-6 mb-4'>
-                <Image
-                    src={auth_forgot_password}
-                    alt='forgot password'
-                    width={240}
-                    height={178}
-                />
-            </div>
-            <p className='sm:text-[40px]/[48px] text-[30px]/[36px] font-medium mb-2 text-center'>
-                Permanent Password?
-            </p>
-            <p className='text-center sm:mb-12 mb-6 text-font-color-100'>
-                Enter the email address you used when you joined and we'll send you instructions to reset your password.
-            </p>
-            <div className='form-control mb-20'>
-                <label htmlFor='password' className='form-label'>
-                    New Password:
-                </label>
-                <button
-                    className="text-white px-2 rounded-full bg-[#6c757d] ml-2 
+            {/* <PrivateRoute> */}
+            <PublicRoute>
+                <div className='flex justify-center sm:mb-6 mb-4'>
+                    <Image
+                        src={auth_forgot_password}
+                        alt='forgot password'
+                        width={240}
+                        height={178}
+                    />
+                </div>
+                <p className='sm:text-[40px]/[48px] text-[30px]/[36px] font-medium mb-2 text-center'>
+                    Permanent Password?
+                </p>
+                <p className='text-center sm:mb-12 mb-6 text-font-color-100'>
+                    Enter the email address you used when you joined and we'll send you instructions to reset your password.
+                </p>
+                <div className='form-control mb-20'>
+                    <label htmlFor='password' className='form-label'>
+                        New Password:
+                    </label>
+                    <button
+                        className="text-white px-2 rounded-full bg-[#6c757d] ml-2 
              shadow-transparent 
              hover:shadow-[0_6px_1rem_rgba(25,24,24,0.1),0_0.5rem_1rem_-0.75rem_rgba(25,24,24,0.1)] 
              hover:-translate-y-[3px] 
              transition-[box-shadow,transform] duration-200 ease-in-out"
-                    onClick={handleInputClick}
-                >
-                    Generate Password
-                </button>
-                <div className='relative'>
-                    <input
-                        type={showPassword ? 'text' : 'password'}
-                        id='password'
-                        placeholder='Enter the password'
-                        className='form-input !pr-12'
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                    <button
-                        onClick={togglePasswordVisibility}
-                        className='absolute top-[50%] translate-y-[-50%] right-3 text-font-color-100'
+                        onClick={handleInputClick}
                     >
-                        {showPassword ? <IconEyeOff /> : <IconEye />}
+                        Generate Password
                     </button>
+                    <div className='relative'>
+                        <input
+                            type={showPassword ? 'text' : 'password'}
+                            id='password'
+                            placeholder='Enter the password'
+                            className='form-input !pr-12'
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                        <button
+                            onClick={togglePasswordVisibility}
+                            className='absolute top-[50%] translate-y-[-50%] right-3 text-font-color-100'
+                        >
+                            {showPassword ? <IconEyeOff /> : <IconEye />}
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <button className='btn btn-secondary large w-full uppercase'
-                onClick={handleSubmit}
-                disabled={loading}
-            >
-                {loading ? 'Submiting...' : 'Submit'}
-            </button>
-            <div className='text-center sm:mt-30 mt-6'>
-                <Link href="/signIn" className='text-primary'>
-                    Back to Sign in
-                </Link>
-            </div>
+                <button className='btn btn-secondary large w-full uppercase'
+                    onClick={handleSubmit}
+                    disabled={loading}
+                >
+                    {loading ? 'Submiting...' : 'Submit'}
+                </button>
+                <div className='text-center sm:mt-30 mt-6'>
+                    <Link href="/signIn" className='text-primary'>
+                        Back to Sign in
+                    </Link>
+                </div>
+
+            </PublicRoute>
+            {/* </PrivateRoute> */}
         </>
     )
 }

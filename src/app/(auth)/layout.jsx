@@ -122,8 +122,11 @@ import { Techvein_logo, profile_av } from '@/assets/images/';
 import Image from 'next/image';
 import PrivateRoute from '../PrivateRoute';
 import { useEffect, useState } from 'react';
+import PublicRoute from '../PublicRoute';
 
 export default function AuthLayout({ children }) {
+
+    console.log(children, "children")
     const [customizations, setCustomizations] = useState();
     console.log("🚀 ~ AuthLayout ~ customizations:", customizations)
 
@@ -154,8 +157,12 @@ export default function AuthLayout({ children }) {
         }
     }, []);
 
+    console.log("private route")
+
+
     return (
-        <PrivateRoute>
+        // <PrivateRoute>
+        <PublicRoute>
             <div className="min-h-screen flex items-center justify-center bg-body-color py-4 px-4 sm:px-6">
                 <div className="container mx-auto flex flex-col lg:flex-row items-center justify-center gap-4 md:gap-6 lg:gap-8 xl:gap-12 max-w-7xl">
                     {/* Left Content */}
@@ -225,15 +232,17 @@ export default function AuthLayout({ children }) {
                             </div>
                         </div>
                     </div>
-
+                    {console.log("fdsfsfsfsfsfsfs")}
+                
                     {/* Right Content (Sign In Box) */}
                     <div className="w-full max-w-xs sm:max-w-sm md:max-w-md px-2 sm:px-0">
                         <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-md w-full">
-                            {children}
+                            {children}                                                                                                                                                                                                              
                         </div>
                     </div>
                 </div>
             </div>
-        </PrivateRoute>
+             </PublicRoute>
+        // </PrivateRoute>
     );
 }

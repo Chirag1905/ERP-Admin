@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { clearAuthError, clearAuthState, forgotPassRequest, forgotPassSuccess } from '@/Redux/features/auth/authSlice';
 import Image from 'next/image';
+import PublicRoute from '@/app/PublicRoute';
 
 export default function ForgotPassword() {
     const dispatch = useDispatch();
@@ -55,43 +56,45 @@ export default function ForgotPassword() {
 
     return (
         <>
-            <div className='flex justify-center sm:mb-6 mb-4'>
-                <Image
-                    src={auth_forgot_password}
-                    alt='forgot password'
-                    width={240}
-                    height={178}
-                />
-            </div>
-            <p className='sm:text-[40px]/[48px] text-[30px]/[36px] font-medium mb-2 text-center'>
-                Forgot password?
-            </p>
-            <p className='text-center sm:mb-12 mb-6 text-font-color-100'>
-                Enter the email address you used when you joined and we'll send you instructions to reset your password.
-            </p>
-            <div className='form-control mb-20'>
-                <label htmlFor='email' className='form-label'>
-                    Email
-                </label>
-                <input
-                    type='email'
-                    id='email'
-                    placeholder='name@example.com'
-                    className='form-input'
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-            </div>
-            <button className='btn btn-secondary large w-full uppercase'
-                onClick={handleSubmit}
-                disabled={loading}>
-                {loading ? 'Submiting...' : 'Submit'}
-            </button>
-            <div className='text-center sm:mt-30 mt-6'>
-                <Link href="/signIn" prefetch={false} className='text-primary'>
-                    Back to Sign in
-                </Link>
-            </div>
+            <PublicRoute>
+                <div className='flex justify-center sm:mb-6 mb-4'>
+                    <Image
+                        src={auth_forgot_password}
+                        alt='forgot password'
+                        width={240}
+                        height={178}
+                    />
+                </div>
+                <p className='sm:text-[40px]/[48px] text-[30px]/[36px] font-medium mb-2 text-center'>
+                    Forgot password?
+                </p>
+                <p className='text-center sm:mb-12 mb-6 text-font-color-100'>
+                    Enter the email address you used when you joined and we'll send you instructions to reset your password.
+                </p>
+                <div className='form-control mb-20'>
+                    <label htmlFor='email' className='form-label'>
+                        Email
+                    </label>
+                    <input
+                        type='email'
+                        id='email'
+                        placeholder='name@example.com'
+                        className='form-input'
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
+                <button className='btn btn-secondary large w-full uppercase'
+                    onClick={handleSubmit}
+                    disabled={loading}>
+                    {loading ? 'Submiting...' : 'Submit'}
+                </button>
+                <div className='text-center sm:mt-30 mt-6'>
+                    <Link href="/signIn" prefetch={false} className='text-primary'>
+                        Back to Sign in
+                    </Link>
+                </div>
+            </PublicRoute>
         </>
     )
 }
