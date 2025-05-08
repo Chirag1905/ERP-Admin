@@ -91,7 +91,7 @@ export default function Sidebar(props) {
       dispatch(signOutSuccess());
       console.log("LogOut called");
       toast.success("You've been successfully logged out. See you soon!")
-      // { !isAuthenticated && router.push("/signIn") }
+      // { !isAuthenticated && router.push("/signIn") }ff
     }
   };
 
