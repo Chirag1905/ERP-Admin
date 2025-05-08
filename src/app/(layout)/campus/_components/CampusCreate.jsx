@@ -252,7 +252,7 @@ const CampusCreate = (props) => {
                                                 <div className='form-control w-full md:w-2/3'>
                                                     <input
                                                         type='email'
-                                                        placeholder='email address'
+                                                        placeholder='email address of admin'
                                                         className='form-input'
                                                         value={formData?.campusEmailId || ""}
                                                         onChange={(e) => updateFormData("campusEmailId", e.target.value)}
