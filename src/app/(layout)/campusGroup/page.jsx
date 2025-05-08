@@ -146,17 +146,6 @@ const CampusGroup = () => {
 
   return (
     <>
-      {/* <div className="flex justify-between items-center">
-        <Breadcrumb breadcrumbItem={breadcrumbItem} />
-        <button
-          onClick={handleCreateModal.open}
-          className="flex gap-1 btn btn-light-primary"
-        >
-          <IconPlus />
-          <span className="md:block hidden">New Campus</span>
-        </button>
-      </div>
-      <WelcomeHeader /> */}
       <div>
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 md:gap-0">
           <Breadcrumb breadcrumbItem={breadcrumbItem} />
@@ -189,7 +178,7 @@ const CampusGroup = () => {
       )}
 
       {!isCreateModalOpen && !isEditModalOpen && (
-        <div className="pt-6 md:pt-9 px-4 sm:px-6 md:px-0 bg-card-color rounded-lg">
+        <div className="pt-6 md:pt-5 px-5 sm:px-6 md:px-0 bg-card-color rounded-lg">
           {/* Header Section */}
           <div className="flex flex-col md:mx-6 md:flex-row justify-between items-start md:items-center gap-4 mb-6">
             <div className="flex items-center w-full md:w-auto">
@@ -227,7 +216,7 @@ const CampusGroup = () => {
 
           {/* Content Section */}
           <div
-            className={`my-6 md:my-[10px] px-2 sm:px-4 md:px-[10px] h-[60vh] md:h-[70vh] ${loading ? '' : 'overflow-auto cus-scrollbar'
+            className={`my-6 md:my-[10px] px-2 sm:px-4 md:px-[30px] h-[60vh] md:h-[70vh] ${loading ? '' : 'overflow-auto cus-scrollbar'
               }`}
           >
             {loading ? (

@@ -24,7 +24,7 @@ const CustomPagination = ({ page, totalPages, handleChange, totalElements, rowsP
 
   return (
     <>
-      <div className="flex md:flex-row flex-col bottom-0 left-0 right-0 text-xs items-center justify-between me-4 p-2 pt-5 pb-3 gap-3">
+      <div className="flex md:flex-row flex-col bottom-0 left-0 right-0 text-xs items-center justify-between me-4 px-5 pt-2 pb-5 gap-3">
         <Box
           display="flex"
           alignItems="center"

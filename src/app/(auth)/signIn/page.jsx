@@ -6,6 +6,7 @@ import { clearAuthError, clearAuthState, signInRequest, signInSuccess } from '@/
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import Cookies from 'js-cookie';
 
 const Signin = () => {
     const dispatch = useDispatch();
@@ -14,23 +15,103 @@ const Signin = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
+    const [formErrors, setFormErrors] = useState({
+        email: '',
+        password: ''
+    });
+
+     // Load saved credentials if "Remember me" was checked previously
+     useEffect(() => {
+        const rememberedCredentials = Cookies.get('rememberedCredentials');
+        const rememberMeStatus = Cookies.get('rememberMe') === 'true';
+
+        if (rememberMeStatus && rememberedCredentials) {
+            try {
+                const credentials = JSON.parse(rememberedCredentials);
+                setUsername(credentials.username);
+                setPassword(credentials.password);
+                setRememberMe(true);
+            } catch (error) {
+                console.error('Failed to parse credentials:', error);
+                // Clear invalid cookies
+                Cookies.remove('rememberedCredentials');
+                Cookies.remove('rememberMe');
+            }
+        }
+    }, []);
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
 
-    const handleSubmit = async () => {
+    const validateForm = () => {
+        let valid = true;
+        const newErrors = {
+            email: '',
+            password: ''
+        };
+
+        if (!username.trim()) {
+            newErrors.email = 'Email is required';
+            valid = false;
+        }
+        //  else if (!/\S+@\S+\.\S+/.test(username)) {
+        //     newErrors.email = 'Email is invalid';
+        //     valid = false;
+        // }
+
+        if (!password.trim()) {
+            newErrors.password = 'Password is required';
+            valid = false;
+        }
+
+        setFormErrors(newErrors);
+        return valid;
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        if (!validateForm()) {
+            return;
+        }
+
+        // Set cookies if "Remember me" is checked
+        if (rememberMe) {
+            const credentials = {
+                username,
+                password
+            };
+            
+            Cookies.set('rememberedCredentials', JSON.stringify(credentials), { 
+                expires: 30, // Expires in 30 days
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+                path: '/'
+            });
+            
+            Cookies.set('rememberMe', 'true', {
+                expires: 30,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+                path: '/'
+            });
+        } else {
+            // Remove cookies if "Remember me" is unchecked
+            Cookies.remove('rememberedCredentials', { path: '/' });
+            Cookies.remove('rememberMe', { path: '/' });
+        }
+
         const params = {
-            username: username,
-            password: password,
+            username,
+            password,
             clientId: "admin-cli",
             realmName: "master"
-            // clientId: "test4-fe-client",
-            // realmName: "test4"
         };
+        
         toast.loading('Logging in...', { id: 'login-toast' });
         dispatch(signInRequest(params));
-        { isAuthenticated && router.push("/") }
     };
 
     // Show toast based on loading state
@@ -55,7 +136,6 @@ const Signin = () => {
         }
     }, [loginData, error, isTempPass, router, dispatch]);
 
-
     return (
         <>
             <div className='mb-6 sm:mb-8 text-center'>
@@ -77,73 +157,82 @@ const Signin = () => {
                     <span className='inline-block h-[1px] flex-1 bg-font-color-400'></span>
                 </div>
             </div>
-            <div>
-                <div className='form-control mb-4 sm:mb-[15px]'>
-                    <label htmlFor='email' className='form-label'>
-                        Email
-                    </label>
-                    <input
-                        type='text'
-                        id='email'
-                        placeholder='name@example.com'
-                        className='form-input'
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className='form-control mb-4 sm:mb-[15px]'>
-                    <label htmlFor='password' className='form-label'>
-                        Password
-                    </label>
-                    <div className='relative'>
-                        <input
-                            type={showPassword ? 'text' : 'password'}
-                            id='password'
-                            placeholder='Enter the password'
-                            className='form-input !pr-12'
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                        <button
-                            onClick={togglePasswordVisibility}
-                            className='absolute top-[50%] translate-y-[-50%] right-3 text-font-color-100'
-                        >
-                            {showPassword ? <IconEyeOff /> : <IconEye />}
-                        </button>
-                    </div>
-                </div>
-                <div className='flex flex-wrap items-center justify-between gap-2 my-4 sm:my-2'>
-                    <div className="form-check">
-                        <input
-                            type="checkbox"
-                            id="forgotPassword"
-                            className="form-check-input"
-                        />
-                        <label className="form-check-label" htmlFor="forgotPassword">
-                            Remember me
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <div className='form-control mb-4 sm:mb-[15px]'>
+                        <label htmlFor='email' className='form-label'>
+                            Email
                         </label>
+                        <input
+                            type='text'
+                            id='email'
+                            placeholder='name@example.com'
+                            className={`form-input ${formErrors.email ? 'border-red-500' : ''}`}
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                        {formErrors.email && (
+                            <p className="text-red-500 text-sm mt-1">{formErrors.email}</p>
+                        )}
                     </div>
-                    <Link href="/forgotPassword" prefetch={false} className='text-primary text-[14px]/[20px] sm:text-[16px]/[24px]'>
-                        Forgot Password?
-                    </Link>
+                    <div className='form-control mb-4 sm:mb-[15px]'>
+                        <label htmlFor='password' className='form-label'>
+                            Password
+                        </label>
+                        <div className='relative'>
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                id='password'
+                                placeholder='Enter the password'
+                                className={`form-input !pr-12 ${formErrors.password ? 'border-red-500' : ''}`}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                            <button
+                                type="button"
+                                onClick={togglePasswordVisibility}
+                                className='absolute top-[50%] translate-y-[-50%] right-3 text-font-color-100'
+                            >
+                                {showPassword ? <IconEyeOff /> : <IconEye />}
+                            </button>
+                        </div>
+                        {formErrors.password && (
+                            <p className="text-red-500 text-sm mt-1">{formErrors.password}</p>
+                        )}
+                    </div>
+                    <div className='flex flex-wrap items-center justify-between gap-2 my-4 sm:my-2'>
+                        <div className="form-check">
+                            <input
+                                type="checkbox"
+                                id="rememberMe"
+                                className="form-check-input"
+                                checked={rememberMe}
+                                onChange={(e) => setRememberMe(e.target.checked)}
+                            />
+                            <label className="form-check-label" htmlFor="rememberMe">
+                                Remember me
+                            </label>
+                        </div>
+                        <Link href="/forgotPassword" prefetch={false} className='text-primary text-[14px]/[20px] sm:text-[16px]/[24px]'>
+                            Forgot Password?
+                        </Link>
+                    </div>
+                    {error && <p className="error mb-4 text-red-500">{'The email or password you entered is incorrect. Please try again!'}</p>}
+                    <button
+                        type="submit"
+                        className='btn btn-secondary large w-full uppercase'
+                        disabled={loading}
+                    >
+                        {loading ? 'Signing in...' : 'Sign In'}
+                    </button>
+                    <div className='text-center mt-6 sm:mt-[10px] text-font-color-100'>
+                        <p>Don&apos;t have an account yet?</p>
+                        <Link href="/signUp" prefetch={false} className='text-primary'>
+                            Sign up here
+                        </Link>
+                    </div>
                 </div>
-                {error && <p className="error mb-4">{'The email or password you entered is incorrect. Please try again!'}</p>}
-                <button
-                    className='btn btn-secondary large w-full uppercase'
-                    onClick={handleSubmit}
-                    disabled={loading}
-                >
-                    {loading ? 'Signing in...' : 'Sign In'}
-                </button>
-                <div className='text-center mt-6 sm:mt-[10px] text-font-color-100'>
-                    <p>Don&apos;t have an account yet?</p>
-                    <Link href="/signUp" prefetch={false} className='text-primary'>
-                        Sign up here
-                    </Link>
-                </div>
-            </div>
+            </form>
         </>
     );
 };
