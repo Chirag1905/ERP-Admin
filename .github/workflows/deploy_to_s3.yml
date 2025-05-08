@@ -3,7 +3,7 @@ name: Deploy Next.js to S3
 on:
   push:
     branches:
-      - main  # Trigger on pushes to the main branch
+      - admin  # Trigger on pushes to the main branch
 
 permissions:
   id-token: write  # Required for OIDC token exchange
