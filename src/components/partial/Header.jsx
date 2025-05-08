@@ -52,6 +52,7 @@ import {
 import Image from 'next/image';
 import toast from 'react-hot-toast';
 import { useFavicon } from '../utils/useFavicon';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleChat }) {
 
@@ -775,6 +776,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                             </ul>
                         </div>
                     </div>
+                    <LanguageSwitcher />
                     <button onClick={toggleChat} className='xl:hidden sm:block hidden md:py-2 md:px-3 p-2 hover:bg-primary-10 transition-all duration-300'>
                         <IconMessage className='stroke-[1.5] w-[20px] h-[20px]' />
                     </button>
