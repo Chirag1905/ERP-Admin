@@ -11,7 +11,7 @@ import Loader from "@/components/utils/Loader";
 import { useEffect } from "react";
 import Script from "next/script";
 
-// Suppress hydration errors in the console
+// Suppress hydration errors in the console for Next.js
 if (typeof window !== 'undefined') {
   const originalError = console.error;
   console.error = (...args) => {
