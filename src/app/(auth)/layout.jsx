@@ -121,13 +121,11 @@ import { IconBrandFacebookFilled, IconBrandGithubFilled, IconBrandTwitterFilled,
 import { Techvein_logo, profile_av } from '@/assets/images/';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import PublicRoute from '../PublicRoute';
+import PrivateRoute from '../PrivateRoute';
 
 export default function AuthLayout({ children }) {
 
-    console.log(children, "children")
     const [customizations, setCustomizations] = useState();
-    console.log("🚀 ~ AuthLayout ~ customizations:", customizations)
 
     // Load customizations from localStorage on mount
     useEffect(() => {
@@ -157,7 +155,7 @@ export default function AuthLayout({ children }) {
     }, []);
 
     return (
-        <PublicRoute>
+        <PrivateRoute>
             <div className="min-h-screen flex items-center justify-center bg-body-color py-4 px-4 sm:px-6">
                 <div className="container mx-auto flex flex-col lg:flex-row items-center justify-center gap-4 md:gap-6 lg:gap-8 xl:gap-12 max-w-7xl">
                     {/* Left Content */}
@@ -174,7 +172,7 @@ export default function AuthLayout({ children }) {
                                     priority
                                 />
                                 <span className="text-primary font-bold text-xl sm:text-2xl lg:text-3xl">
-                                    {customizations?.heading || " ERP School Portal"}
+                                    {customizations?.heading || "ERP School Portal"}
                                 </span>
                             </div>
 
@@ -236,6 +234,6 @@ export default function AuthLayout({ children }) {
                     </div>
                 </div>
             </div>
-        </PublicRoute>
+        </PrivateRoute>
     );
 }

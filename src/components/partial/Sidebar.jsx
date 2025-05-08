@@ -61,14 +61,13 @@ import {
 // import NewProject from '../../pages/app/project/NewProject';
 import { useDispatch, useSelector } from 'react-redux';
 import { signOutSuccess } from '../../Redux/features/auth/authSlice';
-import { closeModal } from '../../Redux/features/utils/modalSlice';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
+import { closeModal } from '@/Redux/features/utils/modalSlice';
 
 export default function Sidebar(props) {
   const { setMobileNav, note, toggleNote, chat, toggleChat } = props;
   const dispatch = useDispatch();
-  const router = useRouter();
   const { isAuthenticated } = useSelector((state) => state.auth);
   const [pinnedItems, setPinnedItems] = useState([]);
   const [menuActive, setMenuActive] = useState(null);
@@ -91,7 +90,6 @@ export default function Sidebar(props) {
       dispatch(signOutSuccess());
       console.log("LogOut called");
       toast.success("You've been successfully logged out. See you soon!")
-      // { !isAuthenticated && router.push("/signIn") }
     }
   };
 
@@ -106,11 +104,6 @@ export default function Sidebar(props) {
       icon: IconHome,
       link: "Overview",
       url: "/",
-    },
-    {
-      icon: IconSchool,
-      link: "Academic Years",
-      url: "/academicYear",
     },
     {
       icon: IconBooks,
@@ -151,56 +144,6 @@ export default function Sidebar(props) {
     //     },
     //     { link: 'My Wallet', url: '/app-project' },
     //     { link: 'Smart IOT', url: '/app-contact' },
-    //   ],
-    // },
-    // {
-    //   icon: IconApps,
-    //   link: 'Other Tabs',
-    //   children: [
-    //     { link: 'wallet', url: '/index-wallet' },
-    //     { link: 'iot', url: '/index-iot' },
-    //     { link: 'calendar', url: '/app-calendar' },
-    //     { link: 'calendar-tui', url: '/app-calendar-tui' },
-    //     { link: 'appemail', url: '/app-email' },
-    //     { link: 'appemaildetail', url: '/app-email-detail' },
-    //     { link: 'email-compose', url: '/app-email-compose' },
-    //     { link: 'chat', url: '/app-chat' },
-    //     { link: 'campaign', url: '/app-campaign' },
-    //     { link: 'social', url: '/app-social' },
-    //     { link: 'file-manager', url: '/app-file-manager' },
-    //     { link: 'todo', url: '/app-todo' },
-    //     { link: 'contact', url: '/app-contact' },
-    //     { link: 'task', url: '/app-task' },
-    //     { link: 'project', url: '/app-project' },
-    //     { link: 'project-detail', url: '/app-project-detail' },
-    //     { link: 'my-profile', url: '/page-my-profile' },
-    //     { link: 'bookmark', url: '/page-bookmark' },
-    //     { link: 'timeline', url: '/page-timeline' },
-    //     { link: 'image-gallery', url: '/page-image-gallery' },
-    //     { link: 'pricing', url: '/page-pricing' },
-    //     { link: 'team-board', url: '/page-team-board' },
-    //     { link: 'support-ticket', url: '/page-support-ticket' },
-    //     { link: 'faq', url: '/page-faq' },
-    //     { link: 'search', url: '/page-search' },
-    //     { link: 'footer', url: '/page-footer' },
-    //     { link: 'account-setting', url: '/account-setting' },
-    //     { link: 'invoice', url: '/account-invoice' },
-    //     { link: 'billing', url: '/account-billing' },
-    //     { link: 'create-invoice', url: '/account-create-invoice' },
-    //     { link: 'modals', url: '/modals' },
-    //     { link: 'doc-overview', url: '/doc-overview' },
-    //     { link: 'doc-setup', url: '/doc-setup' },
-    //     { link: 'doc-structure', url: '/doc-structure' },
-    //     { link: 'doc-references', url: '/doc-references' },
-    //     { link: 'doc-helperclass', url: '/doc-helperclass' },
-    //     { link: 'doc-changelog', url: '/doc-changelog' },
-    //     { link: 'widget', url: '/widget' },
-    //     { link: 'signin', url: '/auth-signin' },
-    //     { link: 'signup', url: '/auth-signup' },
-    //     { link: 'forgot-password', url: '/auth-forgot-password' },
-    //     { link: 'two-step', url: '/auth-two-step' },
-    //     { link: 'lockscreen', url: '/auth-lockscreen' },
-    //     { link: 'maintenance', url: '/auth-maintenance' },
     //   ],
     // },
     // {
@@ -305,10 +248,12 @@ export default function Sidebar(props) {
   };
 
   const closeModals = () => {
-    dispatch(closeModal({ modalType: "createCampusGroup" }))
-    dispatch(closeModal({ modalType: "editCampusGroup" }))
-    dispatch(closeModal({ modalType: "createAcademicYear" }))
-    dispatch(closeModal({ modalType: "editAcademicYear" }))
+    // Close all campus group and campus modals
+    console.log("called")
+    dispatch(closeModal({ modalType: "createCampusGroup" }));
+    dispatch(closeModal({ modalType: "editCampusGroup" }));
+    dispatch(closeModal({ modalType: "createCampus" }));
+    dispatch(closeModal({ modalType: "editCampus" }));
   };
 
   useEffect(() => {
@@ -418,7 +363,6 @@ export default function Sidebar(props) {
                 <item.icon className="stroke-[1.5] w-[22px] h-[22px]" />
                 <Link
                   href={item.url}
-                  onClick={() => closeModals()}
                   className='text-left'
                   prefetch={true}
                 >
@@ -438,14 +382,20 @@ export default function Sidebar(props) {
                         >
                           <Link
                             href={res.url}
-                            onClick={() => window.innerWidth < 1200 && setMobileNav(false)}
+                            onClick={() => {
+                              window.innerWidth < 1200 && setMobileNav(false);
+                              closeModals();
+                            }}
                             className={`py-1 text-[14px]/[20px] flex relative before:hidden before:absolute before:h-full before:w-[1px] ltr:before:left-[-20px] rtl:before:right-[-20px] before:top-0 before:bg-secondary hover:text-secondary hover:before:block transition-all ${pageUrl === res.url ? 'text-secondary before:!block' : ''}`}
                             prefetch={true}
                           >
                             {res.link}
                             {res.children && (
                               <button
-                                onClick={() => toggleSubmenu(parentIndex, key)}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  toggleSubmenu(parentIndex, key);
+                                }}
                                 className="text-secondary ms-4 text-sm flex items-center"
                               >
                                 <IconChevronRight className={`inline-block w-4 h-4 transition-transform ${submenuActive[`${parentIndex}-${key}`] ? 'rotate-90' : ''}`} />
@@ -469,7 +419,9 @@ export default function Sidebar(props) {
                                 >
                                   <Link
                                     href={subItem.url}
-                                    onClick={() => window.innerWidth < 1200 && setMobileNav(false)}
+                                    onClick={() => {
+                                      window.innerWidth < 1200 && setMobileNav(false);
+                                    }}
                                     prefetch={true}
                                   >
                                     {subItem.link}
@@ -496,9 +448,16 @@ export default function Sidebar(props) {
             </li>
           ) : item.url ?
             <li key={parentIndex}>
-              <Link href={item.url} prefetch={true} onClick={() => { window.innerWidth < 1200 && setMobileNav(false) }} className={`flex items-center gap-2.5 w-full py-2 transition-all hover:text-secondary ${pageUrl === item.url ? 'text-secondary' : ''}`}>
+              <Link
+                href={item.url}
+                prefetch={true}
+                onClick={() => {
+                  window.innerWidth < 1200 && setMobileNav(false);
+                }}
+                className={`flex items-center gap-2.5 w-full py-2 transition-all hover:text-secondary ${pageUrl === item.url ? 'text-secondary' : ''}`}
+              >
                 {item.icon ? <item.icon className='stroke-[1.5] w-[22px] h-[22px]' /> : <IconChevronRight />}
-                <span onClick={() => closeModals()}>{item.link}</span>
+                <span>{item.link}</span>
               </Link>
             </li>
             :

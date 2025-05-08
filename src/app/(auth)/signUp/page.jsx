@@ -1,12 +1,10 @@
 'use client';
-import PublicRoute from '@/app/PublicRoute';
 import Link from 'next/link';
 import React from 'react'
 
 export default function Signup() {
   return (
     <>
-      <PublicRoute>
         <div className='sm:mb-8 mb-6 text-center'>
           <div className='sm:text-[40px]/[48px] text-[30px]/[36px] font-medium mb-2'>
             Create Account
@@ -68,7 +66,6 @@ export default function Signup() {
             </Link>
           </div>
         </div>
-      </PublicRoute>
     </>
   )
 }

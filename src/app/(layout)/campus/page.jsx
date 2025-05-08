@@ -189,7 +189,7 @@ const Campus = () => {
       )}
 
       {!isCreateModalOpen && !isEditModalOpen && (
-        <div className="pt-6 md:pt-9 px-4 sm:px-6 md:px-10 bg-card-color rounded-lg">
+        <div className="pt-6 md:pt-9 px-4 sm:px-6 md:px-[10px] bg-card-color rounded-lg">
           {/* Header Section */}
           <div className="flex flex-col md:mx-6 md:flex-row justify-between items-start md:items-center gap-4 mb-6">
             <div className="flex items-center w-full md:w-auto">
@@ -227,7 +227,7 @@ const Campus = () => {
 
           {/* Content Section */}
           <div
-            className={`my-6 md:my-10 px-2 sm:px-4 md:px-10 h-[60vh] md:h-[70vh] ${loading ? '' : 'overflow-auto cus-scrollbar'
+            className={`my-6 md:my-[10px] px-2 sm:px-4 md:px-[10px] h-[60vh] md:h-[70vh] ${loading ? '' : 'overflow-auto cus-scrollbar'
               }`}
           >
             {loading ? (

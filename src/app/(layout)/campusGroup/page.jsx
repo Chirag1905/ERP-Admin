@@ -227,7 +227,7 @@ const CampusGroup = () => {
 
           {/* Content Section */}
           <div
-            className={`my-6 md:my-10 px-2 sm:px-4 md:px-10 h-[60vh] md:h-[70vh] ${loading ? '' : 'overflow-auto cus-scrollbar'
+            className={`my-6 md:my-[10px] px-2 sm:px-4 md:px-[10px] h-[60vh] md:h-[70vh] ${loading ? '' : 'overflow-auto cus-scrollbar'
               }`}
           >
             {loading ? (

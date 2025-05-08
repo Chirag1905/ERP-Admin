@@ -156,8 +156,8 @@ const CampusGroupEdit = (props) => {
 
     return (
         <>
-            <div className='py-10 md:px-10 mt-10 px-[7px] bg-card-color rounded-lg'>
-                <div className='my-10 lg:px-20 md:px-10 px-[7px] md:max-h-[80svh] max-h-[60svh] overflow-auto cus-scrollbar'>
+            <div className='py-[10px] md:px-[10px] mt-[10px] px-[7px] bg-card-color rounded-lg'>
+                <div className='my-[10px] lg:px-[20px] md:px-[10px] px-[7px] md:max-h-[80svh] max-h-[60svh] overflow-auto cus-scrollbar'>
                     <div className="flex justify-between items-center">
                         <div className='text-[24px]/[30px] font-medium mb-2'>
                             Edit Campus Group
@@ -175,7 +175,7 @@ const CampusGroupEdit = (props) => {
                     <div className="flex">
                         {/* Left Side Tabs */}
                         <div className="w-1/4 bg-card-color border-r border-border-color">
-                            <div className="flex flex-col space-y-10 p-4">
+                            <div className="flex flex-col space-y-[10px] p-4">
                                 {['Profile', 'Domain', 'Plugins', 'Email', 'SMS Setting', 'Plugin Settings', 'Gateways'].map((tab, index) => (
                                     <button
                                         key={index}
@@ -193,11 +193,11 @@ const CampusGroupEdit = (props) => {
                             {activeTab === 0 && (
                                 <>
                                     <div className="flex flex-col space-y-4">
-                                        <div className='flex justify-between px-10'>
+                                        <div className='flex justify-between px-[10px]'>
                                             <label htmlFor='campaignsTitle' className='form-label'>
                                                 Name <span className="text-red-500"> *</span>
                                             </label>
-                                            <div className='form-control h-full w-3/5 mb-15'>
+                                            <div className='form-control h-full w-3/5 mb-[15px]'>
                                                 <input
                                                     type='text'
                                                     placeholder='Campus Group Name'
@@ -207,11 +207,11 @@ const CampusGroupEdit = (props) => {
                                                 />
                                             </div>
                                         </div>
-                                        <div className='flex justify-between px-10'>
+                                        <div className='flex justify-between px-[10px]'>
                                             <label htmlFor='campaignsTitle' className='form-label'>
                                                 License Count <span className="text-red-500"> *</span>
                                             </label>
-                                            <div className='form-control h-full w-3/5 mb-15'>
+                                            <div className='form-control h-full w-3/5 mb-[15px]'>
                                                 <input
                                                     type='number'
                                                     placeholder='license count'
@@ -221,11 +221,11 @@ const CampusGroupEdit = (props) => {
                                                 />
                                             </div>
                                         </div>
-                                        <div className='flex justify-between px-10'>
+                                        <div className='flex justify-between px-[10px]'>
                                             <label htmlFor='campaignsTitle' className='form-label'>
                                                 GPS Enabled <span className="text-red-500"> *</span>
                                             </label>
-                                            <div className='form-check form-switch h-full w-3/5 mb-15'>
+                                            <div className='form-check form-switch h-full w-3/5 mb-[15px]'>
                                                 <input
                                                     type="checkbox"
                                                     className="form-check-input"
@@ -235,11 +235,11 @@ const CampusGroupEdit = (props) => {
                                                 <label className="form-check-label ml-2" htmlFor="lightIndoor1">{formData?.gpsEnabled === true ? "Enabled" : "Disable"}</label>
                                             </div>
                                         </div>
-                                        <div className='flex justify-between px-10'>
+                                        <div className='flex justify-between px-[10px]'>
                                             <label htmlFor='campaignsTitle' className='form-label'>
                                                 Zoom Meeting Enabled <span className="text-red-500"> *</span>
                                             </label>
-                                            <div className='form-check form-switch h-full w-3/5 mb-15'>
+                                            <div className='form-check form-switch h-full w-3/5 mb-[15px]'>
                                                 <input
                                                     type='checkbox'
                                                     className='form-check-input'
@@ -249,11 +249,11 @@ const CampusGroupEdit = (props) => {
                                                 <label className="form-check-label ml-2" htmlFor="lightIndoor1">{formData?.zoomEnabled === true ? "Enabled" : "Disable"}</label>
                                             </div>
                                         </div>
-                                        <div className='flex justify-between px-10'>
+                                        <div className='flex justify-between px-[10px]'>
                                             <label htmlFor='campaignsTitle' className='form-label'>
                                                 IsActive <span className="text-red-500"> *</span>
                                             </label>
-                                            <div className='form-check form-switch h-full w-3/5 mb-15'>
+                                            <div className='form-check form-switch h-full w-3/5 mb-[15px]'>
                                                 <input
                                                     type='checkbox'
                                                     className='form-check-input'
@@ -264,11 +264,11 @@ const CampusGroupEdit = (props) => {
                                             </div>
                                         </div>
                                     </div>
-                                    {/* <div className='flex px-10'>
+                                    {/* <div className='flex px-[10px]'>
                                         <label htmlFor='campaignsTitle' className='form-label'>
                                             Inherit Email Settings
                                         </label>
-                                        <div className='form-control h-full w-3/5 mb-15'>
+                                        <div className='form-control h-full w-3/5 mb-[15px]'>
                                             <input
                                                 type='checkbox'
                                                 placeholder='Inherit Email Settings'
@@ -278,11 +278,11 @@ const CampusGroupEdit = (props) => {
                                             />
                                         </div>
                                     </div> */}
-                                    {/* <div className='flex justify-between px-10'>
+                                    {/* <div className='flex justify-between px-[10px]'>
                                         <label htmlFor='campaignsTitle' className='form-label'>
                                             SMS Template ID Enabled
                                         </label>
-                                        <div className='form-control h-full w-3/5 mb-15'>
+                                        <div className='form-control h-full w-3/5 mb-[15px]'>
                                             <input
                                                 type='checkbox'
                                                 placeholder='SMS Template ID Enabled'
@@ -292,11 +292,11 @@ const CampusGroupEdit = (props) => {
                                             />
                                         </div>
                                     </div> */}
-                                    {/* <div className='flex justify-between px-10'>
+                                    {/* <div className='flex justify-between px-[10px]'>
                                         <label htmlFor='campaignsTitle' className='form-label'>
                                             Inherit Google OAuth
                                         </label>
-                                        <div className='form-control h-full w-3/5 mb-15'>
+                                        <div className='form-control h-full w-3/5 mb-[15px]'>
                                             <input
                                                 type='checkbox'
                                                 placeholder='campus Name'
@@ -306,11 +306,11 @@ const CampusGroupEdit = (props) => {
                                             />
                                         </div>
                                     </div> */}
-                                    {/* <div className='flex justify-between px-10'>
+                                    {/* <div className='flex justify-between px-[10px]'>
                                         <label htmlFor='campaignsTitle' className='form-label'>
                                             Google Meet Enabled
                                         </label>
-                                        <div className='form-check form-switch h-full w-3/5 mb-15'>
+                                        <div className='form-check form-switch h-full w-3/5 mb-[15px]'>
                                             <input
                                                 type='checkbox'
                                                 placeholder='campus Name'
@@ -320,11 +320,11 @@ const CampusGroupEdit = (props) => {
                                             />
                                         </div>
                                     </div>
-                                    <div className='flex justify-between px-10'>
+                                    <div className='flex justify-between px-[10px]'>
                                         <label htmlFor='campaignsTitle' className='form-label'>
                                             Owned by
                                         </label>
-                                        <div className='form-control h-full w-3/5 mb-15'>
+                                        <div className='form-control h-full w-3/5 mb-[15px]'>
                                             <input
                                                 type='text'
                                                 placeholder='Owned by'
@@ -339,7 +339,7 @@ const CampusGroupEdit = (props) => {
                             {activeTab === 1 && (
                                 <div>
                                     {/* Domain Content */}
-                                    <div className='form-control mb-15'>
+                                    <div className='form-control mb-[15px]'>
                                         <label className='form-label'>
                                             Assigned Domains
                                         </label>
@@ -357,7 +357,7 @@ const CampusGroupEdit = (props) => {
                             {activeTab === 2 && (
                                 <div>
                                     {/* Plugins Content */}
-                                    <div className='form-control mb-15'>
+                                    <div className='form-control mb-[15px]'>
                                         <div className='justify-between flex mb-4'>
                                             <label className='form-label'>
                                                 Assign Plugins
@@ -392,11 +392,11 @@ const CampusGroupEdit = (props) => {
                                 <div>
                                     {/* Email Content */}
                                     <div className="flex flex-col space-y-4">
-                                        <div className='flex justify-between px-10'>
+                                        <div className='flex justify-between px-[10px]'>
                                             <label htmlFor='campaignsTitle' className='form-label'>
                                                 Inherit Email Settings <span className="text-red-500"> *</span>
                                             </label>
-                                            <div className='form-check form-switch h-full w-3/5 mb-15'>
+                                            <div className='form-check form-switch h-full w-3/5 mb-[15px]'>
                                                 <input
                                                     type="checkbox"
                                                     className="form-check-input"
@@ -406,12 +406,12 @@ const CampusGroupEdit = (props) => {
                                                 <label className="form-check-label ml-2" htmlFor="lightIndoor1">{formData?.gpsEnabled === true ? "Enable" : "Disable"}</label>
                                             </div>
                                         </div>
-                                        <div className='flex justify-between px-10'>
+                                        <div className='flex justify-between px-[10px]'>
                                             <label htmlFor='campaignsTitle' className='form-label'>
                                                 Inherit Google OAuth
                                                 {/* <span className="text-red-500"> *</span> */}
                                             </label>
-                                            <div className='form-check form-switch h-full w-3/5 mb-15'>
+                                            <div className='form-check form-switch h-full w-3/5 mb-[15px]'>
                                                 <input
                                                     type="checkbox"
                                                     className="form-check-input"
@@ -422,7 +422,7 @@ const CampusGroupEdit = (props) => {
                                             </div>
                                         </div>
                                     </div>
-                                    {/* <div className='form-control mb-15'>
+                                    {/* <div className='form-control mb-[15px]'>
                                         <div className='relative w-full flex'>
                                             <div className="flex items-center justify-center gap-4 border border-border-color rounded-s-md mr-[-1px] py-[6px] px-[12px] bg-body-color">
                                                 <div className="form-check">
@@ -454,7 +454,7 @@ const CampusGroupEdit = (props) => {
                             {activeTab === 4 && (
                                 <div>
                                     {/* SMS Setting Content */}
-                                    <div className='form-control mb-15'>
+                                    <div className='form-control mb-[15px]'>
                                         <label className='form-label'>
                                             SMS Settings
                                         </label>
@@ -488,7 +488,7 @@ const CampusGroupEdit = (props) => {
                             {activeTab === 5 && (
                                 <div>
                                     {/* Plugin Settings Content */}
-                                    <div className='form-control mb-15'>
+                                    <div className='form-control mb-[15px]'>
                                         <div className='relative w-full flex'>
                                             <div className="flex items-center justify-center gap-4 border border-border-color rounded-s-md mr-[-1px] py-[6px] px-[12px] bg-body-color">
                                                 <div className="form-check">
@@ -519,7 +519,7 @@ const CampusGroupEdit = (props) => {
                             {activeTab === 6 && (
                                 <div>
                                     {/* Gateways Content */}
-                                    <div className='form-control mb-15'>
+                                    <div className='form-control mb-[15px]'>
                                         <label className='form-label'>
                                             Gateways
                                         </label>

@@ -148,8 +148,8 @@ const CampusEdit = (props) => {
 
     return (
         <>
-            <div className='py-10 md:px-10 mt-10 px-[7px] bg-card-color rounded-lg'>
-                <div className='my-10 lg:px-20 md:px-10 px-[7px] md:max-h-[80svh] max-h-[60svh] overflow-auto cus-scrollbar'>
+            <div className='py-[10px] md:px-[10px] mt-[10px] px-[7px] bg-card-color rounded-lg'>
+                <div className='my-[10px] lg:px-[20px] md:px-[10px] px-[7px] md:max-h-[80svh] max-h-[60svh] overflow-auto cus-scrollbar'>
                     <div className="flex justify-between items-center">
                         <div className='text-[24px]/[30px] font-medium mb-2'>
                             Edit Campus
@@ -167,7 +167,7 @@ const CampusEdit = (props) => {
                     <div className="flex">
                         {/* Left Side Tabs */}
                         <div className="w-1/4 bg-card-color border-r border-border-color">
-                            <div className="flex flex-col space-y-10 p-4">
+                            <div className="flex flex-col space-y-[10px] p-4">
                                 {['Profile', 'Domain', 'Plugins', 'Email', 'SMS Setting', 'Plugin Settings', 'Gateways'].map((tab, index) => (
                                     <button
                                         key={index}

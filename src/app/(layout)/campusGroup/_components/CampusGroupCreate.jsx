@@ -106,8 +106,8 @@ const CampusGroupCreate = (props) => {
 
     return (
         <>
-            <div className='py-6 md:py-10 px-4 md:px-10 mt-6 md:mt-10 bg-card-color rounded-lg'>
-                <div className='my-6 md:my-10 px-2 md:px-4 lg:px-20 max-h-[60svh] md:max-h-[80svh] overflow-auto cus-scrollbar'>
+            <div className='py-6 md:py-[10px] px-4 md:px-[10px] mt-6 md:mt-[10px] bg-card-color rounded-lg'>
+                <div className='my-6 md:my-[10px] px-2 md:px-4 lg:px-[20px] max-h-[60svh] md:max-h-[80svh] overflow-auto cus-scrollbar'>
                     <div className="flex justify-between items-center mb-4 md:mb-6">
                         <div className='text-lg md:text-2xl font-medium'>
                             New Campus Group

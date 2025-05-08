@@ -251,7 +251,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
     useEffect(() => {
         setFavicon(customizations.schoolLogo || '/default-favicon.ico');
     }, [customizations.schoolLogo, setFavicon]);
-    console.log("🚀 ~ Header ~ customizations:", customizations)
+    // console.log("🚀 ~ Header ~ customizations:", customizations)
 
 
     // Also update the handleFileChange function to save to localStorage:
@@ -475,7 +475,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                     </button> */}
                     <div className='relative px-4 flex-1 md:block hidden'>
                         <input type="text" placeholder="Enter your search key word" onClick={openSearchBar} className={`w-full py-[6px] px-[12px] bg-transparent focus:outline-0 placeholder:text-white placeholder:opacity-50 ${searchBar ? 'z-[5] relative' : ''}`} />
-                        <div className={`bg-card-color text-font-color xl:absolute fixed xl:left-0 left-30 xl:top-[40px] top-[68px] z-[5] xl:w-full w-[calc(100%-60px)] rounded-xl p-6 transition-all duration-300 origin-top ${searchBar ? 'opacity-1 visible scale-y-100' : 'opacity-0 invisible scale-y-0'}`}>
+                        <div className={`bg-card-color text-font-color xl:absolute fixed xl:left-0 left-[30px] xl:top-[40px] top-[68px] z-[5] xl:w-full w-[calc(100%-60px)] rounded-xl p-6 transition-all duration-300 origin-top ${searchBar ? 'opacity-1 visible scale-y-100' : 'opacity-0 invisible scale-y-0'}`}>
                             <p className='text-font-color-100 text-[14px]/[20px] mb-3 uppercase'>
                                 RECENT SEARCHES
                             </p>
@@ -501,7 +501,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                             </p>
                             <div className='flex flex-col border border-border-color rounded-xl overflow-hidden'>
                                 <Link href="#" className='py-[10px] px-[15px] border-b border-dashed border-border-color transition hover:bg-primary-10'>
-                                    <div className='font-bold mb-5'>
+                                    <div className='font-bold mb-[5px]'>
                                         Cras justo odio
                                     </div>
                                     <p className='text-[14px]/[20px] text-font-color-100'>
@@ -509,7 +509,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                     </p>
                                 </Link>
                                 <Link href="#" className='py-[10px] px-[15px] border-b border-dashed border-border-color transition hover:bg-primary-10'>
-                                    <div className='font-bold mb-5'>
+                                    <div className='font-bold mb-[5px]'>
                                         Date Range Picker
                                     </div>
                                     <p className='text-[14px]/[20px] text-font-color-100'>
@@ -517,7 +517,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                     </p>
                                 </Link>
                                 <Link href="#" className='py-[10px] px-[15px] border-b border-dashed border-border-color transition hover:bg-primary-10'>
-                                    <div className='font-bold mb-5'>
+                                    <div className='font-bold mb-[5px]'>
                                         Image Input
                                     </div>
                                     <p className='text-[14px]/[20px] text-font-color-100'>
@@ -525,7 +525,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                     </p>
                                 </Link>
                                 <Link href="#" className='py-[10px] px-[15px] border-b border-dashed border-border-color transition hover:bg-primary-10'>
-                                    <div className='font-bold mb-5'>
+                                    <div className='font-bold mb-[5px]'>
                                         DataTables for jQuery
                                     </div>
                                     <p className='text-[14px]/[20px] text-font-color-100'>
@@ -533,7 +533,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                     </p>
                                 </Link>
                                 <Link href="#" className='py-[10px] px-[15px] transition hover:bg-primary-10'>
-                                    <div className='font-bold mb-5'>
+                                    <div className='font-bold mb-[5px]'>
                                         Development Setup
                                     </div>
                                     <p className='text-[14px]/[20px] text-font-color-100'>
@@ -551,8 +551,8 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                             </span>
                             <IconBellRinging className='stroke-[1.5] xl:hidden w-[20px] h-[20px]' />
                         </button>
-                        <div className='bg-card-color text-font-color rounded-xl overflow-hidden md:w-[380px] w-[calc(100%-30px)] shadow-shadow-lg md:absolute fixed md:end-0 end-15 md:top-full top-[55px] origin-top-right rtl:origin-top-left z-[1] opacity-0 invisible scale-0 transition-all duration-300 group-hover:opacity-100 group-hover:visible group-hover:scale-100'>
-                            <div className='flex items-center justify-between gap-10 p-4'>
+                        <div className='bg-card-color text-font-color rounded-xl overflow-hidden md:w-[380px] w-[calc(100%-30px)] shadow-shadow-lg md:absolute fixed md:end-0 end-[15px] md:top-full top-[55px] origin-top-right rtl:origin-top-left z-[1] opacity-0 invisible scale-0 transition-all duration-300 group-hover:opacity-100 group-hover:visible group-hover:scale-100'>
+                            <div className='flex items-center justify-between gap-[10px] p-4'>
                                 <div className='font-semibold'>
                                     Notifications Center
                                 </div>
@@ -575,10 +575,10 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                 <div className='md:h-[calc(60svh-185px)] h-[calc(80svh-185px)] sm:p-6 p-4 overflow-auto no-scrollbar'>
                                     <TabPanel>
                                         <ul>
-                                            <li className='py-10 border-b border-border-color flex gap-4'>
+                                            <li className='py-[10px] border-b border-border-color flex gap-4'>
                                                 <Image src={avatar5} alt='notification icon' width={36} height={36} className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                                                 <div className='w-full'>
-                                                    <div className='flex justify-between gap-10'>
+                                                    <div className='flex justify-between gap-2'>
                                                         <div className='font-medium'>
                                                             Olive Tree
                                                         </div>
@@ -591,10 +591,10 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                                     </div>
                                                 </div>
                                             </li>
-                                            <li className='py-10 border-b border-border-color flex gap-4'>
+                                            <li className='py-[10px] border-b border-border-color flex gap-4'>
                                                 <Image src={avatar6} alt='notification icon' width={36} height={36} className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                                                 <div className='w-full'>
-                                                    <div className='flex justify-between gap-10'>
+                                                    <div className='flex justify-between gap-[10px]'>
                                                         <div className='font-medium'>
                                                             Del Phineum
                                                         </div>
@@ -607,10 +607,10 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                                     </div>
                                                 </div>
                                             </li>
-                                            <li className='py-10 border-b border-border-color flex gap-4'>
+                                            <li className='py-[10px] border-b border-border-color flex gap-4'>
                                                 <Image src={avatar1} alt='notification icon' width={36} height={36} className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                                                 <div className='w-full'>
-                                                    <div className='flex justify-between gap-10'>
+                                                    <div className='flex justify-between gap-[10px]'>
                                                         <div className='font-medium'>
                                                             Rose Bush
                                                         </div>
@@ -623,12 +623,12 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                                     </div>
                                                 </div>
                                             </li>
-                                            <li className='py-10 border-b border-border-color flex gap-4'>
+                                            <li className='py-[10px] border-b border-border-color flex gap-4'>
                                                 <div className='w-[36px] h-[36px] min-w-[36px] rounded-md font-semibold text-secondary bg-primary-10 flex items-center justify-center'>
                                                     PT
                                                 </div>
                                                 <div className='w-full'>
-                                                    <div className='flex justify-between gap-10'>
+                                                    <div className='flex justify-between gap-[10px]'>
                                                         <div className='font-medium'>
                                                             Pat Thettick
                                                         </div>
@@ -641,10 +641,10 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                                     </div>
                                                 </div>
                                             </li>
-                                            <li className='py-10 border-b border-border-color flex gap-4'>
+                                            <li className='py-[10px] border-b border-border-color flex gap-4'>
                                                 <Image src={avatar3} alt='notification icon' width={36} height={36} className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                                                 <div className='w-full'>
-                                                    <div className='flex justify-between gap-10'>
+                                                    <div className='flex justify-between gap-[10px]'>
                                                         <div className='font-medium'>
                                                             Eileen Dover
                                                         </div>
@@ -657,10 +657,10 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                                     </div>
                                                 </div>
                                             </li>
-                                            <li className='py-10 border-b border-border-color flex gap-4'>
+                                            <li className='py-[10px] border-b border-border-color flex gap-4'>
                                                 <Image src={avatar4} alt='notification icon' width={36} height={36} className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                                                 <div className='w-full'>
-                                                    <div className='flex justify-between gap-10'>
+                                                    <div className='flex justify-between gap-[10px]'>
                                                         <div className='font-medium'>
                                                             Carmen Goh
                                                         </div>
@@ -673,10 +673,10 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                                     </div>
                                                 </div>
                                             </li>
-                                            <li className='py-10 border-b border-border-color flex gap-4'>
+                                            <li className='py-[10px] border-b border-border-color flex gap-4'>
                                                 <Image src={avatar7} alt='notification icon' width={36} height={36} className='w-[36px] h-[36px] min-w-[36px] rounded-md' />
                                                 <div className='w-full'>
-                                                    <div className='flex justify-between gap-10'>
+                                                    <div className='flex justify-between gap-[10px]'>
                                                         <div className='font-medium'>
                                                             Karen Onnabit
                                                         </div>
@@ -693,7 +693,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                     </TabPanel>
                                     <TabPanel>
                                         <ul>
-                                            <li className='py-10 border-b border-border-color flex gap-4'>
+                                            <li className='py-[10px] border-b border-border-color flex gap-4'>
                                                 <IconThumbUpFilled className='fill-secondary w-[24px] h-[24px] min-w-[24px]' />
                                                 <div className='w-full'>
                                                     <div className='font-medium mb-1'>
@@ -704,7 +704,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                                     </div>
                                                 </div>
                                             </li>
-                                            <li className='py-10 border-b border-border-color flex gap-4'>
+                                            <li className='py-[10px] border-b border-border-color flex gap-4'>
                                                 <IconChartPieFilled className='fill-secondary w-[24px] h-[24px] min-w-[24px]' />
                                                 <div className='w-full'>
                                                     <div className='font-medium mb-1'>
@@ -715,7 +715,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                                     </div>
                                                 </div>
                                             </li>
-                                            <li className='py-10 border-b border-border-color flex gap-4'>
+                                            <li className='py-[10px] border-b border-border-color flex gap-4'>
                                                 <IconInfoCircleFilled className='fill-secondary w-[24px] h-[24px] min-w-[24px]' />
                                                 <div className='w-full'>
                                                     <div className='font-medium mb-1'>
@@ -726,7 +726,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                                     </div>
                                                 </div>
                                             </li>
-                                            <li className='py-10 border-b border-border-color flex gap-4'>
+                                            <li className='py-[10px] border-b border-border-color flex gap-4'>
                                                 <IconInfoTriangleFilled className='fill-secondary w-[24px] h-[24px] min-w-[24px]' />
                                                 <div className='w-full'>
                                                     <div className='font-medium mb-1'>
@@ -744,7 +744,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                     </TabPanel>
                                 </div>
                             </Tabs>
-                            <Link href="#" className='bg-primary text-[14px]/[20px] text-white py-5 px-10 text-center w-full inline-block'>
+                            <Link href="#" className='bg-primary text-[14px]/[20px] text-white py-[5px] px-[10px] text-center w-full inline-block'>
                                 View all notifications
                             </Link>
                         </div>
@@ -789,7 +789,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                         <button className='xl:hidden md:px-3 px-2'>
                             <Image src={profile_av} alt='profile' width={36} height={36} className='bg-white shadow-shadow-lg p-1 rounded-full saturate-50 transition-all hover:filter-none' />
                         </button>
-                        <div className='bg-card-color text-font-color rounded-xl overflow-hidden md:w-[240px] w-[calc(100%-30px)] shadow-shadow-lg md:absolute fixed md:right-0 right-15 md:top-full top-[55px] origin-top-right z-[1] opacity-0 invisible scale-0 transition-all duration-300 group-hover:opacity-100 group-hover:visible group-hover:scale-100'>
+                        <div className='bg-card-color text-font-color rounded-xl overflow-hidden md:w-[240px] w-[calc(100%-30px)] shadow-shadow-lg md:absolute fixed md:right-0 right-[15px] md:top-full top-[55px] origin-top-right z-[1] opacity-0 invisible scale-0 transition-all duration-300 group-hover:opacity-100 group-hover:visible group-hover:scale-100'>
                             <div className='p-4 border-b border-border-color'>
                                 <div className='font-semibold'>
                                     Allie Grater
@@ -824,7 +824,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                     Support Ticket
                                 </Link>
                             </div>
-                            <Link href="auth-signin" className='bg-secondary uppercase text-[14px]/[20px] text-white py-5 px-10 text-center w-full inline-block'>
+                            <Link href="auth-signin" className='bg-secondary uppercase text-[14px]/[20px] text-white py-[5px] px-[10px] text-center w-full inline-block'>
                                 Sign Out
                             </Link>
                         </div>
@@ -841,7 +841,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                     </button>
                 </div>
                 {settingToggle && <div className={`fixed top-0 bg-card-color z-[5] h-svh w-full max-w-[500px] transition-all duration-200 ${settingToggle ? 'ltr:right-0 rtl:left-0' : 'ltr:-right-full rtl:-left-full'}`}>
-                    <div className='md:px-6 px-4 md:py-4 py-3 flex items-center justify-between gap-15 border-b border-border-color'>
+                    <div className='md:px-6 px-4 md:py-4 py-3 flex items-center justify-between gap-[15px] border-b border-border-color'>
                         <div className='text-[20px]/[30px] font-medium'>
                             Customizations Setting
                         </div>
@@ -1009,7 +1009,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                             </div>
                         </div>
                         <div className='relative mb-6 md:p-4 py-4 px-3 border border-dashed border-primary rounded-xl'>
-                            <span className='inline-block bg-card-color px-5 font-semibold text-primary absolute -top-3'>
+                            <span className='inline-block bg-card-color px-[5px] font-semibold text-primary absolute -top-3'>
                                 Color Setting
                             </span>
                             <ul className='flex gap-2'>
@@ -1024,7 +1024,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                 ))}
                             </ul>
                             <div className='dynamic-color-setting relative md:p-4 py-4 px-3 border border-dashed border-primary rounded-xl mt-6'>
-                                <span className='inline-block bg-card-color px-5 font-semibold text-primary absolute -top-3'>
+                                <span className='inline-block bg-card-color px-[5px] font-semibold text-primary absolute -top-3'>
                                     Dynamic Color Setting
                                 </span>
                                 <ul className='sm:columns-2 gap-2'>
@@ -1051,7 +1051,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                             </div>
                         </div>
                         <div className='relative mb-6 md:p-4 py-4 px-3 border border-dashed border-border-color rounded-xl'>
-                            <span className='inline-block bg-card-color px-5 font-semibold absolute -top-3'>
+                            <span className='inline-block bg-card-color px-[5px] font-semibold absolute -top-3'>
                                 Light/Dark & RTL Mode
                             </span>
                             <div className='flex'>
@@ -1076,7 +1076,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                             </div>
                         </div>
                         <div className='relative mb-6 md:p-4 py-4 px-3 border border-dashed border-border-color rounded-xl'>
-                            <span className='inline-block bg-card-color px-5 font-semibold absolute -top-3'>
+                            <span className='inline-block bg-card-color px-[5px] font-semibold absolute -top-3'>
                                 Google Font Setting
                             </span>
                             <div className='flex'>
@@ -1133,7 +1133,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                                     className="form-input"
                                 />
                             </div>
-                            <div className='flex items-start gap-5'>
+                            <div className='flex items-start gap-[5px]'>
                                 <button
                                     onClick={handleApply}
                                     className='btn btn-primary'
@@ -1149,7 +1149,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                             </div>
                         </div>
                         <div>
-                            <div className='mb-5'>
+                            <div className='mb-[5px]'>
                                 More Setting
                             </div>
                             <ul>
@@ -1180,7 +1180,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                             </ul>
                         </div>
                     </div>
-                    <div className='md:px-6 px-4 md:py-4 py-3 flex items-center gap-10 border-t border-border-color'>
+                    <div className='md:px-6 px-4 md:py-4 py-3 flex items-center gap-[10px] border-t border-border-color'>
                         <button className='btn btn-primary w-full' onClick={handleSave}>
                             Save Changes
                         </button>
