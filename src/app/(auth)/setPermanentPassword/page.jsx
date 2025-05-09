@@ -15,6 +15,7 @@ export default function SetPermanentPassword() {
         loginData,
         isAuthenticated,
         setPermPassData,
+        fetchData,
         loading,
         error,
         token,
@@ -23,6 +24,41 @@ export default function SetPermanentPassword() {
     const router = useRouter();
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [clientParams, setClientParams] = useState({
+        clientId: "",
+        realmName: ""
+    });
+
+    useEffect(() => {
+        dispatch(fetchDataRequest());
+    }, []);
+
+    // Extract realm name from subdomain and find matching client
+    useEffect(() => {
+        if (typeof window !== 'undefined' && fetchData?.realm_client_mappings?.length > 0) {
+            const currentOrigin = window.location.origin;
+
+            // Skip if localhost (development)
+            if (currentOrigin.includes("localhost")) {
+                setClientParams({ clientId: "test4-fe-client", realmName: "test4" });
+                return;
+            }
+
+            const matchedClient = fetchData.realm_client_mappings.find(
+                client => client.allowed_origins === currentOrigin
+            );
+
+            if (matchedClient) {
+                setClientParams({
+                    clientId: matchedClient.client_id,
+                    realmName: matchedClient.realm_name
+                });
+            } else {
+                console.error("No allowed_origins match for:", currentOrigin);
+                // Optional: Redirect to an error page or show a message
+            }
+        }
+    }, [fetchData]);
 
     const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
@@ -63,8 +99,8 @@ export default function SetPermanentPassword() {
     const handleSubmit = async () => {
         const params = {
             newPassword: password,
-            clientId: "admin-cli",
-            realmName: "master"
+            clientId: clientParams.clientId,
+            realmName: clientParams.realmName,
             // clientId: "test4-fe-client",
             // realmName: "test4",
         };

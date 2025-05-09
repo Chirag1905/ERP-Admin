@@ -82,5 +82,13 @@ const resetPass = async (obj) => {
   }
 };
 
-export { signIn, signOut, setPermanentPass, forgotPass, resetPass };
-
+const fetchData = async () => {
+  try {
+    const response = await axios.get(`https://testmazingutils.s3.us-east-1.amazonaws.com/realm_client_mappings.json`);
+    return response;
+  } catch (err) {
+    console.log(err, "err");
+    return err.response;
+  }
+};
+export { signIn, signOut, setPermanentPass, forgotPass, resetPass, fetchData };

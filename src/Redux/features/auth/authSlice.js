@@ -11,6 +11,7 @@ const initialState = {
   setPermPassData: null,
   forgotPassData: null,
   resetPassData: null,
+  fetchData: null,
 };
 
 const authSlice = createSlice({
@@ -115,6 +116,22 @@ const authSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
+
+    // Fetch Data Realm Client Id
+    fetchDataRequest(state) {
+      state.fetchData = null;
+      state.loading = true;
+      state.error = null;
+    },
+    fetchDataSuccess(state, action) {
+      state.fetchData = action.payload.data;
+      state.loading = false;
+    },
+    fetchDataFailure(state, action) {
+      state.fetchData = null;
+      state.error = action.payload;
+      state.loading = false;
+    },
   },
 });
 
@@ -139,6 +156,10 @@ export const {
 
   resetPassRequest,
   resetPassSuccess,
-  resetPassFailure
+  resetPassFailure,
+
+  fetchDataRequest,
+  fetchDataSuccess,
+  fetchDataFailure
 } = authSlice.actions;
 export default authSlice.reducer;

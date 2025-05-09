@@ -113,7 +113,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
         quote: "Welcome to the central hub for managing your Campus & School Management ERP solution. Streamline administration, improve efficiency, and stay organized — all from one place.",
         motto2: "Log in to take full control of your ERP ecosystem.",
         quote2: "Built on a robust AWS microservices architecture, this portal empowers SSAS administrators with seamless access to configure, monitor, and support tenant environments in real time.",
-        theme: "indigo",
+        theme: "blush",
         darkMode: false,
         rtlMode: false,
         fontFamily: "Mulish, sans-serif",
@@ -462,10 +462,10 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                             <span
                                 className="p-1 font-semibold text-xl text-white text-left w-full bg-transparent"
                             >
-                                {customizations?.schoolName?.length === 8 ? customizations.schoolName : "Techvein"}
+                                {customizations?.schoolName?.length === 8 ? customizations.schoolName : "Campus"}
                             </span>
                         </Link>
-                        <span className="text-white w-full bg-transparent hover:border-gray-400 transition-colors placeholder-gray-400 hidden sm:block">- Admin</span>
+                        {/* <span className="text-white w-full bg-transparent hover:border-gray-400 transition-colors placeholder-gray-400 hidden sm:block">- Admin</span> */}
                     </div>
                 </div>
                 <div className='flex-1 flex items-center justify-end text-font-color-200'>
@@ -872,7 +872,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                         <div className='relative mb-6 md:p-4 py-4 px-3 bg-body-color rounded-xl'>
                             <div className='flex justify-between'>
                                 <label className='inline-block font-semibold mb-2'>
-                                    Admin Image:
+                                    Campus Image:
                                 </label>
                                 <div className='sm:w-[120px] sm:h-[120px] sm:min-w-[120px] w-[100px] h-[100px] min-w-[100px] relative'>
                                     <Image
@@ -897,7 +897,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                         </div>
                         <div className='relative mb-6 md:p-4 py-4 px-3 bg-body-color rounded-xl'>
                             <span className='inline-block font-semibold mb-4'>
-                                Admin Name:
+                                Campus Name:
                             </span>
                             <div className='mb-2 form-control'>
                                 <label className="form-label">Name</label>
@@ -920,7 +920,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                         </div>
                         <div className='relative mb-6 md:p-4 py-4 px-3 bg-body-color rounded-xl'>
                             <span className='inline-block font-semibold mb-4'>
-                                Admin Title Display:
+                                Campus Title Display:
                             </span>
                             <div className='mb-2 form-control'>
                                 <label className="form-label">Heading</label>
@@ -943,7 +943,7 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
                         </div>
                         <div className='relative mb-6 md:p-4 py-4 px-3 bg-body-color rounded-xl'>
                             <span className='inline-block font-semibold mb-4'>
-                                Admin Motto/Quote Display:
+                                Campus Motto/Quote Display:
                             </span>
                             <div className='mb-2 form-control'>
                                 <label className="form-label">Motto</label>

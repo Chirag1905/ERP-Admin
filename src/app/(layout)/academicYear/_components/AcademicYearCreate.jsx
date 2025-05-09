@@ -1,4 +1,5 @@
 'use client';
+import { getAcademicYearRequest, postAcademicYearRequest, postAcademicYearSuccess } from "@/Redux/features/academicYear/academicYearSlice";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,23 +13,55 @@ const AcademicYearCreate = (props) => {
   // Redux state
   const dispatch = useDispatch();
   const { academicYearPostData, loading, error } = useSelector((state) => state.academicYear);
+  const { token } = useSelector((state) => state.auth);
 
   // Component state
-  const [activeTab, setActiveTab] = useState(0);
   const [formData, setFormData] = useState({
-    campusGroupName: "",
-    licenseCount: "",
-    gpsEnabled: false,
-    zoomEnabled: false,
+    academicYearName: "",
+    startDate: "",
+    endDate: "",
     isActive: false,
-    inheritEmailSettings: false,
-    inheritGoogleOAuth: false,
-    enableGPS: false,
-    enableGoogleMeet: false,
-    enableSMSTemplateEdit: false,
-    enableSMSTemplateID: false,
-    assignedDomains: "",
   });
+  const [errors, setErrors] = useState({
+    startDate: "",
+    endDate: "",
+  });
+
+  // Date validation function
+  const validateDates = () => {
+    const newErrors = { ...errors };
+    let isValid = true;
+
+    // Validate start date
+    if (!formData.startDate) {
+      newErrors.startDate = 'Start date is required';
+      isValid = false;
+    } else {
+      newErrors.startDate = '';
+    }
+
+    // Validate end date
+    if (!formData.endDate) {
+      newErrors.endDate = 'End date is required';
+      isValid = false;
+    } else {
+      newErrors.endDate = '';
+    }
+
+    // If both dates exist, validate their relationship
+    if (formData.startDate && formData.endDate) {
+      const startDate = new Date(formData.startDate);
+      const endDate = new Date(formData.endDate);
+
+      if (endDate <= startDate) {
+        newErrors.endDate = 'End date must be after start date';
+        isValid = false;
+      }
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
 
   // Function to update form data
   const updateFormData = (key, value) => {
@@ -40,15 +73,21 @@ const AcademicYearCreate = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate dates before submission
+    if (!validateDates()) {
+      return;
+    }
+
     try {
       const params = {
-        campusGroupName: formData.campusGroupName,
-        licenseCount: formData.licenseCount,
-        gpsEnabled: formData.gpsEnabled,
-        zoomEnabled: formData.zoomEnabled,
+        academicYearName: formData.academicYearName,
+        startDate: formData.startDate,
+        endDate: formData.endDate,
         isActive: formData.isActive,
       };
-      // dispatch(postCampusGroupRequest(params));
+      console.log("🚀 ~ handleSubmit ~ params:", params)
+      dispatch(postAcademicYearRequest({ data: params, token }));
     } catch (err) {
       console.error("Error submitting data:", err);
       toast.error(err || "Failed to submit data. Please try again.", {
@@ -68,16 +107,16 @@ const AcademicYearCreate = (props) => {
     });
 
     // Refresh campus data
-    // dispatch(getCampusGroupRequest({
-    //     data: {
-    //         page: 0,
-    //         size: 10,
-    //         sortBy: "id",
-    //         ascending: true,
-    //     },
-    // }));
+    dispatch(getAcademicYearRequest({
+      data: {
+        page: 0,
+        size: 10,
+        sortBy: "id",
+        ascending: true,
+      },
+    }));
 
-    // dispatch(postCampusGroupSuccess(null));
+    dispatch(postAcademicYearSuccess(null));
     closeModal();
   }, [academicYearPostData, dispatch, closeModal]);
 
@@ -109,29 +148,55 @@ const AcademicYearCreate = (props) => {
           <div className="floating-form-control">
             <input
               type="text"
-              id="noteTitle"
+              placeholder="AcademicYear Title"
               className="form-input w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Note Title"
+              value={formData?.academicYearName || ""}
+              onChange={(e) => updateFormData("academicYearName", e.target.value)}
             />
-            <label htmlFor="noteTitle" className="form-label">Name</label>
+            <label htmlFor="noteTitle" className="form-label">Name <span className="text-red-500">*</span></label>
           </div>
           <div className="floating-form-control">
             <input
               type="date"
-              id="startDate"
-              className="form-input w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Select Date"
+              className={`form-input w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.startDate ? 'border-red-500' : ''}`}
+              value={formData?.startDate || ""}
+              onChange={(e) => updateFormData("startDate", e.target.value)}
+              onBlur={() => validateDates()}
             />
-            <label htmlFor="startDate" className="form-label">Start Date</label>
+            <label htmlFor="startDate" className="form-label">Start Date <span className="text-red-500">*</span></label>
           </div>
+          {errors.startDate && (
+            <p className="text-red-500 text-xs mt-1">{errors.startDate}</p>
+          )}
           <div className="floating-form-control">
             <input
               type="date"
-              id="endDate"
-              className="form-input w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Select Date"
+              className={`form-input w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.endDate ? 'border-red-500' : ''}`}
+              value={formData?.endDate || ""}
+              onChange={(e) => updateFormData("endDate", e.target.value)}
+              onBlur={() => validateDates()}
+              min={formData.startDate} // Set min date to start date
             />
-            <label htmlFor="endDate" className="form-label">End Date</label>
+            <label htmlFor="endDate" className="form-label">End Date <span className="text-red-500">*</span></label>
+          </div>
+          {errors.endDate && (
+            <p className="text-red-500 text-xs mt-1">{errors.endDate}</p>
+          )}
+          <div className='space-y-2 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 gap-2 md:gap-0 md:px-4'>
+            <label htmlFor='campaignsTitle' className='form-label md:w-1/3'>
+              Status <span className="text-red-500">*</span>
+            </label>
+            <div className='form-check form-switch w-full flex items-center'>
+              <input
+                type="checkbox"
+                className="form-check-input"
+                checked={formData?.isActive || false}
+                onChange={(e) => updateFormData("isActive", e.target.checked)}
+              />
+              <label className="form-check-label ml-2" htmlFor="lightIndoor1">
+                {formData?.isActive ? "Enabled" : "Disabled"}
+              </label>
+            </div>
           </div>
         </div>
       </div>

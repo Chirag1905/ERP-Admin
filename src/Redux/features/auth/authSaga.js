@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from "redux-saga/effects";
-import { forgotPass, resetPass, setPermanentPass, signIn, signOut } from "./authApi";
+import { fetchData, forgotPass, resetPass, setPermanentPass, signIn, signOut } from "./authApi";
 import {
   signInRequest,
   signInSuccess,
@@ -20,6 +20,10 @@ import {
   resetPassRequest,
   resetPassFailure,
   resetPassSuccess,
+
+  fetchDataRequest,
+  fetchDataSuccess,
+  fetchDataFailure,
 } from "./authSlice";
 
 function* signInSaga(action) {
@@ -79,10 +83,20 @@ function* resetPassSaga(action) {
   }
 }
 
+function* fetchDataSaga(action) {
+  try {
+    const response = yield call(fetchData, action.payload);
+    yield put(fetchDataSuccess(response));
+  } catch (error) {
+    yield put(fetchDataFailure(error.message));
+  }
+}
+
 export default function* authSaga() {
   yield takeLatest(signInRequest.type, signInSaga);
   // yield takeLatest(signOutSuccess.type, signOutSaga);
   yield takeLatest(setPermanentPassRequest.type, setPermanentPassSaga);
   yield takeLatest(forgotPassRequest.type, forgotPassSaga);
   yield takeLatest(resetPassRequest.type, resetPassSaga);
+  yield takeLatest(fetchDataRequest.type, fetchDataSaga);
 }

@@ -3,9 +3,11 @@ import {
   getAcademicYearRequest,
   getAcademicYearSuccess,
   getAcademicYearFailure,
+
   postAcademicYearRequest,
   postAcademicYearSuccess,
   postAcademicYearFailure,
+
   putAcademicYearSuccess,
   putAcademicYearFailure,
   putAcademicYearRequest,
@@ -58,8 +60,7 @@ function* postAcademicYearSaga(action) {
 // Add new saga for updating campus data
 function* putAcademicYearSaga(action) {
   try {
-    const { id, data } = action.payload;
-    const response = yield call(putAcademicYear, id, data);
+    const response = yield call(putAcademicYear, action.payload);
     if (response.status === 200 || response.status === 201) {
       yield put(putAcademicYearSuccess(response.data));
       yield put(
@@ -85,7 +86,7 @@ function* putAcademicYearSaga(action) {
   }
 }
 
-export default function* campusSaga() {
+export default function* academicYearSaga() {
   yield takeLatest(getAcademicYearRequest.type, getAcademicYearSaga);
   yield takeLatest(postAcademicYearRequest.type, postAcademicYearSaga);
   yield takeLatest(putAcademicYearRequest.type, putAcademicYearSaga);

@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IconBrandGoogleFilled, IconEye, IconEyeOff } from '@tabler/icons-react';
-import { clearAuthError, clearAuthState, signInRequest, signInSuccess } from '@/Redux/features/auth/authSlice';
+import { clearAuthError, clearAuthState, fetchDataRequest, signInRequest, signInSuccess } from '@/Redux/features/auth/authSlice';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
@@ -10,7 +10,7 @@ import Cookies from 'js-cookie';
 
 const Signin = () => {
     const dispatch = useDispatch();
-    const { loginData, isAuthenticated, loading, error, isTempPass } = useSelector((state) => state.auth);
+    const { loginData, isAuthenticated, fetchData, loading, error, isTempPass } = useSelector((state) => state.auth);
     const router = useRouter();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -20,9 +20,44 @@ const Signin = () => {
         email: '',
         password: ''
     });
+    const [clientParams, setClientParams] = useState({
+        clientId: "",
+        realmName: ""
+    });
 
-     // Load saved credentials if "Remember me" was checked previously
-     useEffect(() => {
+    useEffect(() => {
+        dispatch(fetchDataRequest());
+    }, []);
+
+    // Extract realm name from subdomain and find matching client
+    useEffect(() => {
+        if (typeof window !== 'undefined' && fetchData?.realm_client_mappings?.length > 0) {
+            const currentOrigin = window.location.origin;
+
+            // Skip if localhost (development)
+            if (currentOrigin.includes("localhost")) {
+                setClientParams({ clientId: "test4-fe-client", realmName: "test4" });
+                return;
+            }
+
+            const matchedClient = fetchData.realm_client_mappings.find(
+                client => client.allowed_origins === currentOrigin
+            );
+
+            if (matchedClient) {
+                setClientParams({
+                    clientId: matchedClient.client_id,
+                    realmName: matchedClient.realm_name
+                });
+            } else {
+                console.error("No allowed_origins match for:", currentOrigin);
+                // Optional: Redirect to an error page or show a message
+            }
+        }
+    }, [fetchData]);
+
+    // Load saved credentials if "Remember me" was checked previously
+    useEffect(() => {
         const rememberedCredentials = Cookies.get('rememberedCredentials');
         const rememberMeStatus = Cookies.get('rememberMe') === 'true';
 
@@ -72,7 +107,7 @@ const Signin = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         if (!validateForm()) {
             return;
         }
@@ -83,14 +118,14 @@ const Signin = () => {
                 username,
                 password
             };
-            
-            Cookies.set('rememberedCredentials', JSON.stringify(credentials), { 
+
+            Cookies.set('rememberedCredentials', JSON.stringify(credentials), {
                 expires: 30, // Expires in 30 days
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'strict',
                 path: '/'
             });
-            
+
             Cookies.set('rememberMe', 'true', {
                 expires: 30,
                 secure: process.env.NODE_ENV === 'production',
@@ -106,10 +141,12 @@ const Signin = () => {
         const params = {
             username,
             password,
-            clientId: "admin-cli",
-            realmName: "master"
+            clientId: clientParams.clientId,
+            realmName: clientParams.realmName,
+            // clientId: "admin-cli",
+            // realmName: "master"
         };
-        
+
         toast.loading('Logging in...', { id: 'login-toast' });
         dispatch(signInRequest(params));
     };

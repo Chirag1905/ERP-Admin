@@ -1,14 +1,14 @@
 import axios from "axios";
-
 export const getAcademicYear = async (obj) => {
   try {
     const response = await axios.get(
-      "https://api.testmazing.com/campus/api/campusgroupspagination",
+      "https://api.testmazing.com/campus/api/academicyearpagination",
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${obj?.token}`,
         },
-        params: obj.data,
+        params: obj?.data,
       }
     );
     return response;
@@ -19,14 +19,14 @@ export const getAcademicYear = async (obj) => {
 };
 
 export const postAcademicYear = async (obj) => {
-  // console.log(obj, "Main object Post Campus");
   try {
     const response = await axios.post(
-      "https://api.testmazing.com/campus/api/createcampusgroup",
-      obj,
+      "https://api.testmazing.com/campus/api/createacademicyear",
+      obj?.data,
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${obj?.token}`,
         },
       }
     );
@@ -37,14 +37,15 @@ export const postAcademicYear = async (obj) => {
   }
 };
 
-export const putAcademicYear = async (id, data) => {
+export const putAcademicYear = async (obj) => {
   try {
     const response = await axios.put(
-      `https://api.testmazing.com/campus/api/updatecampusgroup/${id}`,
-      data,
+      `https://api.testmazing.com/campus/api/updateacademicyear/${obj?.id}`,
+      obj?.data,
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${obj?.token}`,
         },
       }
     );

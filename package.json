@@ -21,6 +21,7 @@
     "next": "15.2.4",
     "nextjs-toploader": "^3.8.16",
     "react": "^19.0.0",
+    "react-apexcharts": "^1.7.0",
     "react-color": "^2.19.3",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.5.2",

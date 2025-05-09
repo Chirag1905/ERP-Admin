@@ -29,7 +29,7 @@ const academicYearSlice = createSlice({
   reducers: {
     ...createAsyncReducers("getAcademicYear", "academicYearData"),
     ...createAsyncReducers("postAcademicYear", "academicYearPostData"),
-    ...createAsyncReducers("putgetAcademicYear", "academicYearPutData"),
+    ...createAsyncReducers("putAcademicYear", "academicYearPutData"),
   },
 });
 

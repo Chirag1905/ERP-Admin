@@ -11,6 +11,7 @@ import {
 } from '@tabler/icons-react';
 import toast from 'react-hot-toast';
 import { closeModal, openModal } from '@/Redux/features/utils/modalSlice';
+import { getAcademicYearRequest } from '@/Redux/features/academicYear/academicYearSlice';
 import Breadcrumb from '@/components/common/Breadcrumb';
 import WelcomeHeader from '@/components/common/WelcomeHeader';
 import AcademicYearCreate from './_components/AcademicYearCreate';
@@ -23,6 +24,7 @@ const AcademicYearListPage = () => {
   // Redux state
   const dispatch = useDispatch();
   const { academicYearData, loading, error } = useSelector((state) => state.academicYear);
+  const { token } = useSelector((state) => state.auth);
   const { modals } = useSelector((state) => state.modal);
 
   // Modal states
@@ -30,15 +32,11 @@ const AcademicYearListPage = () => {
   const isEditModalOpen = modals.editAcademicYear.isOpen;
 
   // Component state
-  const [data, setData] = useState([
-    { id: 1, name: "2024-25", start_date: "2024-04-01", end_date: "2025-03-31" },
-    { id: 2, name: "2024-25", start_date: "2024-04-01", end_date: "2025-03-31" },
-    { id: 3, name: "2024-25", start_date: "2024-04-01", end_date: "2025-03-31" }
-  ]);
+  const [data, setData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [isAscending, setIsAscending] = useState(true);
   const [pagination, setPagination] = useState({
-    page: 0,
+    page: 1,
     rowsPerPage: 10,
     totalPages: 0,
     totalElements: 0,
@@ -72,7 +70,7 @@ const AcademicYearListPage = () => {
     setPagination(prev => ({
       ...prev,
       rowsPerPage: parseInt(event.target.value, 10),
-      page: 0
+      page: 1
     }));
   };
 
@@ -91,6 +89,7 @@ const AcademicYearListPage = () => {
       setData(academicYearData?.data?.content || []);
       setPagination(prev => ({
         ...prev,
+        page: academicYearData?.data?.pageNumber || 1,
         totalPages: academicYearData?.data?.totalPages || 0,
         totalElements: academicYearData?.data?.totalElements || 0
       }));
@@ -109,7 +108,7 @@ const AcademicYearListPage = () => {
       };
 
       try {
-        // dispatch(getCampusGroupRequest({ data: params }));
+        dispatch(getAcademicYearRequest({ data: params, token }));
       } catch (error) {
         console.error("Error fetching campus group data:", error);
         toast.error("Failed to load campus group data");
@@ -184,7 +183,7 @@ const AcademicYearListPage = () => {
                   type="text"
                   id="team_board_search"
                   className="form-input !rounded-e-none !py-[6px]"
-                  placeholder="Search campus..."
+                  placeholder="Search academics..."
                   value={searchText}
                   onChange={handleSearch}
                 />
@@ -289,7 +288,7 @@ const AcademicYearListPage = () => {
                         ))
                       ) : (
                         <tr>
-                          <td colSpan="5" className="text-center text-gray-500 py-4 px-2 md:px-4">No campuss available</td>
+                          <td colSpan="5" className="text-center text-gray-500 py-4 px-2 md:px-4">No acedamic years available</td>
                         </tr>
                       )}
                     </tbody>
@@ -298,14 +297,17 @@ const AcademicYearListPage = () => {
               )}
             </div>
           </div>
-          <CustomPagination
-            page={pagination.page}
-            totalPages={pagination.totalPages}
-            handleChange={handlePageChange}
-            totalElements={pagination?.totalElements}
-            rowsPerPage={pagination.rowsPerPage}
-            handleChangeRowsPerPage={handleRowsPerPageChange}
-          />
+          {/* Pagination */}
+          {data?.length > 0 &&
+            <CustomPagination
+              page={pagination.page}
+              totalPages={pagination.totalPages}
+              handleChange={handlePageChange}
+              totalElements={pagination?.totalElements}
+              rowsPerPage={pagination.rowsPerPage}
+              handleChangeRowsPerPage={handleRowsPerPageChange}
+            />
+          }
         </>
       )}
     </>
