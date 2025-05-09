@@ -251,8 +251,6 @@ export default function Header({ toggleMobileNav, mobileNav, toggleNote, toggleC
     useEffect(() => {
         setFavicon(customizations.schoolLogo || '/default-favicon.ico');
     }, [customizations.schoolLogo, setFavicon]);
-    // console.log("🚀 ~ Header ~ customizations:", customizations)
-
 
     // Also update the handleFileChange function to save to localStorage:
     const handleFileChange = (event) => {

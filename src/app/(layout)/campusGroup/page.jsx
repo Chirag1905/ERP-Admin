@@ -43,7 +43,7 @@ const CampusGroup = () => {
   const [searchText, setSearchText] = useState("");
   const [isAscending, setIsAscending] = useState(true);
   const [pagination, setPagination] = useState({
-    page: 0,
+    page: 1,
     rowsPerPage: 10,
     totalPages: 0,
     totalElements: 0,
@@ -77,7 +77,7 @@ const CampusGroup = () => {
     setPagination(prev => ({
       ...prev,
       rowsPerPage: parseInt(event.target.value, 10),
-      page: 0
+      page: 1
     }));
   };
 
@@ -96,6 +96,7 @@ const CampusGroup = () => {
       setData(campusGroupData?.data?.content || []);
       setPagination(prev => ({
         ...prev,
+        page: campusGroupData?.data?.pageNumber || 1,
         totalPages: campusGroupData?.data?.totalPages || 0,
         totalElements: campusGroupData?.data?.totalElements || 0
       }));

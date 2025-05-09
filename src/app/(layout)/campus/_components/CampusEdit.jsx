@@ -87,8 +87,6 @@ const CampusEdit = (props) => {
     //     }
     //   };
 
-    // console.log("🚀 ~ useEffect ~ selectedItem:", selectedItem.primaryDomainName)
-    console.log("🚀 ~ useEffect ~ selectedItem:", formData.primaryDomainName)
     useEffect(() => {
         if (selectedItem) {
             setFormData({

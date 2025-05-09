@@ -8,8 +8,6 @@ const modalSlice = createSlice({
       editCampusGroup: { isOpen: false }, // Example: Additional data for edit modal
       createCampus: { isOpen: false },
       editCampus: { isOpen: false }, // Example: Additional data for edit modal
-      createAcademicYear: { isOpen: false },
-      editAcademicYear: { isOpen: false }, // Example: Additional data for edit modal
     },
   },
   reducers: {

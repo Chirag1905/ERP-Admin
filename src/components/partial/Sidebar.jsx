@@ -64,11 +64,13 @@ import { signOutSuccess } from '../../Redux/features/auth/authSlice';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
 import { closeModal } from '@/Redux/features/utils/modalSlice';
+import { getCampusRequest } from '@/Redux/features/campus/campusSlice';
+import { getCampusGroupRequest } from '@/Redux/features/campusGroup/campusGroupSlice';
 
 export default function Sidebar(props) {
   const { setMobileNav, note, toggleNote, chat, toggleChat } = props;
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated, token } = useSelector((state) => state.auth);
   const [pinnedItems, setPinnedItems] = useState([]);
   const [menuActive, setMenuActive] = useState(null);
   const [submenuActive, setSubmenuActive] = useState({});
@@ -88,7 +90,7 @@ export default function Sidebar(props) {
   const handleLogout = () => {
     if (isAuthenticated) {
       dispatch(signOutSuccess());
-      console.log("LogOut called");
+      // console.log("LogOut called");
       toast.success("You've been successfully logged out. See you soon!")
     }
   };
@@ -249,11 +251,30 @@ export default function Sidebar(props) {
 
   const closeModals = () => {
     // Close all campus group and campus modals
-    console.log("called")
     dispatch(closeModal({ modalType: "createCampusGroup" }));
     dispatch(closeModal({ modalType: "editCampusGroup" }));
     dispatch(closeModal({ modalType: "createCampus" }));
     dispatch(closeModal({ modalType: "editCampus" }));
+    dispatch(getCampusRequest({
+      data: {
+        page: 1,
+        size: 10,
+        sortBy: "id",
+        ascending: "true",
+        searchFilter: "",
+      },
+      token
+    }));
+    dispatch(getCampusGroupRequest({
+      data: {
+        page: 1,
+        size: 10,
+        sortBy: "id",
+        ascending: "true",
+        searchFilter: "",
+      },
+      token
+    }));
   };
 
   useEffect(() => {

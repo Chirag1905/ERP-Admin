@@ -43,7 +43,7 @@ const Campus = () => {
   const [searchText, setSearchText] = useState("");
   const [isAscending, setIsAscending] = useState(true);
   const [pagination, setPagination] = useState({
-    page: 0,
+    page: 1,
     rowsPerPage: 10,
     totalPages: 0,
     totalElements: 0,
@@ -77,7 +77,7 @@ const Campus = () => {
     setPagination(prev => ({
       ...prev,
       rowsPerPage: parseInt(event.target.value, 10),
-      page: 0
+      page: 1
     }));
   };
 
@@ -96,6 +96,7 @@ const Campus = () => {
       setData(campusData?.data?.content || []);
       setPagination(prev => ({
         ...prev,
+        page: campusData?.data?.pageNumber || 1,
         totalPages: campusData?.data?.totalPages || 0,
         totalElements: campusData?.data?.totalElements || 0
       }));
@@ -273,7 +274,7 @@ const Campus = () => {
                   ))
                 ) : (
                   <li className="flex items-center justify-center h-full text-gray-500">
-                    No campus available
+                    No Campus available
                   </li>
                 )}
               </ul>
